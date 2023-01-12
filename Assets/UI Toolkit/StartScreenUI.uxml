@@ -15,7 +15,7 @@
                 <ui:Button text="4 Player" display-tooltip-when-elided="true" name="FourPlayer" class="StartScreenButton" style="width: 150px;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="PlayerAssignment" picking-mode="Ignore" style="justify-content: center; width: 100%; height: 100%; align-items: center;">
+        <ui:VisualElement name="PlayerAssignment" picking-mode="Ignore" style="justify-content: center; width: 100%; height: 100%; align-items: center; display: flex;">
             <ui:VisualElement picking-mode="Ignore" style="flex-direction: row; justify-content: space-between;">
                 <ui:Label text="Player One&#10;Controller Type/Name" display-tooltip-when-elided="true" name="OnePlayer" class="SSPlayerAssign" style="width: 150px; height: 75px; -unity-text-align: middle-center;" />
                 <ui:Label text="Player Two&#10;Controller Type/Name" display-tooltip-when-elided="true" name="TwoPlayer" class="SSPlayerAssign" style="width: 150px; -unity-text-align: middle-center;" />
