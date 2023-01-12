@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainUSS.uss?fileID=7433441132597879392&amp;guid=c8723f9a896526f4d9e89941ee0b871a&amp;type=3#MainUSS" />
+    <ui:VisualElement name="HealthBars" picking-mode="Ignore" style="justify-content: space-between; width: 100%; height: 100%;">
+        <ui:VisualElement picking-mode="Ignore" style="flex-direction: row; justify-content: space-between;">
+            <ui:ProgressBar title="Player 1" name="HBP1" class="HealthBar" />
+            <ui:ProgressBar title="Player 2" name="HBP2" class="HealthBar" />
+        </ui:VisualElement>
+        <ui:VisualElement picking-mode="Ignore" style="flex-direction: row; justify-content: space-between;">
+            <ui:ProgressBar title="Player 3" name="HBP3" class="HealthBar" />
+            <ui:ProgressBar title="Player 4" name="HBP4" class="HealthBar" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="ControllerInterrupt" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; justify-content: center; align-items: center; background-color: rgba(51, 51, 51, 0.5); display: none;">
+        <ui:VisualElement>
+            <ui:Label text="Controller Disconnected!" display-tooltip-when-elided="true" name="BigLabel" class="CtrlerInterText" style="font-size: 88px; -unity-font-style: bold;" />
+            <ui:Label text="Player 1 Controller Disconnected" display-tooltip-when-elided="true" name="ControllerInfo" class="CtrlerInterText" style="font-size: 52px; -unity-text-align: middle-center; white-space: normal; -unity-font-style: bold;" />
+            <ui:Label text="Please reconnect, then press any button" display-tooltip-when-elided="true" name="InfoLabel" class="CtrlerInterText" style="font-size: 52px; -unity-text-align: middle-center; white-space: normal; -unity-font-style: bold;" />
+        </ui:VisualElement>
+        <ui:Label text="Controller Connected" display-tooltip-when-elided="true" name="ControllerConnected" class="CtrlerInterText" style="-unity-text-align: lower-center; margin-top: 64px; -unity-font-style: bold; font-size: 27px; color: rgb(210, 210, 81);" />
+    </ui:VisualElement>
+</ui:UXML>

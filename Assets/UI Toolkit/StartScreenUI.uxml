@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainUSS.uss?fileID=7433441132597879392&amp;guid=c8723f9a896526f4d9e89941ee0b871a&amp;type=3#MainUSS" />
+    <ui:VisualElement name="Overlay" class="SSPlayerAssign" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; justify-content: center; align-items: center; background-color: rgba(51, 51, 51, 0.5); display: flex;">
+        <ui:VisualElement name="StartScreen" style="display: none;">
+            <ui:Label text="Project|Eternity" display-tooltip-when-elided="true" class="CtrlerInterText" style="font-size: 88px; -unity-font-style: bold; -unity-text-align: upper-center;" />
+            <ui:Label text="Press Any Button to Start" display-tooltip-when-elided="true" class="CtrlerInterText" style="font-size: 52px; -unity-text-align: middle-center; white-space: normal; -unity-font-style: bold;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="PlayerModePick" picking-mode="Ignore" style="justify-content: center; width: 100%; height: 100%; align-items: center; display: none;">
+            <ui:VisualElement picking-mode="Ignore" style="flex-direction: row; justify-content: space-between;">
+                <ui:Button text="1 Player (Debug Only)" display-tooltip-when-elided="true" name="OnePlayer" class="StartScreenButton" style="width: 150px; height: 75px;" />
+                <ui:Button text="2 Player" display-tooltip-when-elided="true" name="TwoPlayer" class="StartScreenButton" style="width: 150px;" />
+            </ui:VisualElement>
+            <ui:VisualElement picking-mode="Ignore" style="flex-direction: row; justify-content: space-between;">
+                <ui:Button text="3 Player" display-tooltip-when-elided="true" name="ThreePlayer" class="StartScreenButton" style="width: 150px; height: 75px;" />
+                <ui:Button text="4 Player" display-tooltip-when-elided="true" name="FourPlayer" class="StartScreenButton" style="width: 150px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="PlayerAssignment" picking-mode="Ignore" style="justify-content: center; width: 100%; height: 100%; align-items: center;">
+            <ui:VisualElement picking-mode="Ignore" style="flex-direction: row; justify-content: space-between;">
+                <ui:Label text="Player One&#10;Controller Type/Name" display-tooltip-when-elided="true" name="OnePlayer" class="SSPlayerAssign" style="width: 150px; height: 75px; -unity-text-align: middle-center;" />
+                <ui:Label text="Player Two&#10;Controller Type/Name" display-tooltip-when-elided="true" name="TwoPlayer" class="SSPlayerAssign" style="width: 150px; -unity-text-align: middle-center;" />
+            </ui:VisualElement>
+            <ui:VisualElement picking-mode="Ignore" style="flex-direction: row; justify-content: space-between;">
+                <ui:Label text="Player Three&#10;Controller Type/Name" display-tooltip-when-elided="true" name="ThreePlayer" class="SSPlayerAssign" style="width: 150px; -unity-text-align: middle-center;" />
+                <ui:Label text="Player Four&#10;Controller Type/Name" display-tooltip-when-elided="true" name="FourPlayer" class="SSPlayerAssign" style="width: 150px; height: 75px; -unity-text-align: middle-center;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
