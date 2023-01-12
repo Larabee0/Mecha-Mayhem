@@ -51,12 +51,20 @@ namespace RedButton.Core
 
         // start Screen
         [SerializeField] private bool StartScreen = false;
-        private InputAction startScreenAction;
+        private DualControllerInput startScreenActionMap;
+        private InputActionAsset startScreenUIActionAsset;
         private StartScreenUI.ControllerAssignHelper playerToAssign;
 
         private void Awake()
         {
             InputSystem.onDeviceChange += OnDeviceChanged;
+
+            if (Instance != null && !OverrideDuplicates)
+            {
+                Debug.LogError("Multiple Control Arbiters in scene! Please remove any duplicates!\nThis may get falsing triggered by switching to a scene with a Control Arbiter in it, set OverrideDuplicate to true before switching to the new scene.");
+                return;
+            }
+            Instance = this;
 
             if (StartScreen)
             {
@@ -64,16 +72,9 @@ namespace RedButton.Core
                 return;
             }
 
-            if (Instance != null && !OverrideDuplicates)
-            {
-                Debug.LogError("Multiple Control Arbiters in scene! Please remove any duplicates!\nThis may get falsing triggered by switching to a scene with a Control Arbiter in it, set OverrideDuplicate to true before switching to the new scene.");
-                return;
-            }
-
             MainUIController = FindObjectOfType<MainUIController>();
 
             OverrideDuplicates = false;
-            Instance = this;
             PlayerOne = null;
             PlayerTwo = null;
             PlayerThree = null;
@@ -239,12 +240,15 @@ namespace RedButton.Core
         #region Start Screen
         private void SetUpForStartScreen()
         {
+            startScreenUIActionAsset = GetComponent<InputSystemUIInputModule>().actionsAsset;
             newDevices = new(InputSystem.devices);
-            startScreenAction = new InputAction(binding: "/*/<button>");
-            startScreenAction.actionMap.devices = newDevices.ToArray();
-            startScreenAction.performed += StartScreenAnyButtonPressed;
-            startScreenAction.Enable();
-            InputSystem.onDeviceChange += OnDeviceChanged;
+            startScreenActionMap = new()
+            {
+                devices = newDevices.ToArray()
+            };
+            startScreenUIActionAsset.devices = newDevices.ToArray();
+            startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
+            startScreenActionMap.UI.Enable();
         }
 
         private void StartScreenAnyButtonPressed(InputAction.CallbackContext obj)
@@ -252,30 +256,35 @@ namespace RedButton.Core
             if (newDevices.Contains(obj.control.device))
             {
                 newDevices.Remove(obj.control.device);
+                startScreenActionMap.devices = new[] { obj.control.device };
+                startScreenUIActionAsset.devices = new[] { obj.control.device };
             }
-            startScreenAction.Disable();
-            startScreenAction.actionMap.devices = newDevices.ToArray();
-            startScreenAction.performed -= StartScreenAnyButtonPressed;
 
             PlayerOne = Instantiate(playerInputControllerPrefab, transform);
+            PlayerOne.playerColour = PlayerOneColour;
             PlayerOne.AssignDevice(obj.control.device, Controller.One);
-            // PlayerOne.Disable();
+
+            startScreenActionMap.UI.Submit.performed -= StartScreenAnyButtonPressed;
+            startScreenActionMap.UI.Disable();
+
             MainUIController.StartScreenController.ProgressToPlayerCountPikcer();
             EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
         }
 
         public void StartControllerAssignment(Queue<StartScreenUI.ControllerAssignHelper> playersToAssign)
         {
-            startScreenAction.performed += AssignControllerCallback;
-            startScreenAction.Enable();
+            startScreenActionMap.devices = newDevices.ToArray();
+            startScreenUIActionAsset.devices = newDevices.ToArray();
+            startScreenActionMap.UI.Submit.performed += AssignControllerCallback;
+            startScreenActionMap.UI.Enable();
             StartCoroutine(ControllerAssignmentCoroutine(playersToAssign));
         }
 
         private IEnumerator ControllerAssignmentCoroutine(Queue<StartScreenUI.ControllerAssignHelper> playersToAssign)
         {
-            while (playersToAssign.Count > 0)
+            while (playersToAssign.Count > 0 || playerToAssign != null)
             {
-                if(playerToAssign == null)
+                if (playerToAssign == null)
                 {
                     playerToAssign = playersToAssign.Dequeue();
                     playerToAssign.Highlight();
@@ -283,7 +292,7 @@ namespace RedButton.Core
                 yield return null;
             }
 
-            startScreenAction.Dispose();
+            startScreenActionMap.Dispose();
             PlayerOne.Enable();
             // next screen
         }
@@ -297,36 +306,39 @@ namespace RedButton.Core
             switch (playerToAssign.playerNum)
             {
                 case 2:
-                    if(PlayerTwo != null)
+                    if(PlayerTwo == null)
                     {
                         PlayerTwo = Instantiate(playerInputControllerPrefab, transform);
                     }
-                    PlayerTwo.AssignDevice(obj.control.device, Controller.One);
+                    PlayerTwo.playerColour = PlayerTwoColour;
+                    PlayerTwo.AssignDevice(obj.control.device, Controller.Two);
                     // PlayerTwo.Disable();
                     playerToAssign.Set(PlayerTwo);
                     break;
                 case 3:
-                    if (PlayerTwo != null)
+                    if (PlayerTwo == null)
                     {
                         PlayerThree = Instantiate(playerInputControllerPrefab, transform);
                     }
+                    PlayerThree.playerColour = PlayerThreeColour;
                     PlayerThree.AssignDevice(obj.control.device, Controller.Three);
                     // PlayerThree.Disable();
                     playerToAssign.Set(PlayerThree);
                     break;
                 case 4:
-                    if (PlayerTwo != null)
+                    if (PlayerTwo == null)
                     {
                         PlayerFour = Instantiate(playerInputControllerPrefab, transform);
                     }
+                    PlayerFour.playerColour = PlayerFourColour;
                     PlayerFour.AssignDevice(obj.control.device, Controller.Four);
                     // PlayerFour.Disable();
                     playerToAssign.Set(PlayerFour);
                     break;
             }
+            startScreenUIActionAsset.devices = newDevices.ToArray();
+            startScreenActionMap.devices = newDevices.ToArray();
             playerToAssign = null;
-
-            startScreenAction.actionMap.devices = newDevices.ToArray();
         }
 
         #endregion

@@ -12,7 +12,7 @@ namespace RedButton.Core
         [Header("Information")]
         [SerializeField] private Controller player = 0;
         public Controller Player => player;
-        [HideInInspector] public Color playerColour;
+        public Color playerColour;
         // input actions asset for this player.
         private DualControllerInput controlMap;
 
