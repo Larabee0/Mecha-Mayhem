@@ -7,11 +7,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UIElements;
+using RedButton.Core.UI;
 
 namespace RedButton.Core
 {
     public class ControlArbiter : MonoBehaviour
     {
+        public static Controller playerMode;
         public static bool OverrideDuplicates;
         public static ControlArbiter Instance;
         public static PlayerInput PlayerOne = null;
@@ -57,6 +59,7 @@ namespace RedButton.Core
 
         private void Awake()
         {
+            DontDestroyOnLoad(this);
             InputSystem.onDeviceChange += OnDeviceChanged;
 
             if (Instance != null && !OverrideDuplicates)
@@ -238,6 +241,10 @@ namespace RedButton.Core
         #endregion
 
         #region Start Screen
+        /// <summary>
+        /// Sets up ControlArbiter for starting from main menu
+        /// in the future it will support starting from a map scene to speed up testing
+        /// </summary>
         private void SetUpForStartScreen()
         {
             startScreenUIActionAsset = GetComponent<InputSystemUIInputModule>().actionsAsset;
@@ -251,6 +258,11 @@ namespace RedButton.Core
             startScreenActionMap.UI.Enable();
         }
 
+        /// <summary>
+        /// Input System Callback for grabbing the main player (player one)
+        /// All controllers are unlocked and no player input scripts should exist.
+        /// </summary>
+        /// <param name="obj"></param>
         private void StartScreenAnyButtonPressed(InputAction.CallbackContext obj)
         {
             if (newDevices.Contains(obj.control.device))
@@ -263,23 +275,40 @@ namespace RedButton.Core
             PlayerOne = Instantiate(playerInputControllerPrefab, transform);
             PlayerOne.playerColour = PlayerOneColour;
             PlayerOne.AssignDevice(obj.control.device, Controller.One);
-
+            PlayerOne.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
+            PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
+            PlayerOne.EnableUIonly();
             startScreenActionMap.UI.Submit.performed -= StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Disable();
 
-            MainUIController.StartScreenController.ProgressToPlayerCountPikcer();
+            MainUIController.StartScreenController.ShowPlayerCountPicker();
             EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
         }
 
+        /// <summary>
+        /// starts controller to player assignment, triggered by the start screen UI.
+        /// </summary>
+        /// <param name="playersToAssign">all players to assign, in order</param>
         public void StartControllerAssignment(Queue<StartScreenUI.ControllerAssignHelper> playersToAssign)
         {
             startScreenActionMap.devices = newDevices.ToArray();
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += AssignControllerCallback;
+            startScreenActionMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
             startScreenActionMap.UI.Enable();
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
+            }
             StartCoroutine(ControllerAssignmentCoroutine(playersToAssign));
         }
 
+        /// <summary>
+        /// coroutine to assign controllers to players, started by StartcontrollerAssignment
+        /// </summary>
+        /// <param name="playersToAssign">all players to assign, in order</param>
+        /// <returns></returns>
         private IEnumerator ControllerAssignmentCoroutine(Queue<StartScreenUI.ControllerAssignHelper> playersToAssign)
         {
             while (playersToAssign.Count > 0 || playerToAssign != null)
@@ -291,12 +320,19 @@ namespace RedButton.Core
                 }
                 yield return null;
             }
-
-            startScreenActionMap.Dispose();
+            startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
+            startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
+            startScreenUIActionAsset.devices = new[] { PlayerOne.Device };
+            startScreenActionMap.devices = new[] { PlayerOne.Device };
             PlayerOne.Enable();
-            // next screen
+            MainUIController.StartScreenController.ShowAssignmentButtonPanel();
         }
 
+        /// <summary>
+        /// Input System callback called when any unassigned controller expirences a button press
+        /// This assigns that controller to the current "playerToAssign".
+        /// </summary>
+        /// <param name="obj"></param>
         private void AssignControllerCallback(InputAction.CallbackContext obj)
         {
             if (newDevices.Contains(obj.control.device))
@@ -305,40 +341,135 @@ namespace RedButton.Core
             }
             switch (playerToAssign.playerNum)
             {
-                case 2:
+                case Controller.One:
+                    if (PlayerOne == null)
+                    {
+                        PlayerOne = Instantiate(playerInputControllerPrefab, transform);
+                    }
+                    PlayerOne.playerColour = PlayerOneColour;
+                    PlayerOne.AssignDevice(obj.control.device, Controller.One);
+                    playerToAssign.Set(PlayerOne);
+                    PlayerOne.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
+                    break;
+                case Controller.Two:
                     if(PlayerTwo == null)
                     {
                         PlayerTwo = Instantiate(playerInputControllerPrefab, transform);
                     }
                     PlayerTwo.playerColour = PlayerTwoColour;
                     PlayerTwo.AssignDevice(obj.control.device, Controller.Two);
-                    // PlayerTwo.Disable();
                     playerToAssign.Set(PlayerTwo);
+                    PlayerTwo.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
                     break;
-                case 3:
+                case Controller.Three:
                     if (PlayerTwo == null)
                     {
                         PlayerThree = Instantiate(playerInputControllerPrefab, transform);
                     }
                     PlayerThree.playerColour = PlayerThreeColour;
                     PlayerThree.AssignDevice(obj.control.device, Controller.Three);
-                    // PlayerThree.Disable();
                     playerToAssign.Set(PlayerThree);
+                    PlayerThree.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
                     break;
-                case 4:
+                case Controller.Four:
                     if (PlayerTwo == null)
                     {
                         PlayerFour = Instantiate(playerInputControllerPrefab, transform);
                     }
                     PlayerFour.playerColour = PlayerFourColour;
                     PlayerFour.AssignDevice(obj.control.device, Controller.Four);
-                    // PlayerFour.Disable();
                     playerToAssign.Set(PlayerFour);
+                    PlayerFour.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
                     break;
             }
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.devices = newDevices.ToArray();
             playerToAssign = null;
+        }
+
+        /// <summary>
+        /// Input System callback to return to the start screen and the inital state of the game
+        /// on the start screen from the player count picker screen
+        /// </summary>
+        /// <param name="obj"></param>
+        private void GoBackToStartScreen(InputAction.CallbackContext obj)
+        {
+
+            // unassign all players
+            UnassignPlayers(true);
+            newDevices = new HashSet<InputDevice>(InputSystem.devices);
+            startScreenActionMap = new()
+            {
+                devices = newDevices.ToArray()
+            };
+            startScreenUIActionAsset.devices = newDevices.ToArray();
+            startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
+            startScreenActionMap.UI.Enable();
+            MainUIController.StartScreenController.ShowMainMenu();
+        }
+
+        /// <summary>
+        /// Input System callback to return to the player count screen
+        /// from the controller to player assignment screen.
+        /// </summary>
+        /// <param name="obj"></param>
+        private void GoBackToPlayerCountPickScreen(InputAction.CallbackContext obj)
+        {
+            StopAllCoroutines();
+            startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
+            MainUIController.StartScreenController.ShowPlayerCountPicker();
+            startScreenActionMap.UI.Disable();
+            startScreenActionMap.devices = new[] { obj.control.device };
+            startScreenUIActionAsset.devices = new[] { obj.control.device };
+            startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
+            
+            playerToAssign = null;
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
+                PlayerOne.Disable();
+            }
+
+            MainUIController.StartScreenController.ShowPlayerCountPicker();
+        }
+
+        /// <summary>
+        /// Triggers the total reassignment of player controllers, including main player
+        /// </summary>
+        public void ResetControllerAssignment()
+        {
+            UnassignPlayers(true);
+            newDevices = new HashSet<InputDevice>(InputSystem.devices);
+            MainUIController.StartScreenController.PlayerSelectCallback(playerMode, false);
+        }
+
+        /// <summary>
+        /// Helper method to unassign all player controllers,
+        /// this destroyers all player input game objects
+        /// </summary>
+        /// <param name="playerOne">Whether player one (main player) should be destroyed</param>
+        private void UnassignPlayers(bool playerOne = false)
+        {
+            if(PlayerOne != null && playerOne)
+            {
+                Destroy(PlayerOne.gameObject);
+                PlayerOne = null;
+            }
+            if (PlayerTwo != null)
+            {
+                Destroy(PlayerTwo.gameObject);
+                PlayerTwo = null;
+            }
+            if (PlayerThree != null)
+            {
+                Destroy(PlayerThree.gameObject);
+                PlayerThree = null;
+            }
+            if (PlayerFour != null)
+            {
+                Destroy(PlayerFour.gameObject);
+                PlayerFour = null;
+            }
         }
 
         #endregion

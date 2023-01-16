@@ -15,6 +15,7 @@ namespace RedButton.Core
         public Color playerColour;
         // input actions asset for this player.
         private DualControllerInput controlMap;
+        public DualControllerInput ControlMap=>controlMap;
 
         // the gamepad device assigned to this player, if they are using keyboard, this will be null.
         private Gamepad gamepad;
@@ -22,6 +23,19 @@ namespace RedButton.Core
         public string DevicePath => devicePath;
         public string DeviceName;
         public bool DeviceConnected;
+
+        public InputDevice Device
+        {
+            get
+            {
+                if(controlMap== null||!DeviceConnected)
+                {
+                    return null;
+                }
+
+                return controlMap.devices.Value[0];
+            }
+        }
 
         // events and information about the status of the fire button.
         public Pluse OnFireOneButtonPressed;
@@ -122,6 +136,11 @@ namespace RedButton.Core
             controlMap.UI.Enable();
         }
 
+        public void EnableUIonly()
+        {
+            controlMap.UI.Enable();
+        }
+
         /// <summary>
         /// Disable user input for this player
         /// </summary>
@@ -151,7 +170,10 @@ namespace RedButton.Core
 
         private void OnDestroy()
         {
+            Debug.Log("Decommissioning Player Input Script!");
             StopRumbleMotor(global::RumbleMotor.Both);
+            Disable();
+            ControlMap.Dispose();
         }
 
         #region Buttons
