@@ -4,12 +4,19 @@ using UnityEngine;
 
 namespace RedButton.Mech
 {
-    /// <summary>
-    /// Base class all weapons are derived from
-    /// </summary>
-    public abstract class WeaponBase : MonoBehaviour
+    public abstract class ProjectileCore : MonoBehaviour
     {
+        protected virtual void Awake()
+        {
+
+        }
+
         protected virtual void Start()
+        {
+
+        }
+
+        protected virtual void Update()
         {
 
         }

@@ -1,4 +1,5 @@
 using RedButton.Core;
+using RedButton.Mech;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,7 +49,7 @@ namespace RedButton.Core.UI
             }
         }
 
-        public void SetPlayers(List<PlayerInput> players)
+        public void SetPlayers(List<CentralMechComponent> players)
         {
             int i = 0;
             for (; i < players.Count; i++)

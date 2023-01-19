@@ -24,6 +24,15 @@ public delegate void Vector2Axis(Vector2 axis);
 public delegate void Pluse();
 public delegate void FloatPassThrough(float value);
 
+public class ButtonEventContainer
+{
+    public Pluse OnButtonPressed;
+    public Pluse OnButtonReleased;
+    public Pluse OnButtonHeld;
+    public bool buttonDown = false;
+}
+
+
 public enum Controller : byte
 {
     One,
@@ -38,4 +47,17 @@ public enum RumbleMotor : byte
     LowFreq,
     HighFreq,
     Both
+}
+
+public enum ControlBinding : byte
+{
+    Fire1,
+    Fire2
+}
+
+public enum ControlBehaviour : byte
+{
+    OnPress,
+    OnRelease,
+    OnHeld
 }

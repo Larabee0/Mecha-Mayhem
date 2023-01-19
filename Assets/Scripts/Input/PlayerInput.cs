@@ -38,17 +38,9 @@ namespace RedButton.Core
         }
 
         // events and information about the status of the fire button.
-        public Pluse OnFireOneButtonPressed;
-        public Pluse OnFireOneButtonReleased;
-        public Pluse OnFireOneButtonHeld;
-        private bool fireOneButtonDown = false;
-        public bool FireOneButtonDown => fireOneButtonDown;
+        public ButtonEventContainer fireOneButton =new();
 
-        public Pluse OnFireTwoButtonPressed;
-        public Pluse OnFireTwoButtonReleased;
-        public Pluse OnFireTwoButtonHeld;
-        private bool fireTwoButtonDown = false;
-        public bool FireTwoButtonDown => fireTwoButtonDown;
+        public ButtonEventContainer fireTwoButton =new();
 
         // Joy stick axis events
         public Vector2Axis OnLeftStick;
@@ -112,6 +104,8 @@ namespace RedButton.Core
                     bindingMask = InputBinding.MaskByGroup("Gamepad")
                 };
             }
+            player = playerNum;
+            devicePath = device.path;
             DeviceConnected = true;
             DeviceName = device.displayName;
             // Subscribe to the various stick and button inputs.
@@ -179,8 +173,8 @@ namespace RedButton.Core
         #region Buttons
         private void OnFireOneStart(InputAction.CallbackContext context)
         {
-            fireOneButtonDown = true;
-            OnFireOneButtonPressed?.Invoke();
+            fireOneButton.buttonDown = true;
+            fireOneButton.OnButtonPressed?.Invoke();
             if (fireOneButtonProcess != null)
             {
                 StopCoroutine(fireOneButtonProcess);
@@ -195,15 +189,15 @@ namespace RedButton.Core
                 StopCoroutine(fireOneButtonProcess);
                 fireOneButtonProcess = null;
             }
-            fireOneButtonDown = false;
-            OnFireOneButtonReleased?.Invoke();
+            fireOneButton.buttonDown = false;
+            fireOneButton.OnButtonReleased?.Invoke();
         }
 
         private IEnumerator OnFireOneHeld()
         {
             while (true)
             {
-                OnFireOneButtonHeld?.Invoke();
+                fireOneButton.OnButtonHeld?.Invoke();
                 yield return null;
             }
         }
@@ -211,8 +205,8 @@ namespace RedButton.Core
 
         private void OnFireTwoStart(InputAction.CallbackContext context)
         {
-            fireTwoButtonDown = true;
-            OnFireTwoButtonPressed?.Invoke();
+            fireTwoButton.buttonDown = true;
+            fireTwoButton.OnButtonPressed?.Invoke();
             if (fireTwoButtonProcess != null)
             {
                 StopCoroutine(fireTwoButtonProcess);
@@ -227,15 +221,15 @@ namespace RedButton.Core
                 StopCoroutine(fireTwoButtonProcess);
                 fireTwoButtonProcess = null;
             }
-            fireTwoButtonDown = false;
-            OnFireTwoButtonReleased?.Invoke();
+            fireTwoButton.buttonDown = false;
+            fireTwoButton.OnButtonReleased?.Invoke();
         }
 
         private IEnumerator OnFireTwoHeld()
         {
             while (true)
             {
-                OnFireTwoButtonHeld?.Invoke();
+                fireTwoButton.OnButtonHeld?.Invoke();
                 yield return null;
             }
         }

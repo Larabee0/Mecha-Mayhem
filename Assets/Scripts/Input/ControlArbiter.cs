@@ -21,14 +21,35 @@ namespace RedButton.Core
         public static PlayerInput PlayerThree = null;
         public static PlayerInput PlayerFour = null;
         public static PlayerInput KeyboardPlayer = null;
-        public PlayerInput this[int i] => i switch
+        public PlayerInput this[int i]
         {
-            0 => PlayerOne,
-            1 => PlayerTwo,
-            2 => PlayerThree,
-            3 => PlayerFour,
-            _ => null
-        };
+            get => i switch
+            {
+                0 => PlayerOne,
+                1 => PlayerTwo,
+                2 => PlayerThree,
+                3 => PlayerFour,
+                _ => null
+            };
+            private set
+            {
+                switch (i)
+                {
+                    case 0:
+                        PlayerOne = value;
+                        break;
+                    case 1:
+                        PlayerTwo = value;
+                        break;
+                    case 2:
+                        PlayerThree = value;
+                        break;
+                    case 3:
+                        PlayerFour = value;
+                        break;
+                }
+            }
+        }
 
         public static Color PlayerOneColour => Instance.playerOneColour;
         public static Color PlayerTwoColour => Instance.playerTwoColour;
@@ -49,7 +70,8 @@ namespace RedButton.Core
         [SerializeField] private Color playerThreeColour = new(0.09803922f, 1f, 0f, 1f);
         [SerializeField] private Color playerFourColour = new(1f, 0.4862745f, 0f, 1f);
 
-        [SerializeField] private MainUIController MainUIController;
+        [SerializeField] private MainUIController mainUIController;
+        public MainUIController MainUIController => mainUIController;
 
         // start Screen
         [SerializeField] private bool StartScreen = false;
@@ -62,6 +84,7 @@ namespace RedButton.Core
             DontDestroyOnLoad(this);
             InputSystem.onDeviceChange += OnDeviceChanged;
 
+            mainUIController = FindObjectOfType<MainUIController>();
             if (Instance != null && !OverrideDuplicates)
             {
                 Debug.LogError("Multiple Control Arbiters in scene! Please remove any duplicates!\nThis may get falsing triggered by switching to a scene with a Control Arbiter in it, set OverrideDuplicate to true before switching to the new scene.");
@@ -69,21 +92,22 @@ namespace RedButton.Core
             }
             Instance = this;
 
+            OverrideDuplicates = false;
+
             if (StartScreen)
             {
                 SetUpForStartScreen();
                 return;
             }
 
-            MainUIController = FindObjectOfType<MainUIController>();
+            Debug.Log("Hot starting ControlArbiter!");
 
-            OverrideDuplicates = false;
             PlayerOne = null;
             PlayerTwo = null;
             PlayerThree = null;
             PlayerFour = null;
             KeyboardPlayer = null;
-            ValidateControllersAndPlayers();
+            HotStart();
         }
 
         private void LateUpdate()
@@ -93,7 +117,7 @@ namespace RedButton.Core
                 toDispose.Dequeue().reconnectListerner.Dispose();
                 if (toDispose.Count == 0)
                 {
-                    MainUIController.HandleControllerReconnect();
+                    mainUIController.HandleControllerReconnect();
                 }
             }
         }
@@ -106,7 +130,7 @@ namespace RedButton.Core
         /// <summary>
         /// Goes through every InputController in the scene to ensure no duplicate players and controllers exist.
         /// </summary>
-        private void ValidateControllersAndPlayers()
+        public void ValidateControllersAndPlayers()
         {
             PlayerInput[] controllers = FindObjectsOfType<PlayerInput>();
             if (controllers.Length == 0)
@@ -178,7 +202,6 @@ namespace RedButton.Core
                 }
             }
 
-            MainUIController.SetPlayers(activePlayers);
         }
 
         #region Controller connect/disconnect handlers
@@ -213,7 +236,7 @@ namespace RedButton.Core
             if (devicelessMaps.Count > 0)
             {
                 controllerReconnectors.Add(new(devicelessMaps.Dequeue(), this));
-                MainUIController.FlashControllerConnected(device.displayName);
+                mainUIController.FlashControllerConnected(device.displayName);
             }
         }
 
@@ -235,7 +258,7 @@ namespace RedButton.Core
                 player.DeviceConnected = false;
                 devicelessMaps.Enqueue(player);
                 int playerNum = Mathf.Clamp(((int)player.Player) + 1, 1, 4);
-                MainUIController.HandleControllerDisconnect(playerNum, player.playerColour);
+                mainUIController.HandleControllerDisconnect(playerNum, player.playerColour);
             }
         }
         #endregion
@@ -271,17 +294,18 @@ namespace RedButton.Core
                 startScreenActionMap.devices = new[] { obj.control.device };
                 startScreenUIActionAsset.devices = new[] { obj.control.device };
             }
-
-            PlayerOne = Instantiate(playerInputControllerPrefab, transform);
-            PlayerOne.playerColour = PlayerOneColour;
-            PlayerOne.AssignDevice(obj.control.device, Controller.One);
+            if(PlayerOne != null)
+            {
+                Destroy(PlayerOne);
+            }
+            PlayerOne = InstantiatePlayer(PlayerOneColour, obj.control.device, Controller.One);
             PlayerOne.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
             PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
             PlayerOne.EnableUIonly();
             startScreenActionMap.UI.Submit.performed -= StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Disable();
 
-            MainUIController.StartScreenController.ShowPlayerCountPicker();
+            mainUIController.StartScreenController.ShowPlayerCountPicker();
             EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
         }
 
@@ -325,7 +349,7 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = new[] { PlayerOne.Device };
             startScreenActionMap.devices = new[] { PlayerOne.Device };
             PlayerOne.Enable();
-            MainUIController.StartScreenController.ShowAssignmentButtonPanel();
+            mainUIController.StartScreenController.ShowAssignmentButtonPanel();
         }
 
         /// <summary>
@@ -405,7 +429,7 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Enable();
-            MainUIController.StartScreenController.ShowMainMenu();
+            mainUIController.StartScreenController.ShowMainMenu();
         }
 
         /// <summary>
@@ -417,7 +441,7 @@ namespace RedButton.Core
         {
             StopAllCoroutines();
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
-            MainUIController.StartScreenController.ShowPlayerCountPicker();
+            mainUIController.StartScreenController.ShowPlayerCountPicker();
             startScreenActionMap.UI.Disable();
             startScreenActionMap.devices = new[] { obj.control.device };
             startScreenUIActionAsset.devices = new[] { obj.control.device };
@@ -430,7 +454,7 @@ namespace RedButton.Core
                 PlayerOne.Disable();
             }
 
-            MainUIController.StartScreenController.ShowPlayerCountPicker();
+            mainUIController.StartScreenController.ShowPlayerCountPicker();
         }
 
         /// <summary>
@@ -440,7 +464,7 @@ namespace RedButton.Core
         {
             UnassignPlayers(true);
             newDevices = new HashSet<InputDevice>(InputSystem.devices);
-            MainUIController.StartScreenController.PlayerSelectCallback(playerMode, false);
+            mainUIController.StartScreenController.PlayerSelectCallback(playerMode, false);
         }
 
         /// <summary>
@@ -473,5 +497,51 @@ namespace RedButton.Core
         }
 
         #endregion
+
+        #region Hot Start
+        private void HotStart()
+        {
+            Gamepad[] gamepads =Gamepad.all.ToArray();
+            int runTo = Mathf.Min(gamepads.Length, 4);
+            
+            for (int i = 0; i < runTo; i++)
+            {
+                this[i] = InstantiatePlayer(GetPlayerColour(i), gamepads[i], (Controller)i);
+            }
+            ValidateControllersAndPlayers();
+        }
+        #endregion
+
+        /// <summary>
+        /// Method to spawn a player, set their colour and input device
+        /// </summary>
+        /// <param name="playerColour"></param>
+        /// <param name="device"></param>
+        /// <param name="controller"></param>
+        /// <returns></returns>
+        private PlayerInput InstantiatePlayer(Color playerColour,InputDevice device,Controller controller)
+        {
+            PlayerInput player = Instantiate(playerInputControllerPrefab, transform);
+            player.AssignDevice(device,controller);
+            player.playerColour= playerColour;
+            return player;
+        }
+
+        /// <summary>
+        /// index based way of getting player colours
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public static Color GetPlayerColour(int i)
+        {
+            return i switch
+            {
+                0 => PlayerOneColour,
+                1 => PlayerTwoColour,
+                2 => PlayerThreeColour,
+                3 => PlayerFourColour,
+                _ => Color.white
+            };
+        }
     }
 }

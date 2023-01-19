@@ -1,4 +1,5 @@
 using RedButton.Core;
+using RedButton.Mech;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.UIElements;
 public class HealthBarsUI
 {
     private readonly ProgressBar healthBar;
-    // private MechHealthScript healthScript;
+    private CentralMechComponent targetMech;
     private readonly VisualElement progressBarBackground;
     private readonly VisualElement progressBarProgress;
     private readonly Label progressBarLabel;
@@ -31,30 +32,22 @@ public class HealthBarsUI
         Hide();
     }
 
-    public void SetPlayer(PlayerInput player)
+    public void SetPlayer(CentralMechComponent mech)
     {
-        // if(healthScript != null)
-        // {
-        //     healthScript.OnHealthChange -= OnHealthChange;
-        // }
-        HealthBarProgressColour = player.playerColour;
-        HealthBarBackgroundTint = player.playerColour;
+        targetMech  = mech;
+        if(targetMech != null)
+        {
+            targetMech.OnHealthChange -= OnHealthChange;
+        }
+        HealthBarProgressColour = targetMech.MechAccentColour;
+        HealthBarBackgroundTint = targetMech.MechAccentColour;
         HealthBarBackground = null;
         HealthBarLabel = healthBarLabelText;
-        // if (player.TryGetComponent(out healthScript))
-        // {
-        //     HealthMin = healthScript.MinHealth;
-        //     HealthMax = healthScript.MaxHealth;
-        //     HealthValue = healthScript.Health;
-        //     healthScript.OnHealthChange += OnHealthChange;
-        //     Show();
-        // }
-        // else
-        // {
-        //     healthScript = null;
-        //     Hide();
-        //     Debug.LogWarningFormat("Health Bar UI, bound to player: '{0}', but failed to find MechHealthScript!", player.gameObject.name);
-        // }
+        HealthMin = targetMech.MinHealth;
+        HealthMax = targetMech.MaxHealth;
+        HealthValue = targetMech.Health;
+        targetMech.OnHealthChange += OnHealthChange;
+        Show();
     }
 
     public void Show()
@@ -73,7 +66,7 @@ public class HealthBarsUI
         if(value <= 0)
         {
             HealthBarLabel = healthBarLabelText + ": Dead";
-            // HealthBarBackground = healthScript.HealthBackgroundDeath;
+            HealthBarBackground = targetMech.HealthBackgroundDeath;
         }
     }
 
