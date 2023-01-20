@@ -80,10 +80,10 @@ namespace RedButton.Core
                 controlMap.MechControls.RightStick.canceled -= StopRightStick;
 
                 controlMap.MechControls.Fire1.started -= OnFireOneStart;
-                controlMap.MechControls.Fire1.performed -= OnFireOneStop;
+                controlMap.MechControls.Fire1.canceled -= OnFireOneStop;
 
                 controlMap.MechControls.Fire2.started -= OnFireTwoStart;
-                controlMap.MechControls.Fire2.performed -= OnFireTwoStop;
+                controlMap.MechControls.Fire2.canceled -= OnFireTwoStop;
                 controlMap.Dispose();
             }
 
@@ -101,7 +101,7 @@ namespace RedButton.Core
                 controlMap = new()
                 {
                     devices = new[] { gamepad },
-                    bindingMask = InputBinding.MaskByGroup("Gamepad")
+                    //bindingMask = InputBinding.MaskByGroup("Gamepad")
                 };
             }
             player = playerNum;
@@ -115,10 +115,10 @@ namespace RedButton.Core
             controlMap.MechControls.RightStick.canceled += StopRightStick;
 
             controlMap.MechControls.Fire1.started += OnFireOneStart;
-            controlMap.MechControls.Fire1.performed += OnFireOneStop;
+            controlMap.MechControls.Fire1.canceled += OnFireOneStop;
 
             controlMap.MechControls.Fire2.started += OnFireTwoStart;
-            controlMap.MechControls.Fire2.performed += OnFireTwoStop;
+            controlMap.MechControls.Fire2.canceled += OnFireTwoStop;
         }
 
         /// <summary>
@@ -216,6 +216,7 @@ namespace RedButton.Core
 
         private void OnFireTwoStop(InputAction.CallbackContext context)
         {
+            
             if (fireTwoButtonProcess != null)
             {
                 StopCoroutine(fireTwoButtonProcess);

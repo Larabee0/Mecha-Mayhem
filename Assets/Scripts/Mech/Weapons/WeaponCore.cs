@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XInput;
+using UnityEngine.PlayerLoop;
 using UnityEngine.Scripting;
 
 namespace RedButton.Mech
@@ -13,16 +14,18 @@ namespace RedButton.Mech
     {
         [Header("Base Weapon Settings")]
         [SerializeField] protected CentralMechComponent CMC;
+        [Range(1, 100)] public int damage = 10;
 
-        [Tooltip("Which fire button triggers this weapon\nIf group this is controlled by the Weapon Group")]
         [SerializeField] protected ControlBinding binding;
         [SerializeField] protected ControlBehaviour behaviour;
-
-        [SerializeField] protected Transform targetObject;
+        [SerializeField] protected ProjectileCore projectilePrefab;
+        [SerializeField] protected Transform projectileSpawnPoint;
+        [SerializeField] protected Transform animationCentre;
+        protected Transform targetObject;
         protected virtual Vector3 TargetPos => targetObject.position;
         protected virtual Vector3 TargetForward => targetObject.forward;
 
-        public bool Grouped;
+        [HideInInspector] public bool Grouped;
 
         protected virtual void Awake()
         {
@@ -71,10 +74,15 @@ namespace RedButton.Mech
             }
         }
 
-        [RequiredMember]
-        public virtual void Fire() { }
+        protected virtual void Update()
+        {
+            Vector3 lookTarget = targetObject.position;
+            lookTarget.y = animationCentre.position.y;
+            animationCentre.LookAt(lookTarget);
+        }
 
-        [RequiredMember]
-        public virtual void GroupFire() { }
+        public abstract void Fire();
+
+        public abstract void GroupFire();
     }
 }

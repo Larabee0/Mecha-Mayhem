@@ -33,8 +33,10 @@ namespace RedButton.Mech
         [SerializeField] private PlayerInput inputController;
         [SerializeField] private MovementCore movementCore;
         [SerializeField] private WeaponCore[] weapons;
+        [SerializeField] private Collider[] mechColliders;
         public PlayerInput MechInputController => inputController;
         public MovementCore MechMovementCore => movementCore;
+        public Collider[] MechColliders => mechColliders;
         public Color MechAccentColour => inputController.playerColour;
 
         private void Awake()
@@ -46,6 +48,8 @@ namespace RedButton.Mech
                 return;
             }
             movementCore = GetComponentInChildren<MovementCore>();
+
+            mechColliders = GetComponentsInChildren<Collider>();
             weapons = GetComponentsInChildren<WeaponCore>();
 
             if(movementCore == null)
@@ -94,7 +98,7 @@ namespace RedButton.Mech
         {
             if (damage != 0)
             {
-                health += damage;
+                health -= damage;
                 health = Mathf.Clamp(health, minHealth, maxHealth);
                 OnHealthChange?.Invoke(health);
             }
