@@ -12,20 +12,27 @@ namespace RedButton.Mech
     /// </summary>
     public abstract class WeaponCore : MonoBehaviour
     {
-        [Header("Base Weapon Settings")]
-        [SerializeField] protected CentralMechComponent CMC;
-        [Range(1, 100)] public int damage = 10;
-
-        [SerializeField] protected ControlBinding binding;
-        [SerializeField] protected ControlBehaviour behaviour;
-        [SerializeField] protected ProjectileCore projectilePrefab;
-        [SerializeField] protected Transform projectileSpawnPoint;
-        [SerializeField] protected Transform animationCentre;
-        protected Transform targetObject;
+        protected CentralMechComponent CMC;
+        protected Transform targetObject; // gotten by MovementCore this is what the weapon will try and look at, aiming it.
+        
+        // these properties are both overrideable
         protected virtual Vector3 TargetPos => targetObject.position;
         protected virtual Vector3 TargetForward => targetObject.forward;
 
-        [HideInInspector] public bool Grouped;
+        [HideInInspector] public bool Grouped; // if the weapon is part of a group this is set to true by the group.
+
+        [Header("Base Weapon Settings")]
+
+        [SerializeField, Range(1, 100)] protected int damage = 10; // damage property for the weapon, to be provided to the projectile
+
+        [SerializeField] protected ControlBinding controlBinding = ControlBinding.Fire2;
+        [SerializeField] protected ControlBehaviour controlBehaviour = ControlBehaviour.OnHeld;
+
+        [SerializeField] protected ProjectileCore projectilePrefab; // optional projectileCore prefab slot
+
+        [SerializeField] protected Transform muzzleOriginPoint; // point at which projectiles are spawned from or the ray cast is cast from.
+        [SerializeField] protected Transform animationCentre; // centre point of the visual portion of the weapon. this will be made to look at the targetObject
+
 
         protected virtual void Awake()
         {
@@ -49,16 +56,20 @@ namespace RedButton.Mech
             targetObject = CMC.MechMovementCore.TargetPoint;
         }
 
+        /// <summary>
+        /// This method binds the weapon to the control setting set in the editor
+        /// This is not called if the weapon is in a group
+        /// </summary>
         protected virtual void BindtoControls()
         {
-            ButtonEventContainer buttonEventContainer = binding switch
+            ButtonEventContainer buttonEventContainer = controlBinding switch
             {
                 ControlBinding.Fire1 => CMC.MechInputController.fireOneButton,
                 ControlBinding.Fire2 => CMC.MechInputController.fireTwoButton,
                 _ => null,
             };
 
-            switch (behaviour)
+            switch (controlBehaviour)
             {
                 case ControlBehaviour.OnPress when buttonEventContainer != null:
                     buttonEventContainer.OnButtonPressed += Fire;
@@ -74,15 +85,27 @@ namespace RedButton.Mech
             }
         }
 
+        /// <summary>
+        /// rotates center of the animation point to look at the target point (aiming the weapon)
+        /// </summary>
         protected virtual void Update()
         {
-            Vector3 lookTarget = targetObject.position;
+            Vector3 lookTarget = TargetPos;
             lookTarget.y = animationCentre.position.y;
             animationCentre.LookAt(lookTarget);
         }
 
+        /// <summary>
+        /// Fire must be implemeneted. This is where a weapon should work out when it should fire.
+        /// it gets called whenever the fire button this has bound to is pressed, unless the weapon is grouped,
+        /// in which case GroupFire() is called.
+        /// </summary>
         public abstract void Fire();
 
+        /// <summary>
+        /// GroupFire() should be a pass through directly to firing the weapon (spawning the prefab or making the raycast).
+        /// Timing is handled by the WeaponGroup component.
+        /// </summary>
         public abstract void GroupFire();
     }
 }

@@ -606,16 +606,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aea5daa278478346900494fa3aa7d3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CMC: {fileID: 0}
+  Grouped: 0
   damage: 10
-  binding: 1
-  behaviour: 2
+  controlBinding: 1
+  controlBehaviour: 2
   projectilePrefab: {fileID: 8193141111344339459, guid: edb99362c75d23d49837c2a3865eea27,
     type: 3}
-  projectileSpawnPoint: {fileID: 1303482295}
+  muzzleOriginPoint: {fileID: 1303482295}
   animationCentre: {fileID: 2331743068668870359}
-  targetObject: {fileID: 0}
-  Grouped: 0
   shootForce: 20
   fireIntervalMin: 0.5
   fireIntervalMax: 1

@@ -77,20 +77,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ca5cc2949d04b4283c52cc827ede9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CMC: {fileID: 0}
-  damage: 10
-  binding: 1
-  behaviour: 2
-  projectilePrefab: {fileID: 0}
-  projectileSpawnPoint: {fileID: 1303482295}
-  animationCentre: {fileID: 2331743068668870359}
-  targetObject: {fileID: 0}
   Grouped: 0
-  projectileMeshFilter: {fileID: 3004372069370230541}
-  projectileMeshRenderer: {fileID: 6003567257299279866}
+  damage: 10
+  controlBinding: 1
+  controlBehaviour: 2
+  projectilePrefab: {fileID: 0}
+  muzzleOriginPoint: {fileID: 1303482295}
+  animationCentre: {fileID: 2331743068668870359}
   fireIntervalMin: 0.5
   fireIntervalMax: 1
   raycastRange: 1000
+  projectileMeshFilter: {fileID: 3004372069370230541}
+  projectileMeshRenderer: {fileID: 6003567257299279866}
 --- !u!33 &3004372069370230541
 MeshFilter:
   m_ObjectHideFlags: 0
