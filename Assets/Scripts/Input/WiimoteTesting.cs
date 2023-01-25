@@ -24,8 +24,27 @@ public class WiimoteTesting : MonoBehaviour
     public bool gotNunchuck;
     public int frames = 0;
 
-    public Vector2 nunChuckStick;
-    public Vector2 pointPosition;
+    private Vector2 nunChuckStick;
+    private Vector2 pointPosition;
+    public Vector2 NunChuckStick =>nunChuckStick;
+    public Vector2 PointPosition => pointPosition;
+
+
+    public bool ButtonA;
+    public bool ButtonB;
+    public bool ButtonC;
+    public bool ButtonZ;
+
+    public bool ButtonPlus;
+    public bool ButtonMinus;
+    public bool ButtonOne;
+    public bool ButtonTwo;
+
+    public bool DpadUp;
+    public bool DpadDown;
+    public bool DpadLeft;
+    public bool DpadRight;
+
     RectTransform rectTransform;
     // Start is called before the first frame update
     void Awake()
@@ -67,6 +86,7 @@ public class WiimoteTesting : MonoBehaviour
         {
             frames++;
         }
+        UpdateWiimoteButtons(remote);
         UpdateNunchuckStick(remote);
         UpdateIR(remote);
     }
@@ -78,6 +98,31 @@ public class WiimoteTesting : MonoBehaviour
         {
             ret = remote.ReadWiimoteData();
         } while (ret > 0);
+    }
+
+    private void UpdateWiimoteButtons(Wiimote remote)
+    {
+        ButtonData data = remote.Button;
+        ButtonA = data.a;
+        ButtonB = data.b;
+
+        ButtonPlus = data.plus;
+        ButtonMinus = data.minus;
+
+        ButtonOne = data.one;
+        ButtonTwo = data.two;
+
+        DpadUp = data.d_up;
+        DpadDown = data.d_down;
+        DpadLeft = data.d_left;
+        DpadRight = data.d_right;
+
+        if (remote.Nunchuck != null)
+        {
+            NunchuckData nunchuck = remote.Nunchuck;
+            ButtonC = nunchuck.c;
+            ButtonZ = nunchuck.z;
+        }
     }
 
     private void UpdateNunchuckStick(Wiimote remote)

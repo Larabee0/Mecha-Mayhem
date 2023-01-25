@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4478482817129361976}
-  - component: {fileID: 8967009187697995542}
+  - component: {fileID: 376561272837428443}
   - component: {fileID: 3004372069370230541}
   - component: {fileID: 6003567257299279866}
   m_Layer: 0
@@ -65,7 +65,7 @@ Transform:
   m_Father: {fileID: 2331743068901684101}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8967009187697995542
+--- !u!114 &376561272837428443
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1289940180231999293}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06ca5cc2949d04b4283c52cc827ede9f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9cf62c29af84aa34cb17c262a9f8b54c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Grouped: 0
@@ -86,9 +86,10 @@ MonoBehaviour:
   animationCentre: {fileID: 2331743068668870359}
   fireIntervalMin: 0.5
   fireIntervalMax: 1
-  raycastRange: 1000
+  raycastRange: 200
   projectileMeshFilter: {fileID: 3004372069370230541}
   projectileMeshRenderer: {fileID: 6003567257299279866}
+  wiimoteInput: {fileID: 0}
 --- !u!33 &3004372069370230541
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -359,7 +360,7 @@ MonoBehaviour:
   rb: {fileID: 2331743068901684098}
   moveSpeed: 20
   rotationSpeed: 5
-  wiimoteTesting: {fileID: 0}
+  wiimoteInput: {fileID: 0}
 --- !u!1 &2331743068919907998
 GameObject:
   m_ObjectHideFlags: 0

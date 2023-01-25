@@ -8,11 +8,11 @@ namespace RedButton.Wiimote
 {
     public class WiimoteMovementOverride : ExampleAdvancedMovement
     {
-        [SerializeField] private WiimoteTesting wiimoteTesting;
+        [SerializeField] private WiimoteTesting wiimoteInput;
 
         protected override void Awake()
         {
-            wiimoteTesting = FindObjectOfType<WiimoteTesting>();
+            wiimoteInput = FindObjectOfType<WiimoteTesting>();
             CMC = GetComponentInParent<CentralMechComponent>();
 
             if (CMC == null)
@@ -34,10 +34,10 @@ namespace RedButton.Wiimote
 
         protected override void Update()
         {
-            if(wiimoteTesting != null)
+            if(wiimoteInput != null)
             {
-                OnMove(wiimoteTesting.nunChuckStick);
-                OnAim(wiimoteTesting.pointPosition);
+                OnMove(wiimoteInput.NunChuckStick);
+                OnAim(wiimoteInput.PointPosition);
             }
             else
             {
