@@ -33,6 +33,11 @@ public class WiimoteTesting : MonoBehaviour
         gotNunchuck = false;
         // WiimoteManager.Debug_Messages = false;
         Debug.LogFormat("Finding wiimotes {0}", WiimoteManager.FindWiimotes());
+        if(WiimoteManager.Wiimotes== null || WiimoteManager.Wiimotes.Count == 0)
+        {
+            enabled = false;
+            return;
+        }
         remote = WiimoteManager.Wiimotes[0];
         remote.SendPlayerLED(Random.value > 0.5f, Random.value > 0.5f, Random.value > 0.5f, Random.value > 0.5f);
 
