@@ -1,14 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.tvOS;
 using WiimoteApi;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.LowLevel;
-using System.IO.Ports;
+using UnityEngine.UIElements;
 
 public class WiimoteTesting : MonoBehaviour
 {
@@ -22,6 +19,10 @@ public class WiimoteTesting : MonoBehaviour
     }
 
     [SerializeField] private VirtualMouseInput wiiVirtualMouse;
+    [SerializeField] private UIDocument wiimotePointerUI;
+
+    private VisualElement wiiPointer;
+
     private Wiimote remote;
     public IRSensitivity irSensitivity = IRSensitivity.LevelOne;
     public bool gotNunchuck;
@@ -53,13 +54,14 @@ public class WiimoteTesting : MonoBehaviour
     public bool DpadLeft;
     public bool DpadRight;
 
-    RectTransform rectTransform;
-    // Start is called before the first frame update
+    [SerializeField]RectTransform rectTransform;
+
     void Awake()
     {
-        wiiVirtualMouse = GetComponent<VirtualMouseInput>();
+        wiiPointer = wiimotePointerUI.rootVisualElement.Q("WiiCusor");
+
         gotNunchuck = false;
-        // WiimoteManager.Debug_Messages = false;
+
         Debug.LogFormat("Finding wiimotes {0}", WiimoteManager.FindWiimotes());
         if(WiimoteManager.Wiimotes== null || WiimoteManager.Wiimotes.Count == 0)
         {
@@ -69,41 +71,19 @@ public class WiimoteTesting : MonoBehaviour
         remote = WiimoteManager.Wiimotes[0];
         remote.SendPlayerLED(Random.value > 0.5f, Random.value > 0.5f, Random.value > 0.5f, Random.value > 0.5f);
 
-        // remote.SetupIRCamera(IRDataType.BASIC);
-        // SetUpIRCamera(remote, irSensitivity, IRDataType.BASIC);
-        // remote.SendStatusInfoRequest();
         UpdateWiimote(remote);
     }
 
     private void Start()
     {
         UpdateWiimote(remote);
-        rectTransform =  GetComponent<Image>().rectTransform;
-        wiiVirtualMouse.cursorTransform = rectTransform;
-
     }
 
     private void Update()
     {
         UpdateWiimote(remote);
         UpdateIR(remote);
-        // if (wiiVirtualMouse != null)
-        // {
-        //     MouseState state = new()
-        //     {
-        //         position = math.clamp(pointPosition,Vector2.zero,new Vector2(Screen.width,Screen.height)),
-        //         //delta = pointPositionLastFrame - pointPosition
-        //     };
-        //     //InputState.Change(wiiVirtualMouse.virtualMouse, state);
-        //     if (wiiVirtualMouse.virtualMouse.delta.EvaluateMagnitude() > 0)
-        //     {
-        //         Debug.Log(wiiVirtualMouse.virtualMouse.delta.ReadValue());
-        //     }
-        //     else
-        //     {
-        //         Debug.Log("no delta");
-        //     }
-        // }
+        UpdateVirtualMouse(wiiVirtualMouse);
         if (!gotNunchuck && remote.Nunchuck != null)
         {
             Debug.LogFormat("Extension {0}", remote.current_ext);
@@ -118,6 +98,23 @@ public class WiimoteTesting : MonoBehaviour
         UpdateWiimoteButtons(remote);
         UpdateNunchuckStick(remote);
         pointPositionLastFrame = pointPosition;
+    }
+
+    private void UpdateVirtualMouse(VirtualMouseInput wiiVirtualMouse)
+    {
+        if (wiiVirtualMouse != null)
+        {
+            Vector2 wiimoteDelta = pointPositionLastFrame - pointPosition;
+            if (wiimoteDelta.sqrMagnitude > 0)
+            {
+                MouseState state = new()
+                {
+                    position = math.clamp(pointPosition, Vector2.zero, new Vector2(Screen.width, Screen.height)),
+                    delta = wiimoteDelta,
+                };
+                InputState.Change(wiiVirtualMouse.virtualMouse, state);
+            }
+        }
     }
 
     private void UpdateWiimote(Wiimote remote)
@@ -198,13 +195,14 @@ public class WiimoteTesting : MonoBehaviour
 
             // float2 mouse = new (Input.mousePosition.x, Input.mousePosition.y);
             pointPosition = wiimotePosition;
-            // rectTransform.position = new float3(wiimotePosition, 0);
+            rectTransform.position = new float3(wiimotePosition, 0);
+            wiiPointer.transform.position = new Vector3(PointPosition.x, Screen.height - PointPosition.y);
             // Debug.LogFormat("mouse pos {0}, wii pos {1} ",mouse, sixteenByNineLinear);
 
         }
     }
 
-    private bool SetUpIRCamera(Wiimote remote, IRSensitivity sensitivity,IRDataType type = IRDataType.BASIC)
+    private static bool SetUpIRCamera(Wiimote remote, IRSensitivity sensitivity,IRDataType type = IRDataType.BASIC)
     {
         int res;
         // 1. Enable IR Camera (Send 0x04 to Output Report 0x13)
@@ -254,7 +252,7 @@ public class WiimoteTesting : MonoBehaviour
         return true;
     }
 
-    private byte[] GetSensitivityBlockOne(IRSensitivity sensitivity) => sensitivity switch
+    private static byte[] GetSensitivityBlockOne(IRSensitivity sensitivity) => sensitivity switch
     {
         IRSensitivity.LevelOne => new byte[] { 0x02, 0x00, 0x00, 0x71, 0x01, 0x00, 0x64, 0x00, 0xfe },
         IRSensitivity.LevelTwo => new byte[] { 0x02, 0x00, 0x00, 0x71, 0x01, 0x00, 0x96, 0x00, 0xb4 },
@@ -264,7 +262,7 @@ public class WiimoteTesting : MonoBehaviour
         _ => new byte[] { 0x02, 0x00, 0x00, 0x71, 0x01, 0x00, 0xaa, 0x00, 0x64 },
     };
 
-    private byte[] GetSensitivityBlockTwo(IRSensitivity sensitivity) => sensitivity switch
+    private static byte[] GetSensitivityBlockTwo(IRSensitivity sensitivity) => sensitivity switch
     {
         IRSensitivity.LevelOne => new byte[] { 0xfd, 0x05 },
         IRSensitivity.LevelTwo => new byte[] { 0xb3, 0x04 },
@@ -274,7 +272,7 @@ public class WiimoteTesting : MonoBehaviour
         _ => new byte[] { 0x63, 0x03 },
     };
 
-    private int SendIRCameraEnabled(Wiimote remote, bool enabled)
+    private static int SendIRCameraEnabled(Wiimote remote, bool enabled)
     {
         byte[] mask = new byte[] { (byte)(enabled ? 0x04 : 0x00) };
 

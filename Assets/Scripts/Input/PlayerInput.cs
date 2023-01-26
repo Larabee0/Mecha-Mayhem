@@ -95,6 +95,14 @@ namespace RedButton.Core
                     bindingMask = InputBinding.MaskByGroups("Keyboard", "Mouse")
                 };
             }
+            else if (device.GetType() == typeof(WiimoteDevice))
+            {
+                controlMap = new()
+                {
+                    devices = new[] { device },
+                    //bindingMask = InputBinding.MaskByGroup("Gamepad")
+                };
+            }
             else
             {
                 gamepad = (Gamepad)device;
@@ -104,6 +112,7 @@ namespace RedButton.Core
                     //bindingMask = InputBinding.MaskByGroup("Gamepad")
                 };
             }
+
             player = playerNum;
             devicePath = device.path;
             DeviceConnected = true;
@@ -305,28 +314,31 @@ namespace RedButton.Core
         /// <param name="rumbleMotor"> Which motor will be run, low, high or both rumble frequencies.</param>
         public void RumbleMotor(float duration, float strength, RumbleMotor rumbleMotor)
         {
-            switch (rumbleMotor)
+            if (gamepad != null)
             {
-                case global::RumbleMotor.LowFreq:
-                case global::RumbleMotor.Both:
-                    if (lowRumbleProcess != null)
-                    {
-                        StopRumbleMotor(global::RumbleMotor.LowFreq);
-                    }
-                    lowRumbleProcess = StartCoroutine(LowRumbleMotor(duration, strength));
-                    break;
-            }
+                switch (rumbleMotor)
+                {
+                    case global::RumbleMotor.LowFreq:
+                    case global::RumbleMotor.Both:
+                        if (lowRumbleProcess != null)
+                        {
+                            StopRumbleMotor(global::RumbleMotor.LowFreq);
+                        }
+                        lowRumbleProcess = StartCoroutine(LowRumbleMotor(duration, strength));
+                        break;
+                }
 
-            switch (rumbleMotor)
-            {
-                case global::RumbleMotor.HighFreq:
-                case global::RumbleMotor.Both:
-                    if (highRumbleProcess != null)
-                    {
-                        StopRumbleMotor(global::RumbleMotor.HighFreq);
-                    }
-                    highRumbleProcess = StartCoroutine(HighRumbleMotor(duration, strength));
-                    break;
+                switch (rumbleMotor)
+                {
+                    case global::RumbleMotor.HighFreq:
+                    case global::RumbleMotor.Both:
+                        if (highRumbleProcess != null)
+                        {
+                            StopRumbleMotor(global::RumbleMotor.HighFreq);
+                        }
+                        highRumbleProcess = StartCoroutine(HighRumbleMotor(duration, strength));
+                        break;
+                }
             }
         }
 

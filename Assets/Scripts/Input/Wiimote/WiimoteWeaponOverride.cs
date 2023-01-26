@@ -4,7 +4,7 @@ using UnityEngine;
 using RedButton.Mech;
 using RedButton.Mech.Examples;
 
-namespace RedButton.Wiimote
+namespace RedButton.Core.WiimoteSupport
 {
     public class WiimoteWeaponOverride : ExampleBasicRaycasterWeapon
     {

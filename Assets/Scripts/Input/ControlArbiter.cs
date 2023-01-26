@@ -11,7 +11,7 @@ using RedButton.Core.UI;
 
 namespace RedButton.Core
 {
-    public class ControlArbiter : MonoBehaviour
+    public partial class ControlArbiter : MonoBehaviour
     {
         public static Controller playerMode;
         public static bool OverrideDuplicates;
@@ -82,6 +82,7 @@ namespace RedButton.Core
         private void Awake()
         {
             DontDestroyOnLoad(this);
+            PollWiimotes();
             InputSystem.onDeviceChange += OnDeviceChanged;
 
             mainUIController = FindObjectOfType<MainUIController>();
@@ -291,8 +292,8 @@ namespace RedButton.Core
             if (newDevices.Contains(obj.control.device))
             {
                 newDevices.Remove(obj.control.device);
-                startScreenActionMap.devices = new[] { obj.control.device, FindObjectOfType<VirtualMouseInput>().virtualMouse };
-                startScreenUIActionAsset.devices = new[] { obj.control.device, FindObjectOfType<VirtualMouseInput>().virtualMouse };
+                startScreenActionMap.devices = new[] { obj.control.device };
+                startScreenUIActionAsset.devices = new[] { obj.control.device };
             }
             if(PlayerOne != null)
             {
