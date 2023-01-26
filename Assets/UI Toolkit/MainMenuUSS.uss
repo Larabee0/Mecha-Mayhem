@@ -27,4 +27,18 @@
     -unity-background-image-tint-color: rgba(255, 255, 255, 255);
     background-color: rgba(48, 48, 48, 255);
     color: rgba(255, 255, 255, 255);
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.MenuButtons:hover {
+    font-size: 46px;
+    color: rgba(224, 0, 0, 255);
+}
+
+.MenuButtons:focus {
+    font-size: 46px;
+    color: rgb(224, 0, 0);
 }
