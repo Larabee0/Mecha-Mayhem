@@ -7,6 +7,8 @@ using WiimoteApi;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.InputSystem.LowLevel;
+using System.IO.Ports;
 
 public class WiimoteTesting : MonoBehaviour
 {
@@ -29,8 +31,11 @@ public class WiimoteTesting : MonoBehaviour
 
     private Vector2 nunChuckStick;
     private Vector2 pointPosition;
+    private Vector2 pointPositionLastFrame;
     public Vector2 NunChuckStick =>nunChuckStick;
     public Vector2 PointPosition => pointPosition;
+
+
 
 
     public bool ButtonA;
@@ -75,23 +80,30 @@ public class WiimoteTesting : MonoBehaviour
         UpdateWiimote(remote);
         rectTransform =  GetComponent<Image>().rectTransform;
         wiiVirtualMouse.cursorTransform = rectTransform;
-        
+
     }
 
     private void Update()
     {
-        if(wiiVirtualMouse != null)
-        {
-            if(wiiVirtualMouse.virtualMouse.delta.EvaluateMagnitude() > 0)
-            {
-                Debug.Log(wiiVirtualMouse.virtualMouse.delta);
-            }
-            else
-            {
-                Debug.Log("no delta");
-            }
-        }
         UpdateWiimote(remote);
+        UpdateIR(remote);
+        // if (wiiVirtualMouse != null)
+        // {
+        //     MouseState state = new()
+        //     {
+        //         position = math.clamp(pointPosition,Vector2.zero,new Vector2(Screen.width,Screen.height)),
+        //         //delta = pointPositionLastFrame - pointPosition
+        //     };
+        //     //InputState.Change(wiiVirtualMouse.virtualMouse, state);
+        //     if (wiiVirtualMouse.virtualMouse.delta.EvaluateMagnitude() > 0)
+        //     {
+        //         Debug.Log(wiiVirtualMouse.virtualMouse.delta.ReadValue());
+        //     }
+        //     else
+        //     {
+        //         Debug.Log("no delta");
+        //     }
+        // }
         if (!gotNunchuck && remote.Nunchuck != null)
         {
             Debug.LogFormat("Extension {0}", remote.current_ext);
@@ -105,7 +117,7 @@ public class WiimoteTesting : MonoBehaviour
         }
         UpdateWiimoteButtons(remote);
         UpdateNunchuckStick(remote);
-        UpdateIR(remote);
+        pointPositionLastFrame = pointPosition;
     }
 
     private void UpdateWiimote(Wiimote remote)
@@ -186,7 +198,7 @@ public class WiimoteTesting : MonoBehaviour
 
             // float2 mouse = new (Input.mousePosition.x, Input.mousePosition.y);
             pointPosition = wiimotePosition;
-            rectTransform.position = new float3(wiimotePosition, 0);
+            // rectTransform.position = new float3(wiimotePosition, 0);
             // Debug.LogFormat("mouse pos {0}, wii pos {1} ",mouse, sixteenByNineLinear);
 
         }

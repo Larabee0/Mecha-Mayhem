@@ -259,21 +259,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424b6720ff5999446843ba414e58a907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CursorMode: 0
+  m_CursorMode: 1
   m_CursorGraphic: {fileID: 0}
   m_CursorTransform: {fileID: 0}
-  m_CursorSpeed: 400
-  m_ScrollSpeed: 45
+  m_CursorSpeed: 1
+  m_ScrollSpeed: 1
   m_StickAction:
     m_UseReference: 0
     m_Action:
       m_Name: Stick
       m_Type: 0
-      m_ExpectedControlType: 
+      m_ExpectedControlType: Vector2
       m_Id: e22d02b4-8391-479a-9e46-1d996d9967bc
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 3a63d24c-11f0-435c-a7e7-47bb19659b53
+        m_Path: <Mouse>/position
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Stick
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_LeftButtonAction:
@@ -339,7 +347,7 @@ MonoBehaviour:
   m_ScrollWheelAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Scroll Wheel
       m_Type: 0
       m_ExpectedControlType: 
       m_Id: 643eb30d-8383-43c9-98a7-934632a47dd4
@@ -606,7 +614,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1746572509
 MonoBehaviour:
   m_ObjectHideFlags: 0
