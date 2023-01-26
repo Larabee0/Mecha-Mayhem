@@ -291,8 +291,8 @@ namespace RedButton.Core
             if (newDevices.Contains(obj.control.device))
             {
                 newDevices.Remove(obj.control.device);
-                startScreenActionMap.devices = new[] { obj.control.device };
-                startScreenUIActionAsset.devices = new[] { obj.control.device };
+                startScreenActionMap.devices = new[] { obj.control.device, FindObjectOfType<VirtualMouseInput>().virtualMouse };
+                startScreenUIActionAsset.devices = new[] { obj.control.device, FindObjectOfType<VirtualMouseInput>().virtualMouse };
             }
             if(PlayerOne != null)
             {

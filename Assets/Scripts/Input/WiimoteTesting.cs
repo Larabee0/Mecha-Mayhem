@@ -6,6 +6,7 @@ using UnityEngine.tvOS;
 using WiimoteApi;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using UnityEngine.InputSystem.UI;
 
 public class WiimoteTesting : MonoBehaviour
 {
@@ -18,11 +19,13 @@ public class WiimoteTesting : MonoBehaviour
         LevelFive
     }
 
-
-    Wiimote remote;
+    [SerializeField] private VirtualMouseInput wiiVirtualMouse;
+    private Wiimote remote;
     public IRSensitivity irSensitivity = IRSensitivity.LevelOne;
     public bool gotNunchuck;
     public int frames = 0;
+
+    public float debugRumbleMotorTime = 0.5f;
 
     private Vector2 nunChuckStick;
     private Vector2 pointPosition;
@@ -49,6 +52,7 @@ public class WiimoteTesting : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        wiiVirtualMouse = GetComponent<VirtualMouseInput>();
         gotNunchuck = false;
         // WiimoteManager.Debug_Messages = false;
         Debug.LogFormat("Finding wiimotes {0}", WiimoteManager.FindWiimotes());
@@ -70,10 +74,23 @@ public class WiimoteTesting : MonoBehaviour
     {
         UpdateWiimote(remote);
         rectTransform =  GetComponent<Image>().rectTransform;
+        wiiVirtualMouse.cursorTransform = rectTransform;
+        
     }
 
     private void Update()
     {
+        if(wiiVirtualMouse != null)
+        {
+            if(wiiVirtualMouse.virtualMouse.delta.EvaluateMagnitude() > 0)
+            {
+                Debug.Log(wiiVirtualMouse.virtualMouse.delta);
+            }
+            else
+            {
+                Debug.Log("no delta");
+            }
+        }
         UpdateWiimote(remote);
         if (!gotNunchuck && remote.Nunchuck != null)
         {
@@ -266,6 +283,27 @@ public class WiimoteTesting : MonoBehaviour
             SetUpIRCamera(remote, irSensitivity);
             remote.SendPlayerLED(Random.value > 0.5f, Random.value > 0.5f, Random.value > 0.5f, Random.value > 0.5f);
         }
+    }
+
+    [ContextMenu("Debug Test Rumble")]
+    public void DebugRumble()
+    {
+        RumbleRemote(debugRumbleMotorTime);
+    }
+
+    public void RumbleRemote(float time)
+    {
+        StopAllCoroutines();
+        StartCoroutine(RumbleMotor(time));
+    }
+
+    private IEnumerator RumbleMotor(float time)
+    {
+        remote.RumbleOn = true;
+        remote.SendStatusInfoRequest();
+        yield return new WaitForSeconds(time);
+        remote.RumbleOn = false;
+        remote.SendStatusInfoRequest();
     }
 
     private void OnApplicationQuit()
