@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuUSS.uss?fileID=7433441132597879392&amp;guid=49ec617efd2dcf348b29b4524866b7d3&amp;type=3#MainMenuUSS" />
+    <ui:VisualElement name="StartScreen" style="height: 100%; justify-content: space-around; align-items: center;">
+        <ui:VisualElement name="Name">
+            <ui:Label text="Project Eternity" display-tooltip-when-elided="true" class="Header TitleText" style="align-items: center;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Buttons" style="align-items: center; margin-top: 0; font-size: 14px; justify-content: flex-start;">
+            <ui:Button text="Start" display-tooltip-when-elided="true" name="StartBtn" class="MenuButtons" />
+            <ui:Button text="Options" display-tooltip-when-elided="true" name="OptionsBtn" class="MenuButtons" />
+            <ui:Button text="Credits" display-tooltip-when-elided="true" name="CreditsBtn" class="MenuButtons" />
+            <ui:Button text="Quit" display-tooltip-when-elided="true" name="QuitBtn" class="MenuButtons" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Padding" />
+    </ui:VisualElement>
+</ui:UXML>

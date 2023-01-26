@@ -1,0 +1,30 @@
+.TitleText {
+    color: rgb(27, 27, 27);
+    font-size: 76px;
+    -unity-font-style: bold;
+    top: auto;
+}
+
+.MenuButtons {
+    font-size: 36px;
+    width: 602px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    -unity-font-style: bold;
+    height: 94px;
+    border-left-color: rgba(8, 151, 154, 255);
+    border-right-color: rgba(8, 151, 154, 255);
+    border-top-color: rgba(0, 250, 255, 255);
+    border-bottom-color: rgba(0, 250, 255, 255);
+    border-left-width: 20px;
+    border-right-width: 20px;
+    border-top-width: 10px;
+    border-bottom-width: 10px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 255);
+    background-color: rgba(48, 48, 48, 255);
+    color: rgba(255, 255, 255, 255);
+}
