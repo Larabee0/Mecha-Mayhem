@@ -13,6 +13,17 @@ namespace RedButton.Core
 {
     public partial class ControlArbiter : MonoBehaviour
     {
+        public enum HotStartControllers
+        {
+            Keyboard,
+            Gamepad,
+            KeyboardGamepad,
+            Wiimote,
+            KeyboardWiimote,
+            WiimoteGamepad,
+            All
+        }
+
         public static Controller playerMode;
         public static bool OverrideDuplicates;
         public static ControlArbiter Instance;
@@ -73,16 +84,17 @@ namespace RedButton.Core
         [SerializeField] private MainUIController mainUIController;
         public MainUIController MainUIController => mainUIController;
 
-        // start Screen
+        [Header("Start Screen Settings")]
         [SerializeField] private bool StartScreen = false;
         private DualControllerInput startScreenActionMap;
         private InputActionAsset startScreenUIActionAsset;
         private StartScreenUI.ControllerAssignHelper playerToAssign;
+        [Header("Hot Start Settings")]
+        [SerializeField] HotStartControllers hotStartDevices = HotStartControllers.All;
 
         private void Awake()
         {
             DontDestroyOnLoad(this);
-            PollWiimotes();
             InputSystem.onDeviceChange += OnDeviceChanged;
 
             mainUIController = FindObjectOfType<MainUIController>();
@@ -93,6 +105,7 @@ namespace RedButton.Core
             }
             Instance = this;
 
+            PollWiimotes();
             OverrideDuplicates = false;
 
             if (StartScreen)
@@ -289,17 +302,18 @@ namespace RedButton.Core
         /// <param name="obj"></param>
         private void StartScreenAnyButtonPressed(InputAction.CallbackContext obj)
         {
-            if (newDevices.Contains(obj.control.device))
+            InputDevice[] devices = ProcessDevice(obj.control.device);
+            if (newDevices.IsSupersetOf(devices))
             {
-                newDevices.Remove(obj.control.device);
-                startScreenActionMap.devices = new[] { obj.control.device };
-                startScreenUIActionAsset.devices = new[] { obj.control.device };
+                newDevices.ExceptWith(devices);
+                startScreenActionMap.devices = devices;
+                startScreenUIActionAsset.devices = devices;
             }
             if(PlayerOne != null)
             {
                 Destroy(PlayerOne);
             }
-            PlayerOne = InstantiatePlayer(PlayerOneColour, obj.control.device, Controller.One);
+            PlayerOne = InstantiatePlayer(PlayerOneColour, devices, Controller.One);
             PlayerOne.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
             PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
             PlayerOne.EnableUIonly();
@@ -308,6 +322,18 @@ namespace RedButton.Core
 
             mainUIController.StartScreenController.ShowPlayerCountPicker();
             EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+        }
+
+        private InputDevice[] ProcessDevice(InputDevice device)
+        {
+            if (device is Keyboard || device is Mouse)
+            {
+                return new InputDevice[] { Keyboard.current, Mouse.current };
+            }
+            else
+            {
+                return new InputDevice[] { device };
+            }
         }
 
         /// <summary>
@@ -338,6 +364,11 @@ namespace RedButton.Core
         {
             while (playersToAssign.Count > 0 || playerToAssign != null)
             {
+                if(startScreenActionMap.devices.Value.Count != newDevices.Count)
+                {
+                    startScreenActionMap.devices = newDevices.ToArray();
+                    startScreenUIActionAsset.devices = newDevices.ToArray();
+                }
                 if (playerToAssign == null)
                 {
                     playerToAssign = playersToAssign.Dequeue();
@@ -347,8 +378,8 @@ namespace RedButton.Core
             }
             startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
-            startScreenUIActionAsset.devices = new[] { PlayerOne.Device };
-            startScreenActionMap.devices = new[] { PlayerOne.Device };
+            startScreenUIActionAsset.devices = PlayerOne.Device;
+            startScreenActionMap.devices = PlayerOne.Device;
             PlayerOne.Enable();
             mainUIController.StartScreenController.ShowAssignmentButtonPanel();
         }
@@ -360,9 +391,11 @@ namespace RedButton.Core
         /// <param name="obj"></param>
         private void AssignControllerCallback(InputAction.CallbackContext obj)
         {
-            if (newDevices.Contains(obj.control.device))
+
+            InputDevice[] devices = ProcessDevice(obj.control.device);
+            if (newDevices.IsSupersetOf(devices))
             {
-                newDevices.Remove(obj.control.device);
+                newDevices.ExceptWith(devices);
             }
             switch (playerToAssign.playerNum)
             {
@@ -372,7 +405,7 @@ namespace RedButton.Core
                         PlayerOne = Instantiate(playerInputControllerPrefab, transform);
                     }
                     PlayerOne.playerColour = PlayerOneColour;
-                    PlayerOne.AssignDevice(obj.control.device, Controller.One);
+                    PlayerOne.AssignDevice(devices, Controller.One);
                     playerToAssign.Set(PlayerOne);
                     PlayerOne.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
                     break;
@@ -382,7 +415,7 @@ namespace RedButton.Core
                         PlayerTwo = Instantiate(playerInputControllerPrefab, transform);
                     }
                     PlayerTwo.playerColour = PlayerTwoColour;
-                    PlayerTwo.AssignDevice(obj.control.device, Controller.Two);
+                    PlayerTwo.AssignDevice(devices, Controller.Two);
                     playerToAssign.Set(PlayerTwo);
                     PlayerTwo.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
                     break;
@@ -392,7 +425,7 @@ namespace RedButton.Core
                         PlayerThree = Instantiate(playerInputControllerPrefab, transform);
                     }
                     PlayerThree.playerColour = PlayerThreeColour;
-                    PlayerThree.AssignDevice(obj.control.device, Controller.Three);
+                    PlayerThree.AssignDevice(devices, Controller.Three);
                     playerToAssign.Set(PlayerThree);
                     PlayerThree.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
                     break;
@@ -402,7 +435,7 @@ namespace RedButton.Core
                         PlayerFour = Instantiate(playerInputControllerPrefab, transform);
                     }
                     PlayerFour.playerColour = PlayerFourColour;
-                    PlayerFour.AssignDevice(obj.control.device, Controller.Four);
+                    PlayerFour.AssignDevice(devices, Controller.Four);
                     playerToAssign.Set(PlayerFour);
                     PlayerFour.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
                     break;
@@ -502,12 +535,44 @@ namespace RedButton.Core
         #region Hot Start
         private void HotStart()
         {
-            Gamepad[] gamepads =Gamepad.all.ToArray();
-            int runTo = Mathf.Min(gamepads.Length, 4);
+            List<InputDevice> devices = new();
+            switch (hotStartDevices)
+            {
+                case HotStartControllers.Keyboard:
+                    devices.Add(Keyboard.current);
+                    break;
+                case HotStartControllers.Gamepad:
+                    devices.AddRange(Gamepad.all);
+                    break;
+                case HotStartControllers.KeyboardGamepad:
+                    devices.Add(Keyboard.current);
+                    devices.AddRange(Gamepad.all);
+                    break;
+                case HotStartControllers.Wiimote:
+                    devices.AddRange(WiimoteDevice.all);
+                    break;
+                case HotStartControllers.KeyboardWiimote:
+                    devices.Add(Keyboard.current);
+                    devices.AddRange(WiimoteDevice.all);
+                    break;
+                case HotStartControllers.WiimoteGamepad:
+                    devices.AddRange(WiimoteDevice.all);
+                    devices.AddRange(Gamepad.all);
+                    break;
+                case HotStartControllers.All:
+                    devices.Add(Keyboard.current);
+                    devices.AddRange(WiimoteDevice.all);
+                    devices.AddRange(Gamepad.all);
+                    break;
+                default:
+                    break;
+            }
+
+            int runTo = Mathf.Min(devices.Count, 4);
             
             for (int i = 0; i < runTo; i++)
             {
-                this[i] = InstantiatePlayer(GetPlayerColour(i), gamepads[i], (Controller)i);
+                this[i] = InstantiatePlayer(GetPlayerColour(i), ProcessDevice(devices[i]), (Controller)i);
             }
             ValidateControllersAndPlayers();
         }
@@ -520,7 +585,7 @@ namespace RedButton.Core
         /// <param name="device"></param>
         /// <param name="controller"></param>
         /// <returns></returns>
-        private PlayerInput InstantiatePlayer(Color playerColour,InputDevice device,Controller controller)
+        private PlayerInput InstantiatePlayer(Color playerColour,InputDevice[] device,Controller controller)
         {
             PlayerInput player = Instantiate(playerInputControllerPrefab, transform);
             player.AssignDevice(device,controller);

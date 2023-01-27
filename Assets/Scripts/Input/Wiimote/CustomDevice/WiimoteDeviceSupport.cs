@@ -5,7 +5,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
-
+/*
+ * Built using https://docs.unity3d.com/Packages/com.unity.inputsystem@1.4/manual/Devices.html#creating-custom-devices
+ * as a guide
+ */
 [ExecuteInEditMode]
 public class WiimoteDeviceSupport : MonoBehaviour
 {

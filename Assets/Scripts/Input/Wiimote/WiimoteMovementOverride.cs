@@ -37,7 +37,7 @@ namespace RedButton.Core.WiimoteSupport
             if(wiimoteInput != null)
             {
                 OnMove(wiimoteInput.NunChuckStick);
-                OnAim(wiimoteInput.PointPosition);
+                OnAim(wiimoteInput.PointPosition, true);
             }
             else
             {
@@ -47,17 +47,8 @@ namespace RedButton.Core.WiimoteSupport
                     y = Input.GetAxis("Vertical")
                 };
                 OnMove(keyboardAxis);
-                OnAim(Input.mousePosition);
+                OnAim(Input.mousePosition, true);
             }
-        }
-
-        protected override void OnAim(Vector2 position)
-        {
-            float height = targetPoint.position.y;
-            Ray ray = Camera.main.ScreenPointToRay(position);
-            Vector3 aimPoint = ExtraMaths.GetPointAtHeight(ray, height);
-            Vector3 dir = (aimPoint- targetPointParent.position).normalized;
-            targetPointParent.forward = targetPointParentForward = dir;
         }
     }
 }

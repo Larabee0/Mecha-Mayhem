@@ -11,20 +11,30 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 using WiimoteApi;
-using static WiimoteTesting;
+//using static WiimoteTesting;
+/*
+ * Built using https://docs.unity3d.com/Packages/com.unity.inputsystem@1.4/manual/Devices.html#creating-custom-devices
+ * as a guide
+ */
 
+/// <summary>
+/// An InputDevice dervied class used to adapat the WiimoteAPI Wiimote class into UnityEngine.InputSystem.
+/// This is for the purpsoes of using existing controller infrastructure 
+/// and to give a consistant reliable way of interfacing with the Wiimote API
+/// </summary>
 #if UNITY_EDITOR
 [InitializeOnLoad]
 #endif
 [InputControlLayout(displayName = "Wiimote",stateType =typeof(WiimoteState))]
 public class WiimoteDevice : InputDevice, IDualMotorRumble, IInputUpdateCallbackReceiver
 {
+    private bool4 ledState = true;
     private bool shouldRumble = false;
-    private bool gotNunchunck = false;
+    private bool gotNunchuck = false;
     private Wiimote wiimote;
     public Wiimote Wiimote => wiimote;
 
-    //public ButtonControl press { get; private set; }
+
     public ButtonControl buttonA { get; private set; }
     public ButtonControl buttonB { get;private set; }
     public ButtonControl buttonC { get; private set; }
@@ -57,37 +67,32 @@ public class WiimoteDevice : InputDevice, IDualMotorRumble, IInputUpdateCallback
         _ => throw new InvalidEnumArgumentException(nameof(button), (int)button, typeof(GamepadButton)),
     };
 
-    protected override void FinishSetup()
-    {
-
-        //press = GetChildControl<ButtonControl>("press");
-        buttonA = GetChildControl<ButtonControl>("aButton");
-        buttonB = GetChildControl<ButtonControl>("bButton");
-        buttonC = GetChildControl<ButtonControl>("cButton");
-        buttonZ = GetChildControl<ButtonControl>("zButton");
-        buttonOne = GetChildControl<ButtonControl>("oneButton");
-        buttonTwo = GetChildControl<ButtonControl>("twoButton");
-        buttonPlus = GetChildControl<ButtonControl>("plusButton");
-        buttonMinus = GetChildControl<ButtonControl>("minusButton");
-        buttonHome = GetChildControl<ButtonControl>("homeButton");
-
-        position = GetChildControl<Vector2Control>("position");
-
-        nunchuckStick = GetChildControl<StickControl>("nunchuckStick");
-
-        base.FinishSetup();
-    }
-
+    /// <summary>
+    /// A way of modifying the IR Camera Sensitivity after the wiimote has been registered.
+    /// </summary>
+    /// <param name="sensitivity">Sensitivity level of the IR Camera to set</param>
     public void SetIRSensitivity(IRSensitivity sensitivity)
     {
         SetUpIRCamera(wiimote, sensitivity, IRDataType.BASIC);
     }
 
+    /// <summary>
+    /// Simple way to set the 4 LEDs on the wiimote
+    /// </summary>
+    /// <param name="state">Which LEDs are on and off ordered left to right x to w</param>
     public void SetRemoteLEDs(bool4 state)
     {
-        wiimote.SendPlayerLED(state.x, state.y, state.z, state.w);
+        ledState = state;
+        wiimote?.SendPlayerLED(state.x, state.y, state.z, state.w);
     }
 
+    /// <summary>
+    /// Common interface to set controller rumble motors.
+    /// The wiimote only has 1 motor and it binary on or off.
+    /// If low or high freq are greater than zero, the ruble motor will run.
+    /// </summary>
+    /// <param name="lowFrequency"></param>
+    /// <param name="highFrequency"></param>
     public void SetMotorSpeeds(float lowFrequency, float highFrequency)
     {
         shouldRumble = false;
@@ -126,10 +131,10 @@ public class WiimoteDevice : InputDevice, IDualMotorRumble, IInputUpdateCallback
         if (wiimote != null)
         {
             UpdateWiimote(wiimote);
-            if (!gotNunchunck && wiimote.Nunchuck != null)
+            if (!gotNunchuck && wiimote.Nunchuck != null)
             {
                 SetUpIRCamera(wiimote, IRSensitivity.LevelOne, IRDataType.BASIC);
-                gotNunchunck = true;
+                gotNunchuck = true;
             }
             var state = new WiimoteState()
             {
@@ -145,8 +150,29 @@ public class WiimoteDevice : InputDevice, IDualMotorRumble, IInputUpdateCallback
     {
         wiimote = remote;
         UpdateWiimote(wiimote);
-        SetRemoteLEDs(new(true, false, false, false));
+        SetRemoteLEDs(ledState);
         Debug.Log("InputSystem has Registered Wiimote!");
+    }
+
+    protected override void FinishSetup()
+    {
+
+        //press = GetChildControl<ButtonControl>("press");
+        buttonA = GetChildControl<ButtonControl>("aButton");
+        buttonB = GetChildControl<ButtonControl>("bButton");
+        buttonC = GetChildControl<ButtonControl>("cButton");
+        buttonZ = GetChildControl<ButtonControl>("zButton");
+        buttonOne = GetChildControl<ButtonControl>("oneButton");
+        buttonTwo = GetChildControl<ButtonControl>("twoButton");
+        buttonPlus = GetChildControl<ButtonControl>("plusButton");
+        buttonMinus = GetChildControl<ButtonControl>("minusButton");
+        buttonHome = GetChildControl<ButtonControl>("homeButton");
+
+        position = GetChildControl<Vector2Control>("position");
+
+        nunchuckStick = GetChildControl<StickControl>("nunchuckStick");
+
+        base.FinishSetup();
     }
 
     public override void MakeCurrent()

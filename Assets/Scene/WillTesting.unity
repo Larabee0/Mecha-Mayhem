@@ -212,6 +212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d0c98c22caa8e4e8e12df0002182b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wiiVirtualMouse: {fileID: 0}
+  wiimotePointerUI: {fileID: 0}
   irSensitivity: 0
   gotNunchuck: 0
   frames: 0
@@ -228,6 +230,7 @@ MonoBehaviour:
   DpadDown: 0
   DpadLeft: 0
   DpadRight: 0
+  rectTransform: {fileID: 0}
 --- !u!1 &630132299
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &630132300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1114,7 +1117,7 @@ MonoBehaviour:
   playerCount: 0
   editorMechs:
   - {fileID: 52958292, guid: d21c1abb9336a3947ac91a7b92794cf8, type: 3}
-  - {fileID: 52958292, guid: 3d6d5f64f660ac548af31f9fc90e3a2c, type: 3}
+  - {fileID: 52958292, guid: 63a7186cd238a2a49b2165a6366e4cf9, type: 3}
   activeMechs: []
 --- !u!4 &1704852938
 Transform:

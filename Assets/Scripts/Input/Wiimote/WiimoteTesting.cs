@@ -7,17 +7,17 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UIElements;
 
+public enum IRSensitivity
+{
+    LevelOne,
+    LevelTwo,
+    LevelThree,
+    LevelFour,
+    LevelFive
+}
+
 public class WiimoteTesting : MonoBehaviour
 {
-    public enum IRSensitivity
-    {
-        LevelOne,
-        LevelTwo,
-        LevelThree,
-        LevelFour,
-        LevelFive
-    }
-
     [SerializeField] private VirtualMouseInput wiiVirtualMouse;
     [SerializeField] private UIDocument wiimotePointerUI;
 

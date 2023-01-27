@@ -154,64 +154,20 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""d9559113-da70-4f39-9e49-c0c1ff90ec66"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RightStick"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""7a836814-8f76-4ca5-8e99-c3c36a6a3ed2"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RightStick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""96cbd272-bb36-46ee-845c-f3adffbbd41a"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RightStick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""822491d8-f545-444b-8d63-3328be17092d"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RightStick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""2e710822-2e42-4c2f-8fd2-7172f85d21e2"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RightStick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""95f48acd-51d2-4a3a-b80b-2b15ac7f66fb"",
                     ""path"": ""<WiimoteDevice>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightStick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""de5c1f66-527b-4bfa-a3f4-2e6a6826194d"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -233,10 +189,10 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4587717f-2b7f-4afd-bdc3-c2578a94605b"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Fire 1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -247,7 +203,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                     ""path"": ""<WiimoteDevice>/aButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Fire 1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -266,7 +222,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bc19a8f8-dc1e-45ca-ba0d-46e76fd95699"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -280,7 +236,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                     ""path"": ""<WiimoteDevice>/bButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Fire 2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

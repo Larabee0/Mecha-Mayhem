@@ -319,9 +319,10 @@ namespace RedButton.Core.UI
 
             public void Set(PlayerInput player)
             {
+                // Debug.Log(player.DeviceName);
                 visualElement.style.color = visualElement.style.borderBottomColor = visualElement.style.borderLeftColor =
                     visualElement.style.borderRightColor = visualElement.style.borderTopColor = player.playerColour;
-                visualElement.text = string.Format(FirstLine(playerNum), "{0}", player.DeviceName);
+                visualElement.text = string.Format("{0}{1}",FirstLine(playerNum), player.DeviceName);
             }
 
             public void SetHidden(DisplayStyle displayStyle)
@@ -329,6 +330,7 @@ namespace RedButton.Core.UI
                 visualElement.style.display = displayStyle;
                 visualElement.style.color = visualElement.style.color = visualElement.style.borderBottomColor = visualElement.style.borderLeftColor =
                     visualElement.style.borderRightColor = visualElement.style.borderTopColor = Color.gray;
+                visualElement.text = FirstLine(playerNum);
             }
 
 

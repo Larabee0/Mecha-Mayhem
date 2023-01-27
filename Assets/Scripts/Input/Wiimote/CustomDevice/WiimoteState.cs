@@ -6,7 +6,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
-
+/*
+ * Built using https://docs.unity3d.com/Packages/com.unity.inputsystem@1.4/manual/Devices.html#creating-custom-devices
+ * as a guide
+ */
 [StructLayout(LayoutKind.Explicit, Size = 32)]
 public struct WiimoteState : IInputStateTypeInfo
 {
