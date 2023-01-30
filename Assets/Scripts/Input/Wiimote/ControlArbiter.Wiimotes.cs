@@ -104,6 +104,7 @@ namespace RedButton.Core
         private Dictionary<Wiimote, WiimoteDevice> wiimoteToDevice = new();
         public static Action<string> wiimoteAdded;
         public static Action<string> wiimoteRemoved;
+
         private void PollWiimotes()
         {
             WiimoteManager.FindWiimotes();
@@ -121,7 +122,7 @@ namespace RedButton.Core
             }
         }
 
-        private void Start()
+        private void WiimoteUISetup()
         {
             if (wiimoteOverlay.rootVisualElement == null)
             {
