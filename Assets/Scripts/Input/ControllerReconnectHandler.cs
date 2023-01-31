@@ -22,14 +22,27 @@ namespace RedButton.Core
 
         private void AnyButtonPressed(InputAction.CallbackContext obj)
         {
-            if (arbiter.newDevices.Contains(obj.control.device))
+            InputDevice[] devices = ProcessDevice(obj.control.device);
+            if (arbiter.newDevices.IsSupersetOf(devices))
             {
-                arbiter.newDevices.Remove(obj.control.device);
-                controller.AssignDevice(obj.control.device,controller.Player);
+                arbiter.newDevices.ExceptWith(devices);
+                controller.AssignDevice(devices, controller.Player);
                 controller.Enable();
                 reconnectListerner.performed -= AnyButtonPressed;
                 arbiter.controllerReconnectors.Remove(this);
                 arbiter.toDispose.Enqueue(this);
+            }
+        }
+
+        private InputDevice[] ProcessDevice(InputDevice device)
+        {
+            if (device is Keyboard || device is Mouse)
+            {
+                return new InputDevice[] { Keyboard.current, Mouse.current };
+            }
+            else
+            {
+                return new InputDevice[] { device };
             }
         }
     }

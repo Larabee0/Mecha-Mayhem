@@ -111,6 +111,17 @@
                 },
                 {
                     "name": "",
+                    "id": "fee58169-e2ef-40d3-96d4-c020cb8df6da",
+                    "path": "<WiimoteDevice>/nunchuckStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "LeftStick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "da8f04c9-3b9b-483a-a58c-a14590dcc193",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
@@ -121,59 +132,26 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "2D Vector",
-                    "id": "d9559113-da70-4f39-9e49-c0c1ff90ec66",
-                    "path": "2DVector",
+                    "name": "",
+                    "id": "95f48acd-51d2-4a3a-b80b-2b15ac7f66fb",
+                    "path": "<WiimoteDevice>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "RightStick",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "7a836814-8f76-4ca5-8e99-c3c36a6a3ed2",
-                    "path": "<Keyboard>/upArrow",
+                    "name": "",
+                    "id": "de5c1f66-527b-4bfa-a3f4-2e6a6826194d",
+                    "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "RightStick",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "96cbd272-bb36-46ee-845c-f3adffbbd41a",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RightStick",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "822491d8-f545-444b-8d63-3328be17092d",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RightStick",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "2e710822-2e42-4c2f-8fd2-7172f85d21e2",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RightStick",
-                    "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -189,10 +167,21 @@
                 {
                     "name": "",
                     "id": "4587717f-2b7f-4afd-bdc3-c2578a94605b",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
+                    "action": "Fire 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "75dec6c5-304e-4848-8816-b6f7d57b1219",
+                    "path": "<WiimoteDevice>/aButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Fire 1",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -211,7 +200,18 @@
                 {
                     "name": "",
                     "id": "bc19a8f8-dc1e-45ca-ba0d-46e76fd95699",
-                    "path": "<Keyboard>/space",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Fire 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "704265c1-06d7-46d7-bad5-5b8ab9211c93",
+                    "path": "<WiimoteDevice>/bButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -583,6 +583,72 @@
                 },
                 {
                     "name": "",
+                    "id": "4c91f310-4ddb-461a-8f73-00fb68ea223e",
+                    "path": "<WiimoteDevice>/dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Wiimote",
+                    "id": "2f5cbc05-bd51-46bc-a961-0d454794471c",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "53cec443-7680-41a4-8492-627ecb23f9d0",
+                    "path": "<WiimoteDevice>/nunchuckStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "8eb9835c-dca6-41ee-9822-212169796c6e",
+                    "path": "<WiimoteDevice>/nunchuckStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "f702adac-909c-46ed-9f66-361f649c8a7b",
+                    "path": "<WiimoteDevice>/nunchuckStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "e112e4aa-056b-4136-9248-3e915d471184",
+                    "path": "<WiimoteDevice>/nunchuckStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
                     "id": "e70846bf-8b4d-483b-9fde-f871d006151c",
                     "path": "*/{Submit}",
                     "interactions": "",
@@ -632,6 +698,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Touch",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f06fcb57-2529-474a-a65f-3a4d79fb0af5",
+                    "path": "<WiimoteDevice>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -22,7 +22,7 @@ namespace RedButton.Mech.Examples
         protected override void OnMove(Vector2 axis)
         {
             moveInput = axis.magnitude;
-            moveDir = moveInput > 0 ? new Vector3(axis.x, 0f, axis.y) : transform.forward;
+            moveDir = moveInput > 0 ? new Vector3(axis.x, 0f, axis.y).normalized : transform.forward;
             targetPointParentForward = targetPointParent.forward;
             Vector3 pos = targetPoint.transform.position;
             pos.y = targetPointParent.transform.position.y;
