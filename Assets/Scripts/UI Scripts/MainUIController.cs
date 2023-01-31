@@ -2,6 +2,7 @@ using RedButton.Core;
 using RedButton.Mech;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -19,7 +20,6 @@ namespace RedButton.Core.UI
 
         public ControllerInterruptUI controllerInterruptUI;
         public HealthBarsUI[] healthBarsUI = new HealthBarsUI[4];
-
         private bool StartScene => startScreenUI != null;
 
         private void Awake()
@@ -32,7 +32,6 @@ namespace RedButton.Core.UI
                 startScreenController = new StartScreenUI(startScreenUI.Instantiate());
                 RootVisualElenement.Add(startScreenController.RootVisualElement);
             }
-
         }
 
         #region HealthBars
