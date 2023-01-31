@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="WiiCusor1" picking-mode="Ignore" style="position: absolute; width: 50px; height: 50px; background-image: url(&apos;project://database/Packages/com.unity.inputsystem/InputSystem/Editor/Icons/d_Touch@4x.png?fileID=2800000&amp;guid=6db042035460c4167a6ab8d1ac3c2681&amp;type=3#d_Touch@4x&apos;); align-items: center; justify-content: center;">
+        <ui:Label text="1" display-tooltip-when-elided="true" name="PlayerLabel" style="margin-top: 14px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="WiiCusor2" picking-mode="Ignore" style="position: absolute; width: 50px; height: 50px; background-image: url(&apos;project://database/Packages/com.unity.inputsystem/InputSystem/Editor/Icons/d_Touch@4x.png?fileID=2800000&amp;guid=6db042035460c4167a6ab8d1ac3c2681&amp;type=3#d_Touch@4x&apos;); align-items: center; justify-content: center;">
+        <ui:Label text="2" display-tooltip-when-elided="true" name="PlayerLabel" style="margin-top: 14px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="WiiCusor3" picking-mode="Ignore" style="position: absolute; width: 50px; height: 50px; background-image: url(&apos;project://database/Packages/com.unity.inputsystem/InputSystem/Editor/Icons/d_Touch@4x.png?fileID=2800000&amp;guid=6db042035460c4167a6ab8d1ac3c2681&amp;type=3#d_Touch@4x&apos;); align-items: center; justify-content: center;">
+        <ui:Label text="3" display-tooltip-when-elided="true" name="PlayerLabel" style="margin-top: 14px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="WiiCusor4" picking-mode="Ignore" style="position: absolute; width: 50px; height: 50px; background-image: url(&apos;project://database/Packages/com.unity.inputsystem/InputSystem/Editor/Icons/d_Touch@4x.png?fileID=2800000&amp;guid=6db042035460c4167a6ab8d1ac3c2681&amp;type=3#d_Touch@4x&apos;); align-items: center; justify-content: center;">
+        <ui:Label text="4" display-tooltip-when-elided="true" name="PlayerLabel" style="margin-top: 14px;" />
+    </ui:VisualElement>
+</ui:UXML>

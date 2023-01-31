@@ -50,12 +50,24 @@ namespace RedButton.Mech
         /// OnAim is implemented in the base class. But can be overriden in inheriting classes.
         /// </summary>
         /// <param name="axis"></param>
-        protected virtual void OnAim(Vector2 axis)
+        protected virtual void OnAim(Vector2 axis, bool position)
         {
-            float aimInput = axis.magnitude;
-            targetDirection = aimInput > 0 ? new Vector3(axis.x, 0f, axis.y) : targetPointParent.forward;
-            targetPointParent.forward = targetPointParentForward =
-                Vector3.RotateTowards(targetPointParent.forward, targetDirection, aimInput * aimSpeed * Time.deltaTime, 0.0f);
+            Vector3 dir;
+            if (position)
+            {
+                float height = targetPoint.position.y;
+                Ray ray = Camera.main.ScreenPointToRay(axis);
+                Vector3 aimPoint = ExtraMaths.GetPointAtHeight(ray, height);
+                dir = (aimPoint - targetPointParent.position).normalized;
+
+            }
+            else
+            {
+                float aimInput = axis.sqrMagnitude;
+                targetDirection = aimInput > 0 ? new Vector3(axis.x, 0f, axis.y) : targetPointParent.forward;
+                dir = Vector3.RotateTowards(targetPointParent.forward, targetDirection, aimInput * aimSpeed * Time.deltaTime, 0.0f);
+            }
+            targetPointParent.forward = targetPointParentForward = dir;
         }
     }
 }

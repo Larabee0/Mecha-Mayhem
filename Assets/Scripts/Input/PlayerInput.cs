@@ -1,9 +1,13 @@
+using RedButton.Core.WiimoteSupport;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.XR;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace RedButton.Core
 {
@@ -15,36 +19,43 @@ namespace RedButton.Core
         public Color playerColour;
         // input actions asset for this player.
         private DualControllerInput controlMap;
-        public DualControllerInput ControlMap=>controlMap;
+        public DualControllerInput ControlMap => controlMap;
 
-        // the gamepad device assigned to this player, if they are using keyboard, this will be null.
-        private Gamepad gamepad;
+        private bool setWiimotePointer;
+        private bool aimAtRightStick = false;
+        /// <summary>
+        /// should the stick be treated as a direction (false) or position (true)?
+        /// </summary>
+        public bool AimAtRightStick => aimAtRightStick;
+
+        // the rumble device assigned to this player, if they are using keyboard, this will be null.
+        private IDualMotorRumble rumbleDevice;
         private string devicePath;
         public string DevicePath => devicePath;
         public string DeviceName;
         public bool DeviceConnected;
 
-        public InputDevice Device
+        public InputDevice[] Device
         {
             get
             {
-                if(controlMap== null||!DeviceConnected)
+                if (controlMap == null || !DeviceConnected)
                 {
                     return null;
                 }
 
-                return controlMap.devices.Value[0];
+                return controlMap.devices.Value.ToArray();
             }
         }
 
         // events and information about the status of the fire button.
-        public ButtonEventContainer fireOneButton =new();
+        public ButtonEventContainer fireOneButton = new();
 
-        public ButtonEventContainer fireTwoButton =new();
+        public ButtonEventContainer fireTwoButton = new();
 
         // Joy stick axis events
         public Vector2Axis OnLeftStick;
-        public Vector2Axis OnRightStick;
+        public Vector2BoolAxis OnRightStick;
 
         // current rumble strengths for each rumble motor
         private float lowRumbleCurrent = 0f;
@@ -67,10 +78,60 @@ namespace RedButton.Core
         [SerializeField, Range(0f, 1f)] private float rumbleRate;
         [SerializeField] private float rumbleDuration = 10f;
 
-        public void AssignDevice(InputDevice device, Controller playerNum, bool keyboard = false)
+        public void AssignDevice(InputDevice[] devices, Controller playerNum, bool keyboard = false)
+        {
+            DisposeOfCurrentControlMap();
+            setWiimotePointer = false;
+            aimAtRightStick = false;
+            if (devices.Any(x => x is Keyboard) || devices.Any(x => x is Mouse))
+            {
+                aimAtRightStick = true;
+                rumbleDevice = null;
+                DeviceName = "Keyboard & Mouse";
+            }
+
+            if (devices[0] is WiimoteDevice wiimote)
+            {
+                aimAtRightStick = true;
+                setWiimotePointer = true;
+                rumbleDevice = wiimote;
+                DeviceName = "Wiimote";
+                switch (playerNum)
+                {
+                    case Controller.One:
+                        wiimote.SetRemoteLEDs(new Unity.Mathematics.bool4(true, false, false, false));
+                        break;
+                    case Controller.Two:
+                        wiimote.SetRemoteLEDs(new Unity.Mathematics.bool4(false, true, false, false));
+                        break;
+                    case Controller.Three:
+                        wiimote.SetRemoteLEDs(new Unity.Mathematics.bool4(false, false, true, false));
+                        break;
+                    case Controller.Four:
+                        wiimote.SetRemoteLEDs(new Unity.Mathematics.bool4(false, false, false, true));
+                        break;
+                    case Controller.Keyboard:
+                        break;
+                }
+            }
+            else if (devices[0] is Gamepad gamepad)
+            {
+                rumbleDevice = gamepad;
+                DeviceName = devices[0].displayName;
+            }
+            EnableWiimotePointer();
+            CreateNewControlMap(devices);
+
+            player = playerNum;
+            devicePath = devices[0].path;
+            DeviceConnected = true;
+        }
+
+
+        private void DisposeOfCurrentControlMap()
         {
             StopAllCoroutines();
-            if(controlMap != null)
+            if (controlMap != null)
             {
                 // if we had a control map, un subscribe from it Un-Subscribe to the various stick and button inputs.
                 // then dispose of it.
@@ -86,28 +147,15 @@ namespace RedButton.Core
                 controlMap.MechControls.Fire2.canceled -= OnFireTwoStop;
                 controlMap.Dispose();
             }
+        }
 
-            if (keyboard)
+        private void CreateNewControlMap(InputDevice[] devices)
+        {
+            controlMap = new()
             {
-                controlMap = new()
-                {
-                    devices = new InputDevice[] { Keyboard.current, Mouse.current },
-                    bindingMask = InputBinding.MaskByGroups("Keyboard", "Mouse")
-                };
-            }
-            else
-            {
-                gamepad = (Gamepad)device;
-                controlMap = new()
-                {
-                    devices = new[] { gamepad },
-                    //bindingMask = InputBinding.MaskByGroup("Gamepad")
-                };
-            }
-            player = playerNum;
-            devicePath = device.path;
-            DeviceConnected = true;
-            DeviceName = device.displayName;
+                devices = devices,
+            };
+
             // Subscribe to the various stick and button inputs.
             controlMap.MechControls.LeftStick.started += StartLeftStickActivity;
             controlMap.MechControls.RightStick.started += StartRightStickActivity;
@@ -145,9 +193,9 @@ namespace RedButton.Core
             StopAllCoroutines();
         }
 
-#if UNITY_EDITOR
         private void Update()
         {
+            EnableWiimotePointer();
             if (debugging)
             {
                 if (Input.GetKeyUp(KeyCode.Space) && !Input.GetKey(KeyCode.LeftShift))
@@ -159,15 +207,21 @@ namespace RedButton.Core
                     StopRumbleMotor(rumbleMotor);
                 }
             }
+            if (AimAtRightStick && controlMap != null && controlMap.MechControls.enabled)
+            {
+                RightStickLogic();
+            }
+            if(AimAtRightStick && controlMap != null && controlMap.UI.enabled)
+            {
+                SetWiimotePointer(controlMap.UI.Point.ReadValue<Vector2>());
+            }
         }
-#endif
-
         private void OnDestroy()
         {
             Debug.Log("Decommissioning Player Input Script!");
-            StopRumbleMotor(global::RumbleMotor.Both);
             Disable();
-            ControlMap.Dispose();
+            DisposeOfCurrentControlMap();
+            StopRumbleMotor(global::RumbleMotor.Both);
         }
 
         #region Buttons
@@ -216,7 +270,7 @@ namespace RedButton.Core
 
         private void OnFireTwoStop(InputAction.CallbackContext context)
         {
-            
+
             if (fireTwoButtonProcess != null)
             {
                 StopCoroutine(fireTwoButtonProcess);
@@ -249,12 +303,15 @@ namespace RedButton.Core
 
         private void StartRightStickActivity(InputAction.CallbackContext context)
         {
-            if (rightStickProcess != null)
+            if (!aimAtRightStick)
             {
-                StopCoroutine(rightStickProcess);
-            }
+                if (rightStickProcess != null)
+                {
+                    StopCoroutine(rightStickProcess);
+                }
 
-            rightStickProcess = StartCoroutine(RightStickActivity());
+                rightStickProcess = StartCoroutine(RightStickActivity());
+            }
         }
 
         private void StopLeftStick(InputAction.CallbackContext context)
@@ -272,7 +329,12 @@ namespace RedButton.Core
             if (rightStickProcess != null)
             {
                 StopCoroutine(rightStickProcess);
-                OnRightStick?.Invoke(Vector2.zero);
+                Vector2 value = AimAtRightStick ? controlMap.MechControls.RightStick.ReadValue<Vector2>() : Vector2.zero;
+                OnRightStick?.Invoke(value, AimAtRightStick);
+                if (setWiimotePointer)
+                {
+                    SetWiimotePointer(value);
+                }
             }
         }
 
@@ -290,8 +352,57 @@ namespace RedButton.Core
         {
             while (true)
             {
-                OnRightStick?.Invoke(controlMap.MechControls.RightStick.ReadValue<Vector2>());
+                RightStickLogic();
                 yield return null;
+            }
+        }
+
+        private void RightStickLogic()
+        {
+            Vector2 value = controlMap.MechControls.RightStick.ReadValue<Vector2>();
+            OnRightStick?.Invoke(value, AimAtRightStick);
+            if (setWiimotePointer)
+            {
+                SetWiimotePointer(value);
+            }
+        }
+
+        private void SetWiimotePointer(Vector2 value)
+        {
+            switch (player)
+            {
+                case Controller.One:
+                    ControlArbiter.Wiimote1PointerPos = value;
+                    break;
+                case Controller.Two:
+                    ControlArbiter.Wiimote2PointerPos = value;
+                    break;
+                case Controller.Three:
+                    ControlArbiter.Wiimote3PointerPos = value;
+                    break;
+                case Controller.Four:
+                    ControlArbiter.Wiimote4PointerPos = value;
+                    break;
+
+            }
+        }
+        private void EnableWiimotePointer()
+        {
+            switch (player)
+            {
+                case Controller.One:
+                    ControlArbiter.Wiimote1PointerEnable = setWiimotePointer;
+                    break;
+                case Controller.Two:
+                    ControlArbiter.Wiimote2PointerEnable = setWiimotePointer;
+                    break;
+                case Controller.Three:
+                    ControlArbiter.Wiimote3PointerEnable = setWiimotePointer;
+                    break;
+                case Controller.Four:
+                    ControlArbiter.Wiimote4PointerEnable = setWiimotePointer;
+                    break;
+
             }
         }
         #endregion
@@ -305,28 +416,31 @@ namespace RedButton.Core
         /// <param name="rumbleMotor"> Which motor will be run, low, high or both rumble frequencies.</param>
         public void RumbleMotor(float duration, float strength, RumbleMotor rumbleMotor)
         {
-            switch (rumbleMotor)
+            if (rumbleDevice != null)
             {
-                case global::RumbleMotor.LowFreq:
-                case global::RumbleMotor.Both:
-                    if (lowRumbleProcess != null)
-                    {
-                        StopRumbleMotor(global::RumbleMotor.LowFreq);
-                    }
-                    lowRumbleProcess = StartCoroutine(LowRumbleMotor(duration, strength));
-                    break;
-            }
+                switch (rumbleMotor)
+                {
+                    case global::RumbleMotor.LowFreq:
+                    case global::RumbleMotor.Both:
+                        if (lowRumbleProcess != null)
+                        {
+                            StopRumbleMotor(global::RumbleMotor.LowFreq);
+                        }
+                        lowRumbleProcess = StartCoroutine(LowRumbleMotor(duration, strength));
+                        break;
+                }
 
-            switch (rumbleMotor)
-            {
-                case global::RumbleMotor.HighFreq:
-                case global::RumbleMotor.Both:
-                    if (highRumbleProcess != null)
-                    {
-                        StopRumbleMotor(global::RumbleMotor.HighFreq);
-                    }
-                    highRumbleProcess = StartCoroutine(HighRumbleMotor(duration, strength));
-                    break;
+                switch (rumbleMotor)
+                {
+                    case global::RumbleMotor.HighFreq:
+                    case global::RumbleMotor.Both:
+                        if (highRumbleProcess != null)
+                        {
+                            StopRumbleMotor(global::RumbleMotor.HighFreq);
+                        }
+                        highRumbleProcess = StartCoroutine(HighRumbleMotor(duration, strength));
+                        break;
+                }
             }
         }
 
@@ -340,7 +454,7 @@ namespace RedButton.Core
             {
                 StopCoroutine(lowRumbleProcess);
                 lowRumbleCurrent = 0f;
-                gamepad.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
+                rumbleDevice.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
                 lowRumbleProcess = null;
             }
 
@@ -348,7 +462,7 @@ namespace RedButton.Core
             {
                 StopCoroutine(highRumbleProcess);
                 highRumbleCurrent = 0f;
-                gamepad.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
+                rumbleDevice.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
                 highRumbleProcess = null;
             }
         }
@@ -364,11 +478,11 @@ namespace RedButton.Core
         {
             lowRumbleCurrent = Mathf.Clamp01(rate);
             yield return new WaitForEndOfFrame();
-            gamepad.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
+            rumbleDevice.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
             yield return new WaitForSeconds(duration);
             lowRumbleCurrent = 0f;
             yield return new WaitForEndOfFrame();
-            gamepad.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
+            rumbleDevice.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
             lowRumbleProcess = null;
         }
 
@@ -382,11 +496,11 @@ namespace RedButton.Core
         {
             highRumbleCurrent = Mathf.Clamp01(strength);
             yield return new WaitForEndOfFrame();
-            gamepad.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
+            rumbleDevice.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
             yield return new WaitForSeconds(duration);
             highRumbleCurrent = 0f;
             yield return new WaitForEndOfFrame();
-            gamepad.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
+            rumbleDevice.SetMotorSpeeds(lowRumbleCurrent, highRumbleCurrent);
             highRumbleProcess = null;
         }
 
