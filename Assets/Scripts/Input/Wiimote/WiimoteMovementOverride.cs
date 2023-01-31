@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using RedButton.Mech;
 using RedButton.Mech.Examples;
+using System;
 
 namespace RedButton.Core.WiimoteSupport
 {
+    [Obsolete]
     public class WiimoteMovementOverride : ExampleAdvancedMovement
     {
         [SerializeField] private WiimoteTesting wiimoteInput;

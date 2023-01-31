@@ -1,3 +1,4 @@
+using RedButton.Core.WiimoteSupport;
 using System;
 using System.Collections;
 using System.Collections.Generic;

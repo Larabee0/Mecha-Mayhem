@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using WiimoteApi;
+using RedButton.Core.WiimoteSupport;
 
 namespace RedButton.Core
 {

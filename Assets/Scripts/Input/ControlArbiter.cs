@@ -1,12 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
-using UnityEngine.UIElements;
+using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
 
 namespace RedButton.Core

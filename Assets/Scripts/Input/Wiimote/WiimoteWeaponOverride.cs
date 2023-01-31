@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using RedButton.Mech;
 using RedButton.Mech.Examples;
+using System;
 
 namespace RedButton.Core.WiimoteSupport
 {
+    [Obsolete]
     public class WiimoteWeaponOverride : ExampleBasicRaycasterWeapon
     {
         [SerializeField] private WiimoteTesting wiimoteInput;
