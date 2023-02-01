@@ -41,13 +41,13 @@
 }
 
 .StartScreenButton {
-    color: rgba(255, 255, 255, 255);
-    background-color: rgba(27, 27, 27, 255);
+    color: rgb(255, 255, 255);
+    background-color: rgb(27, 27, 27);
 }
 
 .StartScreenButton:hover {
-    background-color: rgba(55, 55, 55, 255);
-    color: rgba(255, 0, 0, 255);
+    background-color: rgb(55, 55, 55);
+    color: rgb(255, 0, 0);
 }
 
 .StartScreenButton:focus {
@@ -56,10 +56,31 @@
 }
 
 .SSPlayerAssign {
-    background-color: rgba(64, 64, 64, 255);
-    color: rgba(255, 255, 255, 255);
+    background-color: rgb(64, 64, 64);
+    color: rgb(255, 255, 255);
     border-left-width: 5px;
     border-right-width: 5px;
     border-top-width: 5px;
     border-bottom-width: 5px;
+}
+
+.Level {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: rgba(188, 188, 188, 255);
+    border-right-color: rgba(188, 188, 188, 255);
+    border-top-color: rgba(188, 188, 188, 255);
+    border-bottom-color: rgba(188, 188, 188, 255);
+    background-color: rgba(125, 125, 125, 0.35);
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.Level:focus {
+    border-left-color: rgba(0, 152, 190, 255);
+    border-right-color: rgba(0, 152, 190, 255);
+    border-top-color: rgba(0, 152, 190, 255);
+    border-bottom-color: rgba(0, 152, 190, 255);
 }

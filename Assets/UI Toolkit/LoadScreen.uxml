@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/LoadScreenSS.uss?fileID=7433441132597879392&amp;guid=a86a41c4a6e461245968dd48b3e40733&amp;type=3#LoadScreenSS" />
+    <ui:VisualElement name="LoadScreenBackground" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; width: 100%; height: 100%; background-color: rgba(43, 43, 43, 255); display: none;">
+        <ui:VisualElement name="LoadScreenImage" style="height: 93%;" />
+        <ui:ProgressBar name="LoadingBar" high-value="1" style="height: 7%; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 8px; padding-right: 8px; padding-top: 13px; padding-bottom: 13px; justify-content: center;" />
+    </ui:VisualElement>
+</ui:UXML>

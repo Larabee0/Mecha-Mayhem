@@ -181,6 +181,7 @@ namespace RedButton.Core
             }
         }
 
+        #region Backwards
         /// <summary>
         /// Input System callback to return to the start screen and the inital state of the game
         /// on the start screen from the player count picker screen
@@ -225,6 +226,7 @@ namespace RedButton.Core
 
             mainUIController.StartScreenController.ShowPlayerCountPicker();
         }
+        #endregion
 
         /// <summary>
         /// Triggers the total reassignment of player controllers, including main player

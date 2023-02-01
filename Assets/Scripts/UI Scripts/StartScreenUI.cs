@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 
 namespace RedButton.Core.UI
 {
-
     public class StartScreenUI
     {
         private VisualElement rootVisualElement;
@@ -14,14 +13,6 @@ namespace RedButton.Core.UI
 
         public VisualElement startScreen;
         public VisualElement mainMenu;
-        public VisualElement ControllerAssignment;
-        public VisualElement controllerAssignmentButtonPanel;
-        public VisualElement mechSelectScreen;
-
-        private ControllerAssignHelper PlayerOneAssign;
-        private ControllerAssignHelper PlayerTwoAssign;
-        private ControllerAssignHelper PlayerThreeAssign;
-        private ControllerAssignHelper PlayerFourAssign;
 
         public StartScreenUI(TemplateContainer rootVisualElement)
         {
@@ -30,7 +21,30 @@ namespace RedButton.Core.UI
             mainMenu = rootVisualElement.Q("PlayerModePick");
             ControllerAssignment = rootVisualElement.Q("PlayerAssignment");
             mechSelectScreen = rootVisualElement.Q("MechSelector");
+            
+            PlayerCountUIQueries();
+            ControllerAssignementUIQueries();
+            MechSelectorUIQueries();
+            LevelSelectorQueries();
 
+            ShowMainMenu();
+        }
+
+        /// <summary>
+        /// shows the main start screen
+        /// </summary>
+        public void ShowMainMenu()
+        {
+            startScreen.style.display = DisplayStyle.Flex;
+            mainMenu.style.display = DisplayStyle.None;
+            ControllerAssignment.style.display = DisplayStyle.None;
+            mechSelectScreen.style.display = DisplayStyle.None;
+            LevelSelectScreen.style.display = DisplayStyle.None;
+        }
+
+        #region Player Count Selection
+        private void PlayerCountUIQueries()
+        {
             PlayerOneAssign = new(ControllerAssignment.Q<Label>("OnePlayer"), Controller.One);
             PlayerTwoAssign = new(ControllerAssignment.Q<Label>("TwoPlayer"), Controller.Two);
             PlayerThreeAssign = new(ControllerAssignment.Q<Label>("ThreePlayer"), Controller.Three);
@@ -47,30 +61,6 @@ namespace RedButton.Core.UI
 
             mainMenu.Q<Button>("FourPlayer").RegisterCallback<ClickEvent>(ev => PlayerSelectCallback(Controller.Four));
             mainMenu.Q<Button>("FourPlayer").RegisterCallback<NavigationSubmitEvent>(ev => PlayerSelectCallback(Controller.Four));
-
-            controllerAssignmentButtonPanel = ControllerAssignment.Q("ButtonContainer");
-
-            ControllerAssignment.Q<Button>("OkButton").RegisterCallback<ClickEvent>(ev => AcceptControllerAssignmentCallback());
-            ControllerAssignment.Q<Button>("OkButton").RegisterCallback<NavigationSubmitEvent>(ev => AcceptControllerAssignmentCallback());
-
-            ControllerAssignment.Q<Button>("ChangeButton").RegisterCallback<ClickEvent>(ev => ChangeControllerAssignmentCallback());
-            ControllerAssignment.Q<Button>("ChangeButton").RegisterCallback<NavigationSubmitEvent>(ev => ChangeControllerAssignmentCallback());
-
-            mechSelectScreen.Q<Button>("BackToAssignment").RegisterCallback<ClickEvent>(ev => BackToAssignmentCallback());
-            mechSelectScreen.Q<Button>("BackToAssignment").RegisterCallback<NavigationSubmitEvent>(ev => BackToAssignmentCallback());
-
-            ShowMainMenu();
-        }
-
-        /// <summary>
-        /// shows the main start screen
-        /// </summary>
-        public void ShowMainMenu()
-        {
-            startScreen.style.display = DisplayStyle.Flex;
-            mainMenu.style.display = DisplayStyle.None;
-            ControllerAssignment.style.display = DisplayStyle.None;
-            mechSelectScreen.style.display = DisplayStyle.None;
         }
 
         /// <summary>
@@ -88,44 +78,6 @@ namespace RedButton.Core.UI
             PlayerThreeAssign.SetHidden(DisplayStyle.None);
             PlayerFourAssign.SetHidden(DisplayStyle.None);
             mainMenu.Q<Button>("TwoPlayer").Focus();
-        }
-
-        /// <summary>
-        /// Shows mech selector UI
-        /// </summary>
-        public void ShowMechSelector()
-        {
-            startScreen.style.display = DisplayStyle.None;
-            mainMenu.style.display = DisplayStyle.None;
-            ControllerAssignment.style.display = DisplayStyle.None;
-            mechSelectScreen.style.display = DisplayStyle.Flex;
-        }
-
-        /// <summary>
-        /// shows the ok/change controller assignment button panel
-        /// </summary>
-        public void ShowAssignmentButtonPanel()
-        {
-            controllerAssignmentButtonPanel.style.display = DisplayStyle.Flex;
-            ControllerAssignment.Q<Button>("OkButton").Focus();
-        }
-
-        /// <summary>
-        /// Change Controller assignment button callback
-        /// Starts the process of reassign all players controllers.
-        /// </summary>
-        private void ChangeControllerAssignmentCallback()
-        {
-            ControlArbiter.Instance.ResetControllerAssignment();
-        }
-
-        /// <summary>
-        /// Accpet controller assignment button callback
-        /// moves onto next screen (mech selector)
-        /// </summary>
-        private void AcceptControllerAssignmentCallback()
-        {
-            ShowMechSelector();
         }
 
         /// <summary>
@@ -180,6 +132,55 @@ namespace RedButton.Core.UI
             controllerAssignmentButtonPanel.style.display = DisplayStyle.None;
 
             ControlArbiter.Instance.StartControllerAssignment(players);
+        }
+        #endregion
+
+        #region Controller Assignement
+        public VisualElement ControllerAssignment;
+        public VisualElement controllerAssignmentButtonPanel;
+
+        private ControllerAssignHelper PlayerOneAssign;
+        private ControllerAssignHelper PlayerTwoAssign;
+        private ControllerAssignHelper PlayerThreeAssign;
+        private ControllerAssignHelper PlayerFourAssign;
+
+        private void ControllerAssignementUIQueries()
+        {
+            controllerAssignmentButtonPanel = ControllerAssignment.Q("ButtonContainer");
+
+            ControllerAssignment.Q<Button>("OkButton").RegisterCallback<ClickEvent>(ev => AcceptControllerAssignmentCallback());
+            ControllerAssignment.Q<Button>("OkButton").RegisterCallback<NavigationSubmitEvent>(ev => AcceptControllerAssignmentCallback());
+
+            ControllerAssignment.Q<Button>("ChangeButton").RegisterCallback<ClickEvent>(ev => ChangeControllerAssignmentCallback());
+            ControllerAssignment.Q<Button>("ChangeButton").RegisterCallback<NavigationSubmitEvent>(ev => ChangeControllerAssignmentCallback());
+        }
+
+        /// <summary>
+        /// shows the ok/change controller assignment button panel
+        /// </summary>
+        public void ShowAssignmentButtonPanel()
+        {
+            controllerAssignmentButtonPanel.style.display = DisplayStyle.Flex;
+            ControllerAssignment.Q<Button>("OkButton").Focus();
+        }
+
+        /// <summary>
+        /// Change Controller assignment button callback
+        /// Starts the process of reassign all players controllers.
+        /// </summary>
+        private void ChangeControllerAssignmentCallback()
+        {
+            ControlArbiter.Instance.ResetControllerAssignment();
+        }
+
+        /// <summary>
+        /// Accpet controller assignment button callback
+        /// moves onto next screen (mech selector)
+        /// </summary>
+        private void AcceptControllerAssignmentCallback()
+        {
+            //ShowMechSelector();
+            ShowLevelSelectScreen();
         }
 
         /// <summary>
@@ -346,5 +347,139 @@ namespace RedButton.Core.UI
                 };
             }
         }
+        #endregion
+
+        #region Mech Selector
+        public VisualElement mechSelectScreen;
+
+        private void MechSelectorUIQueries()
+        {
+            mechSelectScreen.Q<Button>("BackToAssignment").RegisterCallback<ClickEvent>(ev => BackToAssignmentCallback());
+            mechSelectScreen.Q<Button>("BackToAssignment").RegisterCallback<NavigationSubmitEvent>(ev => BackToAssignmentCallback());
+        }
+
+        /// <summary>
+        /// Shows mech selector UI
+        /// </summary>
+        public void ShowMechSelector()
+        {
+            startScreen.style.display = DisplayStyle.None;
+            mainMenu.style.display = DisplayStyle.None;
+            ControllerAssignment.style.display = DisplayStyle.None;
+            mechSelectScreen.style.display = DisplayStyle.Flex;
+        }
+
+        #endregion
+
+        #region Level Selector
+        public VisualElement LevelSelectScreen;
+        public VisualElement BigPeview;
+
+        public LevelHelper level1;
+        public LevelHelper level2;
+        public LevelHelper level3;
+        public LevelHelper level4;
+
+        private void LevelSelectorQueries()
+        {
+            LevelSelectScreen = rootVisualElement.Q("LevelSelectScreen");
+            BigPeview = LevelSelectScreen.Q("BigPreviewImage");
+            level1 = new(LevelSelectScreen.Q("Level1"));
+            level2 = new(LevelSelectScreen.Q("Level2"));
+            level3 = new(LevelSelectScreen.Q("Level3"));
+            level4 = new(LevelSelectScreen.Q("Level4"));
+
+            for (int i = 0; i < 4; i++)
+            {
+                LevelHelper helper = GetLevelDisplay(i);
+                helper.root.RegisterCallback<FocusInEvent>(ev => OnLevelFocusCallback(helper));
+                helper.root.RegisterCallback<ClickEvent>(ev=> OnLevelClickCallback(helper));
+                helper.root.RegisterCallback<NavigationSubmitEvent>(ev => OnLevelClickCallback(helper));
+                helper.Hide();
+            }
+        }
+
+        public void ShowLevelSelectScreen()
+        {
+            LevelSelectScreen.style.display = DisplayStyle.Flex;
+            mainMenu.style.display = DisplayStyle.None;
+            ControllerAssignment.style.display = DisplayStyle.None;
+            mechSelectScreen.style.display = DisplayStyle.None;
+            startScreen.style.display = DisplayStyle.None;
+            PopulateLevels();
+            level1.root.Focus();
+        }
+
+        private void PopulateLevels()
+        {
+            SceneInfo[] scenes = GameSceneManager.Instance.Scenes;
+            int runTo = Mathf.Min(scenes.Length, 4);
+            for (int i = 0; i < runTo; i++)
+            {
+                GetLevelDisplay(i).AssignScene(scenes[i]);
+            }
+        }
+
+        private void OnLevelFocusCallback(LevelHelper helper)
+        {
+            if(helper.current.preview != null)
+            {
+                BigPeview.style.backgroundImage = helper.current.preview;
+            }
+        }
+
+        private void OnLevelClickCallback(LevelHelper helper)
+        {
+            GameSceneManager.Instance.LoadScene(helper.current.buildIndex);
+        }
+
+        public LevelHelper GetLevelDisplay(int index) => index switch
+        {
+            0 => level1,
+            1 => level2,
+            2 => level3,
+            3 => level4,
+            _ => null,
+        };
+
+        public class LevelHelper
+        {
+            public VisualElement root;
+            public VisualElement levelPreviewImage;
+            public Label levelName;
+            
+            public SceneInfo current;
+
+            public LevelHelper(VisualElement root)
+            {
+                this.root = root;
+                levelPreviewImage = root.Q("LevelPreviewImage");
+                levelName = root.Q<Label>("LevelName");
+            }
+
+            public void Hide()
+            {
+                root.style.display = DisplayStyle.None;
+            }
+
+            public void Show()
+            {
+                root.style.display= DisplayStyle.Flex;
+            }
+
+            public void AssignScene(SceneInfo scene)
+            {
+                current = scene;
+                levelName.text = scene.name;
+                levelPreviewImage.style.backgroundImage = scene.preview;
+                if (scene.hideInLevelPicker)
+                {
+                    Hide();
+                    return;
+                }
+                Show();
+            }
+        }
+        #endregion
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
+using System.Linq;
 
 namespace RedButton.Core
 {
@@ -20,7 +21,7 @@ namespace RedButton.Core
         }
 
         public static Controller playerMode;
-        public static bool OverrideDuplicates;
+        
         public static ControlArbiter Instance;
         public static PlayerInput PlayerOne = null;
         public static PlayerInput PlayerTwo = null;
@@ -89,19 +90,30 @@ namespace RedButton.Core
 
         private void Awake()
         {
-            DontDestroyOnLoad(this);
-            InputSystem.onDeviceChange += OnDeviceChanged;
-
-            mainUIController = FindObjectOfType<MainUIController>();
-            if (Instance != null && !OverrideDuplicates)
+            // we should find a mainUIController which either has us as its parent, has no parent or has no ControlArbiter in its parent(s).
+            mainUIController = FindObjectsOfType<MainUIController>().Where(obj => obj.transform.parent == transform || obj.transform == null || obj.GetComponentInParent<ControlArbiter>() == null).FirstOrDefault();
+            if(mainUIController == null)
             {
-                Debug.LogError("Multiple Control Arbiters in scene! Please remove any duplicates!\nThis may get falsing triggered by switching to a scene with a Control Arbiter in it, set OverrideDuplicate to true before switching to the new scene.");
+                Debug.LogError("Failed to find usable MainController UI Instance", gameObject);
+            }
+            else
+            {
+                mainUIController.transform.parent = transform;
+            }
+            
+            // if an active instance already exists, lets bin ourselves including any UI or playerInput children.
+            if (Instance != null|| mainUIController == null)
+            {
+                Destroy(gameObject);
                 return;
             }
             Instance = this;
+            
+            // if we reach here then we've decided we can go ahead with full start up of the control arbiter instance.
+            DontDestroyOnLoad(this);
+            InputSystem.onDeviceChange += OnDeviceChanged;
 
             PollWiimotes();
-            OverrideDuplicates = false;
 
             if (StartScreen)
             {
