@@ -204,6 +204,15 @@ namespace RedButton.Core
             }
         }
 
+        public void LockOutAllPlayers()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (this[i] != null)
+                    this[i].Disable();
+            }
+        }
+
         private void AssignToPlayer(PlayerInput[] controllers, int i)
         {
             switch (controllers[i].Player)
@@ -311,5 +320,6 @@ namespace RedButton.Core
                 _ => Color.white
             };
         }
+
     }
 }

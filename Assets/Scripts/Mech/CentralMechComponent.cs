@@ -12,6 +12,8 @@ namespace RedButton.Mech
     /// </summary>
     public class CentralMechComponent : MonoBehaviour
     {
+        public delegate void MechPassThroughDelegeate(CentralMechComponent cmc);
+
         [Header("Items that should recieve the player colour")]
         [SerializeField] private MeshRenderer[] colourables;
 
@@ -27,6 +29,7 @@ namespace RedButton.Mech
         public float Health => health;
 
         public FloatPassThrough OnHealthChange;
+        public MechPassThroughDelegeate OnMechDied;
 
 
         [Header("For debug info only, DO NOT set these properries",order = 0)]
@@ -115,6 +118,7 @@ namespace RedButton.Mech
 
         private void Die()
         {
+            OnMechDied?.Invoke(this);
             MechInputController.Disable();
             transform.root.gameObject.SetActive(false);
         }

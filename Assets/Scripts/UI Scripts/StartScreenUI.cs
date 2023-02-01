@@ -399,6 +399,19 @@ namespace RedButton.Core.UI
             }
         }
 
+        public void ReturnToLevelSelectScreenFromLevel()
+        {
+            GameSceneManager.Instance.OnActiveSceneChanged += ReturnToLevelSelectScreen;
+            GameSceneManager.Instance.LoadScene(0);
+        }
+
+        private void ReturnToLevelSelectScreen()
+        {
+            GameSceneManager.Instance.OnActiveSceneChanged -= ReturnToLevelSelectScreen;
+            ShowLevelSelectScreen();
+            // enable player one UI control
+        }
+
         public void ShowLevelSelectScreen()
         {
             LevelSelectScreen.style.display = DisplayStyle.Flex;

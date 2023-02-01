@@ -37,6 +37,7 @@ namespace RedButton.Core
         public SceneInfo[] Scenes => scenes;
         public Texture2D LoadScreenImage { set => loadScreenImage.style.backgroundImage = value; }
 
+        public Pluse OnActiveSceneChanged;
 
         void Awake()
         {
@@ -57,13 +58,13 @@ namespace RedButton.Core
             loadScreenImage = loadScreenBackground.Q("LoadScreenImage");
             loadingBar = loadScreenBackground.Q<ProgressBar>("LoadingBar");
             loadScreenBackground.style.display = DisplayStyle.None;
-            SceneManager.activeSceneChanged += OnActiveSceneChange;
+            SceneManager.activeSceneChanged += ActiveSceneChangeCallback;
         }
 
-        private void OnActiveSceneChange(Scene arg0, Scene arg1)
+        private void ActiveSceneChangeCallback(Scene arg0, Scene arg1)
         {
             Debug.Log("Active Scene changed");
-            ControlArbiter.Instance.ValidateControllersAndPlayers();
+            OnActiveSceneChanged?.Invoke();
         }
 
         public void LoadScene(int index)
@@ -73,11 +74,11 @@ namespace RedButton.Core
 
         private IEnumerator LoadMainScene(SceneInfo loadScene)
         {
-            if(loadingScreenImages != null&&loadingScreenImages.Length > 0)
+            if (loadingScreenImages != null && loadingScreenImages.Length > 0)
             {
                 LoadScreenImage = loadingScreenImages[UnityEngine.Random.Range(0, loadingScreenImages.Length)];
             }
-            
+
             loadScreenBackground.style.display = DisplayStyle.Flex;
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(loadScene.buildIndex, loadMode);
             while (!asyncLoad.isDone)
@@ -88,6 +89,5 @@ namespace RedButton.Core
             loadScreenBackground.style.display = DisplayStyle.None;
             loadingBar.value = 0f;
         }
-
     }
 }
