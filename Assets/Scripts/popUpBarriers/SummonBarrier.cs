@@ -72,18 +72,19 @@ public class SummonBarrier : MonoBehaviour
 
         int barrierIndex = rand.Next(0,barriers.Length);
 
-        //int rotationOfBarrier = rand.Next(0, 3);
-        //if (rotationOfBarrier == 0) { rotationOfBarrier = 0; }
-        //else if (rotationOfBarrier == 1) { rotationOfBarrier = 90; }
-        //else if (rotationOfBarrier == 2) { rotationOfBarrier = 180; }
-        //else if (rotationOfBarrier == 3) { rotationOfBarrier = 270; }
+        int rotationOfBarrier = rand.Next(0, 3);
+        if (rotationOfBarrier == 0) { rotationOfBarrier = 0; }
+        else if (rotationOfBarrier == 1) { rotationOfBarrier = 90; }
+        else if (rotationOfBarrier == 2) { rotationOfBarrier = 180; }
+        else if (rotationOfBarrier == 3) { rotationOfBarrier = 270; }
 
         yield return new WaitForSeconds(timeBetweenBarriers);
 
         if (!symetryMode)
         {
-            Instantiate(barriers[barrierIndex], new Vector3(Random.Range(barrierxPopUpStart, barrierxPopUpRange), -barrierHeight, Random.Range(barrierzPopUpStart, barrierzPopUpRange)), Quaternion.identity);
-                //Quaternion.Euler(0, rotationOfBarrier, 0));
+            GameObject barrierToSpawn = Instantiate(barriers[barrierIndex], new Vector3(Random.Range(barrierxPopUpStart, barrierxPopUpRange), -barrierHeight, Random.Range(barrierzPopUpStart, barrierzPopUpRange)), Quaternion.identity);
+            barrierToSpawn.transform.Rotate(0,rotationOfBarrier,0);
+                
         }
         
         StartCoroutine("SpawnBarrier");
