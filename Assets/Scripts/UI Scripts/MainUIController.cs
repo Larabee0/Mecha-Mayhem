@@ -14,6 +14,8 @@ namespace RedButton.Core.UI
         [SerializeField] private VisualTreeAsset startScreenUI;
 
         private StartScreenUI startScreenController;
+        private EndScreenUI endScreenController;
+        public EndScreenUI EndScreenController => endScreenController;
         public StartScreenUI StartScreenController => startScreenController;
 
         private VisualElement RootVisualElenement => mainDocument.rootVisualElement;
@@ -25,7 +27,12 @@ namespace RedButton.Core.UI
         private void Awake()
         {
             mainDocument = GetComponent<UIDocument>();
+        }
+
+        private void Start()
+        {
             controllerInterruptUI = new ControllerInterruptUI(RootVisualElenement.Q("ControllerInterrupt"));
+            endScreenController = new EndScreenUI(RootVisualElenement.Q("EndScreenContainer"), this);
             SetUpHealthBars();
             if (StartScene)
             {

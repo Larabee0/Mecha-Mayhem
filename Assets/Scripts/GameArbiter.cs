@@ -82,7 +82,9 @@ namespace RedButton.GamePlay
 
             // display some other ui after some time delay
             // for now lets say this goes back to the level select screen
-            GameSceneManager.Instance.LoadScene(0);
+
+            ControlArbiter.Instance.MainUIController.EndScreenController.ShowEndScreen();
+
         }
 
         private void OnMechDeath(CentralMechComponent cmc)

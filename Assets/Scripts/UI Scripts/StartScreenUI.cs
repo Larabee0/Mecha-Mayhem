@@ -414,6 +414,8 @@ namespace RedButton.Core.UI
 
         public void ShowLevelSelectScreen()
         {
+            BigPeview.style.backgroundImage = null;
+            RootVisualElement.style.display = DisplayStyle.Flex;
             LevelSelectScreen.style.display = DisplayStyle.Flex;
             mainMenu.style.display = DisplayStyle.None;
             ControllerAssignment.style.display = DisplayStyle.None;
