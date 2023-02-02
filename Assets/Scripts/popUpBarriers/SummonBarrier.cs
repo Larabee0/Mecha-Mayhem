@@ -34,6 +34,10 @@ public class SummonBarrier : MonoBehaviour
     [SerializeField] int minTimeBetweenBarriers;
     [SerializeField] int maxTimeBetweenBarriers;
 
+    [Space]
+    [Header("Likelihood of Barriers - Where 0 is 0%, 1 is 50%...")]
+    [SerializeField] int upperBound;
+    [SerializeField] bool guaranteeBarriers;
 
     float xStart;
     float zStart;
@@ -46,7 +50,7 @@ public class SummonBarrier : MonoBehaviour
 
 
 
-    System.Random rand;
+    
 
     GameObject[] barriers;
 
@@ -77,13 +81,13 @@ public class SummonBarrier : MonoBehaviour
 
     IEnumerator SpawnBarrier()
     {
-        rand = new System.Random();
+        
 
-        int timeBetweenBarriers = rand.Next(minTimeBetweenBarriers, maxTimeBetweenBarriers);
+        int timeBetweenBarriers = Random.Range(minTimeBetweenBarriers, maxTimeBetweenBarriers);
 
         //int barrierIndex = rand.Next(0, barriers.Length);
 
-        int rotationOfBarrier = rand.Next(0, 3);
+        int rotationOfBarrier = Random.Range(0, 3);
         rotationOfBarrier *= 90;
 
 
@@ -97,8 +101,20 @@ public class SummonBarrier : MonoBehaviour
 
             if (barrierLimit.Contains(barrierSpawnRange) && !barrierSpawn.Contains(barrierSpawnRange))
             {
-                GameObject barrierToSpawn = Instantiate(barriers[rand.Next(0, barriers.Length)], barrierSpawnRange, Quaternion.identity);
-                barrierToSpawn.transform.Rotate(0, rotationOfBarrier, 0);
+                if (!guaranteeBarriers)
+                {
+                    int likelyhoodOfBarrier = Random.Range(0, upperBound);
+                    if (likelyhoodOfBarrier != 0)
+                    {
+                        GameObject barrierToSpawn = Instantiate(barriers[Random.Range(0, barriers.Length)], barrierSpawnRange, Quaternion.identity);
+                        barrierToSpawn.transform.Rotate(0, rotationOfBarrier, 0);
+                    }
+                }
+                else
+                {
+                    GameObject barrierToSpawn = Instantiate(barriers[Random.Range(0, barriers.Length)], barrierSpawnRange, Quaternion.identity);
+                    barrierToSpawn.transform.Rotate(0, rotationOfBarrier, 0);
+                }
             }
             
         }

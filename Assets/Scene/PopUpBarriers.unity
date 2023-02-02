@@ -170,6 +170,8 @@ MonoBehaviour:
   rangePlayer: 5
   minTimeBetweenBarriers: 3
   maxTimeBetweenBarriers: 5
+  upperBound: 4
+  guaranteeBarriers: 0
 --- !u!64 &1237097208
 MeshCollider:
   m_ObjectHideFlags: 0
