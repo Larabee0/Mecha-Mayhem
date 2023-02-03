@@ -49,9 +49,6 @@ public class SummonBarrier : MonoBehaviour
     Rect barrierCoords;
 
 
-
-    
-
     GameObject[] barriers;
 
     GameObject[] mechs;
@@ -70,14 +67,20 @@ public class SummonBarrier : MonoBehaviour
 
         barriers = new GameObject[] { barrierL1, barrierL2, barrierI, barrierX };
 
-        mechs = GameObject.FindGameObjectsWithTag("Player");
+        
         
 
-        StartCoroutine("SpawnBarrier");
+        StartCoroutine("GetMechs");
 
     }
 
-
+    IEnumerator GetMechs()
+    {
+        yield return new WaitForEndOfFrame();
+        mechs = GameObject.FindGameObjectsWithTag("Player");
+        Debug.Log(mechs.Length);
+        StartCoroutine("SpawnBarrier");
+    }
 
     IEnumerator SpawnBarrier()
     {
