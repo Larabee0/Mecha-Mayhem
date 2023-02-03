@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1392234861822673704}
   - component: {fileID: 2011431495157520423}
   - component: {fileID: 9150123418642020433}
+  - component: {fileID: -1710280903998081147}
   m_Layer: 0
   m_Name: Ejecta
   m_TagString: Untagged
@@ -114,3 +115,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1710280903998081147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3970472757482318169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0248a35b92753014b8e7e5ded4df5f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EruptionInterval: 60
+  Duration: 10
+  spawnrate: 1
+  damage: 50
+  Velocity: 5
+  height: 20
+  Ejecta: {fileID: 3970472757482318169}
+  TargetPlane: {fileID: 0}
+  HazardZone: {fileID: 5313035773281563202, guid: d77adb9ea6d61204581bccf5596f0fcf,
+    type: 3}
+  TargetPoint: {x: 0, y: 0, z: 0}

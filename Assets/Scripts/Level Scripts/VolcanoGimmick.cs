@@ -13,11 +13,11 @@ namespace RedButton.GamePlay
         [SerializeField] private int EruptionInterval = 60;
         [SerializeField] private int Duration = 10;
         [SerializeField] private int spawnrate = 1;
-        [SerializeField] private int damage = 50;
+        [SerializeField] public int damage = 50;
 
         [Header("Flight characteristics")]
-        [SerializeField] private int Velocity = 5;
-        [SerializeField] private int height = 20;
+        [SerializeField] public float Velocity = 5f;
+        [SerializeField] private float height = 20f;
 
         [Header("Objects")]
         [SerializeField] private GameObject Ejecta;
@@ -26,7 +26,7 @@ namespace RedButton.GamePlay
 
         private float time = 0f;
         private GameObject SelfCollider;
-        private Vector3 TargetPoint;
+        public Vector3 TargetPoint;
 
         private void Awake()
         {
@@ -34,14 +34,16 @@ namespace RedButton.GamePlay
         }
         void Start()
         {
+            spawnrate = spawnrate / 100;
             time = Time.time;
         }
 
 
         private void Update()
         {
-            if (Time.time == time + EruptionInterval)
+            if (Time.time >= time + EruptionInterval)
             {
+                time = Time.time;
                 Erupt();
             }
 
@@ -49,15 +51,19 @@ namespace RedButton.GamePlay
         }
         public void Erupt()
         {
-
+            while (Time.time < time + Duration)
+            {
+                if (Random.Range(0f,1f) < spawnrate)
+                {
+                    NewTarget();
+                    SpawnEjecta();
+                }
+            }
+            time = Time.time;
         }
 
-        public void CalculateFlightPath()
+        public void SpawnEjecta()
         {
-            /// <summary>
-            /// This is basically a copy of the weapon from the demo game. only it has been modified to use the ProjecitleCore script.
-            /// </summary>
-
             // safety measure.
             if  (TargetPlane == null)
             {
@@ -65,23 +71,12 @@ namespace RedButton.GamePlay
                 return;
             }
 
-            Vector3 bulletVector = (TargetPoint.y + ).normalized;
+            Vector3 origin = new Vector3(TargetPoint.x, height, TargetPoint.z);
+            Vector3 bulletVector = (TargetPoint - origin).normalized;
             Quaternion rotation = Quaternion.LookRotation(bulletVector);
 
             // spawn the projectile in the correct orientaiton and position
-            GameObject ejecta = Instantiate(Ejecta, SelfCollider.transform.position, rotation);
-
-            for (int p = 0; p < ejecta.collider.; p++)
-            {
-                for (int m = 0; m < SelfCollider.height; m++)
-                {
-                    Physics.IgnoreCollision(ejecta.ProjectileColliders[p], CMC.MechColliders[m]);
-                }
-            }
-
-                ejecta.Initilise(CMC, damage);
-
-                ejecta.Rigidbody.AddForce(bulletVector * Velocity, ForceMode.Impulse);           
+            GameObject ejecta = Instantiate(Ejecta, origin, rotation);  
         }
 
         public void NewTarget()

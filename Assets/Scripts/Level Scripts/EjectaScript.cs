@@ -4,21 +4,16 @@ using UnityEngine;
 
 namespace RedButton.GamePlay
 {
-    public class EjectaScript : MonoBehaviour
+    public class EjectaScript : VolcanoGimmick
     {
-        [SerializeField] public int damage = 50;
-
-        private Vector3 bulletVector = VolcanoGimmick.bulletVector;
-
-        public Vector3 BulletVector { get => bulletVector; set => bulletVector = value; }
-
-        // Update is called once per frame
         private void Awake()
         {
-            gameObject.Rigidbody.AddForce(VolcanoGimmick.bulletVector * Velocity, ForceMode.Impulse);
+            Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
+            rigidbody.AddForce(TargetPoint * Velocity, ForceMode.Impulse);
         }
+        // Update is called once per frame
 
-        public void CheckImpact(Collision collision)
+        protected void OnCollisionEnter(Collision collision)
         {
             Destroy(gameObject);
             Mech.CentralMechComponent mech = collision.gameObject.GetComponentInParent<Mech.CentralMechComponent>();
