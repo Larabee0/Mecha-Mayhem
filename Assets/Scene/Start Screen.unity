@@ -423,6 +423,11 @@ MonoBehaviour:
     buildIndex: 1
     description: Very Basic Testing Scene
     preview: {fileID: 2800000, guid: 3028dc075ba8c584d9bc7d1e0255e038, type: 3}
+  - hideInLevelPicker: 0
+    name: Testing Ground
+    buildIndex: 2
+    description: Tutorial Level
+    preview: {fileID: 2800000, guid: a776f76bf1ed3074d926981781857f1e, type: 3}
   loadingScreenImages:
   - {fileID: 2800000, guid: cbb82e8b31951de42a4b62f68e885ec5, type: 3}
 --- !u!114 &1524482640

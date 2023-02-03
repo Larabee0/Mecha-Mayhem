@@ -422,7 +422,7 @@ namespace RedButton.Core.UI
             mechSelectScreen.style.display = DisplayStyle.None;
             startScreen.style.display = DisplayStyle.None;
             PopulateLevels();
-            level1.root.Focus();
+            level2.root.Focus();
         }
 
         private void PopulateLevels()

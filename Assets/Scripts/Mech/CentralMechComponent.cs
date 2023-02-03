@@ -71,7 +71,7 @@ namespace RedButton.Mech
             OnHealthChange += OnHealthChanged;
             for (int i = 0; i < colourables.Length; i++)
             {
-                colourables[i].material.color = MechInputController.playerColour;
+                colourables[i].material.SetColor("_BaseColor", MechAccentColour);
             }
         }
 

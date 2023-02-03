@@ -38,7 +38,15 @@ namespace RedButton.GamePlay
         {
             Debug.Log("Starting Game Arbiter...");
             playerCount = ((int)ControlArbiter.playerMode) + 1;
-            mechsToSpawn ??= editorMechs;
+            if(mechsToSpawn == null ||mechsToSpawn.Length == 0)
+            {
+                List<CentralMechComponent> internalSpawns = new();
+                for (int i = 0; i < playerCount; i++)
+                {
+                    internalSpawns.Add(editorMechs[i]);
+                }
+                mechsToSpawn = internalSpawns.ToArray();
+            }
             SpawnMechs();
             ControlArbiter.Instance.MainUIController.SetPlayers(activeMechs);
             StartRound();
