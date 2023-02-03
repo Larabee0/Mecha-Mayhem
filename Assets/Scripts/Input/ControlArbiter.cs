@@ -284,6 +284,7 @@ namespace RedButton.Core
             for (int i = 0; i < runTo; i++)
             {
                 this[i] = InstantiatePlayer(GetPlayerColour(i), ProcessDevice(devices[i]), (Controller)i);
+                playerMode = (Controller)i;
             }
             ValidateControllersAndPlayers();
         }

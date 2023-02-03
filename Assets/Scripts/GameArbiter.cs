@@ -4,6 +4,7 @@ using UnityEngine;
 using RedButton.Core;
 using RedButton.Mech;
 using RedButton.Core.UI;
+using System.Data.Common;
 
 namespace RedButton.GamePlay
 {
@@ -14,6 +15,8 @@ namespace RedButton.GamePlay
         [SerializeField] private ControlArbiter controlArbiterPrefab;
         [SerializeField] private int playerCount;
         [SerializeField] private CentralMechComponent[] editorMechs;
+        [SerializeField] private Vector3[] spawnPoints = new Vector3[4];
+        private HashSet<int> usedSpawnPoints = new();
         [SerializeField] private List<CentralMechComponent> activeMechs = new();
         [SerializeField] private Stack<CentralMechComponent> deathOrder = new();
         
@@ -43,14 +46,31 @@ namespace RedButton.GamePlay
 
         private void SpawnMechs()
         {
+            if(spawnPoints.Length == 0)
+            {
+                //Debug.LogException(new System.InvalidOperationException("Spawn points array is empty, cannot spawn any mechs"), gameObject);
+                throw new System.InvalidOperationException("Spawn points array is empty, cannot spawn any mechs");
+            }
+            if(playerCount > spawnPoints.Length)
+            {
+                Debug.LogWarning("Number of spawn points is lower than the number of players!",gameObject);
+            }
+            usedSpawnPoints.Clear();
             for (int i = 0; i < mechsToSpawn.Length; i++)
             {
                 // Setting the current player's input controller to the target mech prefab's input property is a 
                 // wprk around so the has an assigned input controller when it is instantiated.
                 // This is to allow awake methods in the newly spawned mech work as expected.
                 mechsToSpawn[i].AssignInputController(ControlArbiter.Instance[i]);
-
-                activeMechs.Add(Instantiate(mechsToSpawn[i], new Vector3(i+0.5f, 1, 0), Quaternion.identity));
+                int spawnPointIndex = Random.Range(0,spawnPoints.Length);
+                int safety = 0;
+                while (usedSpawnPoints.Contains(spawnPointIndex) && safety < 1000)
+                {
+                    spawnPointIndex = Random.Range(0, spawnPoints.Length);
+                    safety++;
+                }
+                usedSpawnPoints.Add(spawnPointIndex);
+                activeMechs.Add(Instantiate(mechsToSpawn[i], spawnPoints[spawnPointIndex], Quaternion.identity));
                 activeMechs[^1].OnMechDied += OnMechDeath;
 
                 // To ensure minimal unintended cosnquences, I set the input controller property back to null
