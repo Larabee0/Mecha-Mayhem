@@ -56,6 +56,11 @@ namespace RedButton.Mech
             targetObject = CMC.MechMovementCore.TargetPoint;
         }
 
+        protected virtual void OnDestroy()
+        {
+            UnBindControls();
+        }
+
         /// <summary>
         /// This method binds the weapon to the control setting set in the editor
         /// This is not called if the weapon is in a group
@@ -79,6 +84,31 @@ namespace RedButton.Mech
                     break;
                 case ControlBehaviour.OnHeld when buttonEventContainer != null:
                     buttonEventContainer.OnButtonHeld += Fire;
+                    break;
+                default:
+                    return;
+            }
+        }
+
+        protected virtual void UnBindControls()
+        {
+            ButtonEventContainer buttonEventContainer = controlBinding switch
+            {
+                ControlBinding.Fire1 => CMC.MechInputController.fireOneButton,
+                ControlBinding.Fire2 => CMC.MechInputController.fireTwoButton,
+                _ => null,
+            };
+
+            switch (controlBehaviour)
+            {
+                case ControlBehaviour.OnPress when buttonEventContainer != null:
+                    buttonEventContainer.OnButtonPressed -= Fire;
+                    break;
+                case ControlBehaviour.OnRelease when buttonEventContainer != null:
+                    buttonEventContainer.OnButtonReleased -= Fire;
+                    break;
+                case ControlBehaviour.OnHeld when buttonEventContainer != null:
+                    buttonEventContainer.OnButtonHeld -= Fire;
                     break;
                 default:
                     return;

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
+using System.Linq;
 
 namespace RedButton.Core
 {
@@ -20,8 +21,10 @@ namespace RedButton.Core
         }
 
         public static Controller playerMode;
-        public static bool OverrideDuplicates;
-        public static ControlArbiter Instance;
+        public static ControlArbiter Instance { 
+            get { return instance; } 
+            private set { instance = value; } }
+        public static ControlArbiter instance;
         public static PlayerInput PlayerOne = null;
         public static PlayerInput PlayerTwo = null;
         public static PlayerInput PlayerThree = null;
@@ -89,19 +92,30 @@ namespace RedButton.Core
 
         private void Awake()
         {
-            DontDestroyOnLoad(this);
-            InputSystem.onDeviceChange += OnDeviceChanged;
-
-            mainUIController = FindObjectOfType<MainUIController>();
-            if (Instance != null && !OverrideDuplicates)
+            // we should find a mainUIController which either has us as its parent, has no parent or has no ControlArbiter in its parent(s).
+            mainUIController = FindObjectsOfType<MainUIController>().Where(obj => obj.transform.parent == transform || obj.transform == null || obj.GetComponentInParent<ControlArbiter>() == null).FirstOrDefault();
+            if(mainUIController == null)
             {
-                Debug.LogError("Multiple Control Arbiters in scene! Please remove any duplicates!\nThis may get falsing triggered by switching to a scene with a Control Arbiter in it, set OverrideDuplicate to true before switching to the new scene.");
+                Debug.LogError("Failed to find usable MainController UI Instance", gameObject);
+            }
+            else
+            {
+                mainUIController.transform.parent = transform;
+            }
+            
+            // if an active instance already exists, lets bin ourselves including any UI or playerInput children.
+            if (Instance != this &&(Instance != null|| mainUIController == null))
+            {
+                Destroy(gameObject);
                 return;
             }
             Instance = this;
+            
+            // if we reach here then we've decided we can go ahead with full start up of the control arbiter instance.
+            DontDestroyOnLoad(this);
+            InputSystem.onDeviceChange += OnDeviceChanged;
 
             PollWiimotes();
-            OverrideDuplicates = false;
 
             if (StartScreen)
             {
@@ -136,16 +150,12 @@ namespace RedButton.Core
             }
         }
 
-        private void OnDestroy()
-        {
-            Instance = null;
-        }
-
         /// <summary>
         /// Goes through every InputController in the scene to ensure no duplicate players and controllers exist.
         /// </summary>
         public void ValidateControllersAndPlayers()
         {
+            controllerMap.Clear();
             PlayerInput[] controllers = FindObjectsOfType<PlayerInput>();
             if (controllers.Length == 0)
             {
@@ -188,6 +198,17 @@ namespace RedButton.Core
                 if (this[i] != null)
                 {
                     activePlayers.Add(this[i]);
+                }
+            }
+        }
+
+        public void LockOutAllPlayers()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (this[i] != null)
+                {
+                    this[i].Disable();
                 }
             }
         }
@@ -263,6 +284,7 @@ namespace RedButton.Core
             for (int i = 0; i < runTo; i++)
             {
                 this[i] = InstantiatePlayer(GetPlayerColour(i), ProcessDevice(devices[i]), (Controller)i);
+                playerMode = (Controller)i;
             }
             ValidateControllersAndPlayers();
         }
@@ -299,5 +321,6 @@ namespace RedButton.Core
                 _ => Color.white
             };
         }
+
     }
 }

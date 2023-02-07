@@ -43,6 +43,11 @@ namespace RedButton.Mech
         protected virtual void Update() { }
 
         protected virtual void FixedUpdate() { }
+        protected virtual void OnDestroy()
+        {
+            CMC.MechInputController.OnLeftStick -= OnMove;
+            CMC.MechInputController.OnRightStick -= OnAim;
+        }
 
         protected abstract void OnMove(Vector2 axis);
 

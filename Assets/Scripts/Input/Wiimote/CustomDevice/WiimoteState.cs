@@ -13,6 +13,9 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace RedButton.Core.WiimoteSupport
 {
+    /// <summary>
+    /// The state struct a virtual wiimote will use.
+    /// </summary>
     [StructLayout(LayoutKind.Explicit, Size = 32)]
     public struct WiimoteState : IInputStateTypeInfo
     {
@@ -39,6 +42,12 @@ namespace RedButton.Core.WiimoteSupport
         [FieldOffset(12)]
         public Vector2 nunchuckStick;
 
+        /// <summary>
+        /// sets the binary values for the given buttons state.
+        /// </summary>
+        /// <param name="button">Target wiimote/nunchuck button</param>
+        /// <param name="state">button state</param>
+        /// <returns>The wiimote state after modification</returns>
         public WiimoteState WithButtons(WiimoteButton button, bool state = true)
         {
             Debug.Assert((int)button < 16, $"Expected button < 16, so we fit into the 16 bit wide bitmask");
@@ -51,6 +60,9 @@ namespace RedButton.Core.WiimoteSupport
         }
     }
 
+    /// <summary>
+    /// All physucal buttons present on a wiimote and nunchuck
+    /// </summary>
     public enum WiimoteButton
     {
         DpadUp,
@@ -68,6 +80,9 @@ namespace RedButton.Core.WiimoteSupport
         Home
     }
 
+    /// <summary>
+    /// IR sensitivity Levels used on the Wii Console.
+    /// </summary>
     public enum IRSensitivity
     {
         LevelOne,
