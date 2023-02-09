@@ -34,7 +34,7 @@ namespace RedButton.GamePlay
         }
         void Start()
         {
-            spawnrate = spawnrate / 100;
+            spawnrate = spawnrate * 100;
             time = Time.time;
         }
 
