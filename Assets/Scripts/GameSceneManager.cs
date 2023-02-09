@@ -41,13 +41,12 @@ namespace RedButton.Core
 
         void Awake()
         {
-            if (Instance != null && !OverrideDuplicates)
+            if (Instance != null)
             {
-                Debug.LogError("Multiple Control Arbiters in scene! Please remove any duplicates!\nThis may get falsing triggered by switching to a scene with a Control Arbiter in it, set OverrideDuplicate to true before switching to the new scene.");
+                Destroy(gameObject);
                 return;
             }
             Instance = this;
-            OverrideDuplicates = false;
             DontDestroyOnLoad(gameObject);
             uiDocument = GetComponent<UIDocument>();
         }

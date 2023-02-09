@@ -21,8 +21,10 @@ namespace RedButton.Core
         }
 
         public static Controller playerMode;
-        
-        public static ControlArbiter Instance;
+        public static ControlArbiter Instance { 
+            get { return instance; } 
+            private set { instance = value; } }
+        public static ControlArbiter instance;
         public static PlayerInput PlayerOne = null;
         public static PlayerInput PlayerTwo = null;
         public static PlayerInput PlayerThree = null;
@@ -102,7 +104,7 @@ namespace RedButton.Core
             }
             
             // if an active instance already exists, lets bin ourselves including any UI or playerInput children.
-            if (Instance != null|| mainUIController == null)
+            if (Instance != this &&(Instance != null|| mainUIController == null))
             {
                 Destroy(gameObject);
                 return;
@@ -148,16 +150,12 @@ namespace RedButton.Core
             }
         }
 
-        private void OnDestroy()
-        {
-            Instance = null;
-        }
-
         /// <summary>
         /// Goes through every InputController in the scene to ensure no duplicate players and controllers exist.
         /// </summary>
         public void ValidateControllersAndPlayers()
         {
+            controllerMap.Clear();
             PlayerInput[] controllers = FindObjectsOfType<PlayerInput>();
             if (controllers.Length == 0)
             {
@@ -209,7 +207,9 @@ namespace RedButton.Core
             for (int i = 0; i < 4; i++)
             {
                 if (this[i] != null)
+                {
                     this[i].Disable();
+                }
             }
         }
 
@@ -284,6 +284,7 @@ namespace RedButton.Core
             for (int i = 0; i < runTo; i++)
             {
                 this[i] = InstantiatePlayer(GetPlayerColour(i), ProcessDevice(devices[i]), (Controller)i);
+                playerMode = (Controller)i;
             }
             ValidateControllersAndPlayers();
         }

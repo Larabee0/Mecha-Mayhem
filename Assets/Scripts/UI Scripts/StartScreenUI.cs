@@ -414,13 +414,15 @@ namespace RedButton.Core.UI
 
         public void ShowLevelSelectScreen()
         {
+            BigPeview.style.backgroundImage = null;
+            RootVisualElement.style.display = DisplayStyle.Flex;
             LevelSelectScreen.style.display = DisplayStyle.Flex;
             mainMenu.style.display = DisplayStyle.None;
             ControllerAssignment.style.display = DisplayStyle.None;
             mechSelectScreen.style.display = DisplayStyle.None;
             startScreen.style.display = DisplayStyle.None;
             PopulateLevels();
-            level1.root.Focus();
+            level2.root.Focus();
         }
 
         private void PopulateLevels()
