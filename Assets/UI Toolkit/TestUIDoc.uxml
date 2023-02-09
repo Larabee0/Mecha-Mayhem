@@ -5,7 +5,7 @@
             <ui:Label text="Project Eternity" display-tooltip-when-elided="true" class="Header TitleText" style="align-items: center;" />
         </ui:VisualElement>
         <ui:VisualElement name="Buttons" style="align-items: center; margin-top: 0; font-size: 14px; justify-content: flex-start;">
-            <ui:Button text="Start" display-tooltip-when-elided="true" name="StartBtn" class="MenuButtons" />
+            <ui:Button display-tooltip-when-elided="true" name="StartBtn" text="Start" class="MenuButtons" />
             <ui:Button text="Options" display-tooltip-when-elided="true" name="OptionsBtn" class="MenuButtons" />
             <ui:Button text="Credits" display-tooltip-when-elided="true" name="CreditsBtn" class="MenuButtons" />
             <ui:Button text="Quit" display-tooltip-when-elided="true" name="QuitBtn" class="MenuButtons" />
