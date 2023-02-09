@@ -73,6 +73,7 @@ namespace RedButton.Core
 
         // test settings for manual triggering of rumble motors.
         [Header("Rumble Debugging")]
+        public bool controlMapEnabled = false;
         [SerializeField] private bool debugging;
         [SerializeField] private RumbleMotor rumbleMotor;
         [SerializeField, Range(0f, 1f)] private float rumbleRate;
@@ -109,8 +110,6 @@ namespace RedButton.Core
                         break;
                     case Controller.Four:
                         wiimote.SetRemoteLEDs(new Unity.Mathematics.bool4(false, false, false, true));
-                        break;
-                    case Controller.Keyboard:
                         break;
                 }
             }
@@ -174,6 +173,7 @@ namespace RedButton.Core
         /// </summary>
         public void Enable()
         {
+            controlMapEnabled = true;
             controlMap.MechControls.Enable();
             controlMap.UI.Enable();
         }
@@ -188,6 +188,7 @@ namespace RedButton.Core
         /// </summary>
         public void Disable()
         {
+            controlMapEnabled = false;
             controlMap.MechControls.Disable();
             controlMap.UI.Disable();
             StopAllCoroutines();

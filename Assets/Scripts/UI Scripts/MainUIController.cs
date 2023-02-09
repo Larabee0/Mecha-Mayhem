@@ -14,6 +14,8 @@ namespace RedButton.Core.UI
         [SerializeField] private VisualTreeAsset startScreenUI;
 
         private StartScreenUI startScreenController;
+        private EndScreenUI endScreenController;
+        public EndScreenUI EndScreenController => endScreenController;
         public StartScreenUI StartScreenController => startScreenController;
 
         private VisualElement RootVisualElenement => mainDocument.rootVisualElement;
@@ -25,7 +27,12 @@ namespace RedButton.Core.UI
         private void Awake()
         {
             mainDocument = GetComponent<UIDocument>();
+        }
+
+        private void Start()
+        {
             controllerInterruptUI = new ControllerInterruptUI(RootVisualElenement.Q("ControllerInterrupt"));
+            endScreenController = new EndScreenUI(RootVisualElenement.Q("EndScreenContainer"), this);
             SetUpHealthBars();
             if (StartScene)
             {
@@ -41,7 +48,12 @@ namespace RedButton.Core.UI
             healthBarsUI[1] = new(RootVisualElenement.Q<ProgressBar>("HBP2"));
             healthBarsUI[2] = new(RootVisualElenement.Q<ProgressBar>("HBP3"));
             healthBarsUI[3] = new(RootVisualElenement.Q<ProgressBar>("HBP4"));
+            
+            HideHealthBars();
+        }
 
+        public void HideHealthBars()
+        {
             for (int i = 0; i < healthBarsUI.Length; i++)
             {
                 healthBarsUI[i].Hide();
@@ -58,6 +70,11 @@ namespace RedButton.Core.UI
             for (; i < healthBarsUI.Length; i++)
             {
                 healthBarsUI[i].Hide();
+            }
+
+            if(startScreenController != null)
+            {
+                startScreenController.RootVisualElement.style.display = DisplayStyle.None;
             }
         }
 

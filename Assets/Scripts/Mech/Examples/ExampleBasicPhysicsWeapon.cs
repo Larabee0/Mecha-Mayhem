@@ -58,7 +58,7 @@ namespace RedButton.Mech.Examples
             // calculate the direction to fire the bullet along, this can also be used to set the rotation of it.
             Vector3 bulletVector = (TargetPos - muzzleOriginPoint.position).normalized;
             Quaternion rotation = Quaternion.LookRotation(bulletVector);
-            
+
             // spawn the projectile in the correct orientaiton and position
             ProjectileCore projectile = Instantiate(projectilePrefab, muzzleOriginPoint.position, rotation);
 
