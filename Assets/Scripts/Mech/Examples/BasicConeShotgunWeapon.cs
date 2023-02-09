@@ -5,13 +5,14 @@ using UnityEngine;
 namespace RedButton.Mech.Examples
 {
     /// <summary>
-    /// Example physics wepaon
+    /// Example cone wepaon
     /// </summary>
-    public class ExampleBasicPhysicsWeapon : WeaponCore
+    public class BasicConeShotgunWeapon : WeaponCore
     {
         private float fireInterval = 0f;
 
-        [Header("Physics Weapon Settings")]
+        [Header("Physics Cone Weapon Settings")]
+        [SerializeField] float angleOfBullets;
         [SerializeField] float shootForce;
         [SerializeField][Range(0f, 1f)] float fireIntervalMin = 0.01f;
         [SerializeField][Range(0f, 1f)] float fireIntervalMax = 0.05f;
@@ -58,9 +59,15 @@ namespace RedButton.Mech.Examples
             // calculate the direction to fire the bullet along, this can also be used to set the rotation of it.
             Vector3 bulletVector = (TargetPos - muzzleOriginPoint.position).normalized;
             Quaternion rotation = Quaternion.LookRotation(bulletVector);
+            Vector3 leftBulletVector = Quaternion.AngleAxis(-angleOfBullets, Vector3.up) * bulletVector;// (TargetPos +  - muzzleOriginPoint.position).normalized;
+            Vector3 rightBulletVector = Quaternion.AngleAxis(angleOfBullets, Vector3.up) * bulletVector;
+            Quaternion leftRotation = Quaternion.LookRotation(leftBulletVector);
+            Quaternion rightRotation = Quaternion.LookRotation(rightBulletVector);
 
             // spawn the projectile in the correct orientaiton and position
             ProjectileCore projectile = Instantiate(projectilePrefab, muzzleOriginPoint.position, rotation);
+            ProjectileCore leftProjectile = Instantiate(projectilePrefab, muzzleOriginPoint.position, leftRotation);
+            ProjectileCore rightProjectile = Instantiate(projectilePrefab, muzzleOriginPoint.position, rightRotation);
 
             // Because awake is called immidately for the projectile, its colliders property will now be set (assuming it has any)
             // so we can safely ignore collisions between them and the colliders in the origin mech.
@@ -72,9 +79,57 @@ namespace RedButton.Mech.Examples
                 }
             }
 
+            for (int p = 0; p < projectile.ProjectileColliders.Length; p++)
+            {
+                for (int r = 0; r < leftProjectile.ProjectileColliders.Length; r++)
+                {
+                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], leftProjectile.ProjectileColliders[r]);
+                }
+            }
+
+            for (int p = 0; p < projectile.ProjectileColliders.Length; p++)
+            {
+                for (int r = 0; r < leftProjectile.ProjectileColliders.Length; r++)
+                {
+                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], rightProjectile.ProjectileColliders[r]);
+                }
+            }
+
+            for (int p = 0; p < projectile.ProjectileColliders.Length; p++)
+            {
+                for (int r = 0; r < leftProjectile.ProjectileColliders.Length; r++)
+                {
+                    Physics.IgnoreCollision(rightProjectile.ProjectileColliders[p], leftProjectile.ProjectileColliders[r]);
+                }
+            }
+
+            for (int p = 0; p < leftProjectile.ProjectileColliders.Length; p++)
+            {
+                for (int m = 0; m < CMC.MechColliders.Length; m++)
+                {
+                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], CMC.MechColliders[m]);
+                }
+            }
+
+            for (int p = 0; p < rightProjectile.ProjectileColliders.Length; p++)
+            {
+                for (int m = 0; m < CMC.MechColliders.Length; m++)
+                {
+                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], CMC.MechColliders[m]);
+                }
+            }
+
             projectile.Initilise(CMC, damage);
 
+            leftProjectile.Initilise(CMC, damage);
+
+            rightProjectile.Initilise(CMC, damage);
+
             projectile.Rigidbody.AddForce(bulletVector * shootForce, ForceMode.Impulse);
+
+            leftProjectile.Rigidbody.AddForce(leftBulletVector * shootForce, ForceMode.Impulse);
+
+            rightProjectile.Rigidbody.AddForce(rightBulletVector * shootForce, ForceMode.Impulse);
         }
     }
 }

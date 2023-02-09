@@ -571,9 +571,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4100073344956669377}
-  - component: {fileID: 6893828825490865656}
+  - component: {fileID: 705383117089995162}
   m_Layer: 0
-  m_Name: BasicPhysicsGun
+  m_Name: BasicConeGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -594,7 +594,7 @@ Transform:
   m_Father: {fileID: 2331743068901684101}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6893828825490865656
+--- !u!114 &705383117089995162
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -603,19 +603,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 3927241961408836255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0aea5daa278478346900494fa3aa7d3f, type: 3}
+  m_Script: {fileID: 11500000, guid: 04c70cca98d473145934a3027a421b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Grouped: 0
-  damage: 10
+  damage: 5
   controlBinding: 1
   controlBehaviour: 2
-  projectilePrefab: {fileID: -2796544168625011109, guid: edb99362c75d23d49837c2a3865eea27,
+  projectilePrefab: {fileID: -7607631024499583572, guid: da1ad5b71d4157f4bbcdc376b3b2d698,
     type: 3}
   muzzleOriginPoint: {fileID: 1303482295}
   animationCentre: {fileID: 2331743068668870359}
+  angleOfBullets: 25
   shootForce: 20
-  fireIntervalMin: 0.5
+  fireIntervalMin: 0.75
   fireIntervalMax: 1
 --- !u!1 &5241064893062429170
 GameObject:
