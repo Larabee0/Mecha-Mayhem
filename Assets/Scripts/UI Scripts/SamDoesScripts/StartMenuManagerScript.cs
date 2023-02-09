@@ -25,4 +25,10 @@ public class StartMenuManagerScript : MonoBehaviour
         btnPanel.SetActive(true);
         creditsPanel.SetActive(false);
     }
+
+    public void Quit()
+    {
+        Debug.Log("Quitting");
+        Application.Quit();
+    }
 }
