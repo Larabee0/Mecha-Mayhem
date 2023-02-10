@@ -22,7 +22,7 @@ namespace RedButton.Core.UI
 
         public ControllerInterruptUI controllerInterruptUI;
         public HealthBarsUI[] healthBarsUI = new HealthBarsUI[4];
-        private bool StartScene => startScreenUI != null;
+        public bool StartScene => startScreenUI != null;
 
         private void Awake()
         {

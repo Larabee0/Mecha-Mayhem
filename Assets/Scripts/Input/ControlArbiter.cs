@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
 using System.Linq;
+using UnityEngine.InputSystem.UI;
 
 namespace RedButton.Core
 {
@@ -109,6 +110,7 @@ namespace RedButton.Core
                 Destroy(gameObject);
                 return;
             }
+            StartScreen = mainUIController.StartScene;
             Instance = this;
             
             // if we reach here then we've decided we can go ahead with full start up of the control arbiter instance.
@@ -241,6 +243,15 @@ namespace RedButton.Core
                     PlayerTwo.playerColour = playerTwoColour;
                     break;
             }
+        }
+
+        public void OverrideUIAssetDevices(PlayerInput player)
+        {
+            LockOutAllPlayers();
+            startScreenUIActionAsset = GetComponent<InputSystemUIInputModule>().actionsAsset;
+            startScreenUIActionAsset.devices = player.Devices;
+            startScreenActionMap.devices = player.Devices;
+            player.EnableUIonly();
         }
 
         #region Hot Start

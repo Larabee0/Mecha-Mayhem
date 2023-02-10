@@ -219,15 +219,14 @@ namespace RedButton.Core
         {
             Connected_WiimoteAPI_Wiimotes.Clear();
             Debug.Log("Cleaning up Wiimote bluetooth data");
-            lock (WiimoteManager.Wiimotes)
+            Connected_WiimoteAPI_Wiimotes = new(WiimoteManager.Wiimotes);
+            for (int i = 0; i < Connected_WiimoteAPI_Wiimotes.Count; i++)
             {
-                for (int i = 0; i < WiimoteManager.Wiimotes.Count; i++)
-                {
-                    Wiimote remote = WiimoteManager.Wiimotes[i];
-                    wiimoteRemoved?.Invoke(remote.hidapi_path);
-                    WiimoteManager.Cleanup(remote);
-                }
+                Wiimote remote = Connected_WiimoteAPI_Wiimotes[i];
+                wiimoteRemoved?.Invoke(remote.hidapi_path);
+                WiimoteManager.Cleanup(remote);
             }
+            Connected_WiimoteAPI_Wiimotes.Clear();
         }
     }
 }
