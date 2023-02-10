@@ -411,6 +411,7 @@ namespace RedButton.Core.UI
         {
             GameSceneManager.Instance.OnActiveSceneChanged -= ReturnToLevelSelectScreen;
             ShowLevelSelectScreen();
+            ControlArbiter.Instance.OverrideUIAssetDevices(ControlArbiter.PlayerOne);
             // enable player one UI control
         }
 

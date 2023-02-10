@@ -77,8 +77,8 @@ namespace RedButton.Core
                 PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
             }
 
-            startScreenUIActionAsset.devices = PlayerOne.Device;
-            startScreenActionMap.devices = PlayerOne.Device;
+            startScreenUIActionAsset.devices = PlayerOne.Devices;
+            startScreenActionMap.devices = PlayerOne.Devices;
             PlayerOne.Enable();
         }
 
@@ -133,9 +133,9 @@ namespace RedButton.Core
             startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
 
-            startScreenUIActionAsset.devices = PlayerOne.Device;
-            startScreenActionMap.devices = PlayerOne.Device;
-            PlayerOne.Enable();
+            startScreenUIActionAsset.devices = PlayerOne.Devices;
+            startScreenActionMap.devices = PlayerOne.Devices;
+            PlayerOne.EnableUIonly();
             mainUIController.StartScreenController.ShowAssignmentButtonPanel();
         }
 

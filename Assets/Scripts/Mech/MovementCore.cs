@@ -63,8 +63,10 @@ namespace RedButton.Mech
                 float height = targetPoint.position.y;
                 Ray ray = Camera.main.ScreenPointToRay(axis);
                 Vector3 aimPoint = ExtraMaths.GetPointAtHeight(ray, height);
-                dir = (aimPoint - targetPointParent.position).normalized;
+                aimPoint.y = targetPointParent.position.y;
 
+                dir = (aimPoint - targetPointParent.position).normalized;
+                targetPoint.position = aimPoint;
             }
             else
             {
