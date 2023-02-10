@@ -179,7 +179,8 @@ namespace RedButton.Core.UI
         /// </summary>
         private void AcceptControllerAssignmentCallback()
         {
-            //ShowMechSelector();
+            //ShowMechSelector()
+            ControlArbiter.Instance.AcceptControllerAssignment();
             ShowLevelSelectScreen();
         }
 
@@ -207,6 +208,7 @@ namespace RedButton.Core.UI
             ControllerAssignment.style.display = DisplayStyle.Flex;
             if (allExpectPresent)
             {
+                ControlArbiter.instance.SkipControllerAssignment();
                 ShowAssignmentButtonPanel();
                 return true;
             }

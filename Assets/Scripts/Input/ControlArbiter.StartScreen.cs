@@ -68,6 +68,28 @@ namespace RedButton.Core
             };
         }
 
+        public void SkipControllerAssignment()
+        {
+            startScreenActionMap.UI.Enable();
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
+            }
+
+            startScreenUIActionAsset.devices = PlayerOne.Device;
+            startScreenActionMap.devices = PlayerOne.Device;
+            PlayerOne.Enable();
+        }
+
+        public void AcceptControllerAssignment()
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
+            }
+        }
+
         /// <summary>
         /// starts controller to player assignment, triggered by the start screen UI.
         /// </summary>
@@ -110,6 +132,7 @@ namespace RedButton.Core
             }
             startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
+
             startScreenUIActionAsset.devices = PlayerOne.Device;
             startScreenActionMap.devices = PlayerOne.Device;
             PlayerOne.Enable();
@@ -147,6 +170,8 @@ namespace RedButton.Core
                     PlayerOne.AssignDevice(devices, Controller.One);
                     playerToAssign.Set(PlayerOne);
                     PlayerOne.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
+                    PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
+                    PlayerOne.EnableUIonly();
                     break;
                 case Controller.Two:
                     if (PlayerTwo == null)
@@ -211,7 +236,7 @@ namespace RedButton.Core
         {
             StopAllCoroutines();
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
-            mainUIController.StartScreenController.ShowPlayerCountPicker();
+            //mainUIController.StartScreenController.ShowPlayerCountPicker();
             startScreenActionMap.UI.Disable();
             startScreenActionMap.devices = new[] { obj.control.device };
             startScreenUIActionAsset.devices = new[] { obj.control.device };
@@ -224,6 +249,8 @@ namespace RedButton.Core
                 PlayerOne.Disable();
             }
 
+            PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
+            PlayerOne.EnableUIonly();
             mainUIController.StartScreenController.ShowPlayerCountPicker();
         }
         #endregion
