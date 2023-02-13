@@ -2,7 +2,6 @@ using RedButton.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XInput;
 
 namespace RedButton.Mech
 {
