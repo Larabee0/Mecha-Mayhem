@@ -47,6 +47,7 @@ public class SummonBarrier : MonoBehaviour
     Rect barrierSpawn;
     Rect barrierLimit;
     Rect barrierCoords;
+    Bounds floorSize;
 
 
     GameObject[] barriers;
@@ -56,7 +57,7 @@ public class SummonBarrier : MonoBehaviour
     private void Start()
     {
 
-        Bounds floorSize = floor.GetComponent<MeshCollider>().bounds;
+        floorSize = floor.GetComponent<MeshCollider>().bounds;
         
 
         xStart = floorSize.min.x;
@@ -99,13 +100,13 @@ public class SummonBarrier : MonoBehaviour
 
             barrierCoords = new Rect(mech.transform.position.x, mech.transform.position.z, rangePlayer, rangePlayer);
             Debug.Log(barrierCoords);
-            Vector3 barrierSpawnRange = new Vector3(Random.Range(barrierCoords.xMin, barrierCoords.xMax),floor.transform.position.y -barrierHeight, Random.Range(barrierCoords.yMin, barrierCoords.yMax));
+            Vector3 barrierSpawnRange = new Vector3(Random.Range(barrierCoords.xMin, barrierCoords.xMax),floor.transform.position.y, Random.Range(barrierCoords.yMin, barrierCoords.yMax));
             Debug.Log(barrierSpawnRange);
             barrierLimit = new Rect(floor.transform.position.x, floor.transform.position.z, floor.GetComponent<MeshCollider>().bounds.extents.x - margin, floor.GetComponent<MeshCollider>().bounds.extents.z - margin);
             Debug.Log(barrierLimit);
 
 
-            if (true)
+            if (floorSize.Contains(barrierSpawnRange))
             {
                 Debug.Log("Got To Point A");
                 if (!guaranteeBarriers)
@@ -113,13 +114,13 @@ public class SummonBarrier : MonoBehaviour
                     int likelyhoodOfBarrier = Random.Range(0, upperBound);
                     if (likelyhoodOfBarrier != 0)
                     {
-                        GameObject barrierToSpawn = Instantiate(barriers[Random.Range(0, barriers.Length)], barrierSpawnRange, Quaternion.identity);
+                        GameObject barrierToSpawn = Instantiate(barriers[Random.Range(0, barriers.Length)], barrierSpawnRange - new Vector3(0, barrierHeight, 0), Quaternion.identity);
                         barrierToSpawn.transform.Rotate(0, rotationOfBarrier, 0);
                     }
                 }
                 else
                 {
-                    GameObject barrierToSpawn = Instantiate(barriers[Random.Range(0, barriers.Length)], barrierSpawnRange, Quaternion.identity);
+                    GameObject barrierToSpawn = Instantiate(barriers[Random.Range(0, barriers.Length)], barrierSpawnRange - new Vector3(0, barrierHeight, 0), Quaternion.identity);
                     barrierToSpawn.transform.Rotate(0, rotationOfBarrier, 0);
                 }
             }
