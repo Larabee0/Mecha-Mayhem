@@ -495,6 +495,7 @@ GameObject:
   - component: {fileID: 680385463}
   - component: {fileID: 680385462}
   - component: {fileID: 680385461}
+  - component: {fileID: 680385465}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -523,7 +524,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 680385460}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -574,13 +575,42 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 680385460}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7, z: 10}
+  m_LocalPosition: {x: 0, y: 7.3, z: 10}
   m_LocalScale: {x: 4.5, y: 1, z: 3.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &680385465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680385460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 796ce2e8793a19b45909382d630f710b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floor: {fileID: 680385460}
+  barrierL1: {fileID: 3992641913685333273, guid: 7f3a3d8242c3d4143b26e06a606cb9b0,
+    type: 3}
+  barrierL2: {fileID: 4094973514419791250, guid: 02b58de242d1a8b43a017c7ad7dee94a,
+    type: 3}
+  barrierI: {fileID: 2158491019153756280, guid: a265c7c7990416f42931e595bc3f3e92,
+    type: 3}
+  barrierX: {fileID: 4904347609391547740, guid: 4b700da9bd2f1c74486d1cc524c31182,
+    type: 3}
+  barrierHeight: 2
+  margin: 2
+  marginPlayer: 2
+  rangePlayer: 5
+  minTimeBetweenBarriers: 3
+  maxTimeBetweenBarriers: 5
+  upperBound: 4
+  guaranteeBarriers: 0
 --- !u!1001 &903096736
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -704,7 +734,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947540754}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 796ce2e8793a19b45909382d630f710b, type: 3}
   m_Name: 
@@ -734,7 +764,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947540754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.04614, y: 15.82948, z: 15.841083}
+  m_LocalPosition: {x: 0, y: 7, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

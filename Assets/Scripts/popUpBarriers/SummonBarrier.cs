@@ -56,7 +56,7 @@ public class SummonBarrier : MonoBehaviour
     private void Start()
     {
 
-        Bounds floorSize = floor.GetComponent<MeshRenderer>().bounds;
+        Bounds floorSize = floor.GetComponent<MeshCollider>().bounds;
         
 
         xStart = floorSize.min.x;
@@ -99,13 +99,13 @@ public class SummonBarrier : MonoBehaviour
 
             barrierCoords = new Rect(mech.transform.position.x, mech.transform.position.z, rangePlayer, rangePlayer);
             Debug.Log(barrierCoords);
-            Vector3 barrierSpawnRange = new Vector3(Random.Range(barrierCoords.xMin, barrierCoords.xMax), -barrierHeight, Random.Range(barrierCoords.yMin, barrierCoords.yMax));
+            Vector3 barrierSpawnRange = new Vector3(Random.Range(barrierCoords.xMin, barrierCoords.xMax),floor.transform.position.y -barrierHeight, Random.Range(barrierCoords.yMin, barrierCoords.yMax));
             Debug.Log(barrierSpawnRange);
-            barrierLimit = new Rect(floor.transform.position.x, floor.transform.position.z, floor.GetComponent<MeshRenderer>().bounds.extents.x - margin, floor.GetComponent<MeshRenderer>().bounds.extents.z - margin);
+            barrierLimit = new Rect(floor.transform.position.x, floor.transform.position.z, floor.GetComponent<MeshCollider>().bounds.extents.x - margin, floor.GetComponent<MeshCollider>().bounds.extents.z - margin);
             Debug.Log(barrierLimit);
 
 
-            if (barrierLimit.Contains(barrierSpawnRange))
+            if (true)
             {
                 Debug.Log("Got To Point A");
                 if (!guaranteeBarriers)
