@@ -235,6 +235,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "PauseGame",
+                    "type": "Button",
+                    "id": "1ac34e06-d9fe-4743-ab9e-e9892700da66",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Submit",
                     "type": "Button",
                     "id": "73b572d1-d6e0-4904-a0b2-b9d735a958fc",
@@ -809,6 +818,28 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5221acae-aa0e-4ff3-b1e2-f072be1a1051",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "PauseGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fa65e969-12f3-49f1-a582-14836cf7b19b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "PauseGame",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
