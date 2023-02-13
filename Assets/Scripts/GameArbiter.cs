@@ -4,7 +4,6 @@ using UnityEngine;
 using RedButton.Core;
 using RedButton.Mech;
 using RedButton.Core.UI;
-using System.Data.Common;
 
 namespace RedButton.GamePlay
 {

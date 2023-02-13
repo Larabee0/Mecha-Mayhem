@@ -59,6 +59,11 @@ namespace RedButton.Core
             EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
         }
 
+        /// <summary>
+        /// Determines whether this is a keyboard or mouse press and returns the 
+        /// </summary>
+        /// <param name="device">Device to process</param>
+        /// <returns>an array containing all required devices for the map</returns>
         private InputDevice[] ProcessDevice(InputDevice device)
         {
             return device switch
@@ -66,6 +71,38 @@ namespace RedButton.Core
                 Keyboard or Mouse => new InputDevice[] { Keyboard.current, Mouse.current },
                 _ => new InputDevice[] { device }
             };
+        }
+
+        /// <summary>
+        /// used to maintain player-contorller persistance if the game determines all required controls are still attached.
+        /// </summary>
+        public void SkipControllerAssignment()
+        {
+            startScreenActionMap.UI.Enable();
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
+            }
+
+            startScreenUIActionAsset.devices = PlayerOne.Devices;
+            startScreenActionMap.devices = PlayerOne.Devices;
+            PlayerOne.Enable();
+        }
+
+        /// <summary>
+        /// When the ok button on controller assignmen is press we need to unbind from going back to 
+        /// the player count picker screen
+        /// </summary>
+        public void AcceptControllerAssignment()
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
+
+                // go back to controll assigment screen with controllers assigned but not accepted.
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToControllerAssignment;
+            }
         }
 
         /// <summary>
@@ -110,9 +147,10 @@ namespace RedButton.Core
             }
             startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
-            startScreenUIActionAsset.devices = PlayerOne.Device;
-            startScreenActionMap.devices = PlayerOne.Device;
-            PlayerOne.Enable();
+
+            startScreenUIActionAsset.devices = PlayerOne.Devices;
+            startScreenActionMap.devices = PlayerOne.Devices;
+            PlayerOne.EnableUIonly();
             mainUIController.StartScreenController.ShowAssignmentButtonPanel();
         }
 
@@ -147,6 +185,8 @@ namespace RedButton.Core
                     PlayerOne.AssignDevice(devices, Controller.One);
                     playerToAssign.Set(PlayerOne);
                     PlayerOne.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
+                    PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
+                    PlayerOne.EnableUIonly();
                     break;
                 case Controller.Two:
                     if (PlayerTwo == null)
@@ -211,7 +251,7 @@ namespace RedButton.Core
         {
             StopAllCoroutines();
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
-            mainUIController.StartScreenController.ShowPlayerCountPicker();
+            //mainUIController.StartScreenController.ShowPlayerCountPicker();
             startScreenActionMap.UI.Disable();
             startScreenActionMap.devices = new[] { obj.control.device };
             startScreenUIActionAsset.devices = new[] { obj.control.device };
@@ -224,7 +264,20 @@ namespace RedButton.Core
                 PlayerOne.Disable();
             }
 
+            PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
+            PlayerOne.EnableUIonly();
             mainUIController.StartScreenController.ShowPlayerCountPicker();
+        }
+
+        private void GoBackToControllerAssignment(InputAction.CallbackContext obj)
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToControllerAssignment;
+            }
+
+            mainUIController.StartScreenController.PlayerSelectCallback(playerMode, true);
         }
         #endregion
 
@@ -267,5 +320,21 @@ namespace RedButton.Core
             }
         }
         #endregion
+
+        public void ControlArbiterToGameArbiterHandoff()
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToControllerAssignment;
+            }
+        }
+
+        public void GameArbiterToControlArbiterHandback()
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToControllerAssignment;
+            }
+        }
     }
 }
