@@ -603,7 +603,7 @@ MonoBehaviour:
     type: 3}
   barrierX: {fileID: 4904347609391547740, guid: 4b700da9bd2f1c74486d1cc524c31182,
     type: 3}
-  barrierHeight: 2
+  barrierHeight: 5
   margin: 2
   marginPlayer: 2
   rangePlayer: 5
