@@ -12,7 +12,7 @@ namespace RedButton.GamePlay
         [Header("Ejecta Characteristics")]
         [SerializeField] private int EruptionInterval = 60;
         [SerializeField] private int Duration = 10;
-        [SerializeField] private int spawnrate = 1;
+        [SerializeField] private float spawnrate = 1;
         [SerializeField] public int damage = 50;
 
         [Header("Flight characteristics")]
@@ -24,17 +24,12 @@ namespace RedButton.GamePlay
         [SerializeField] private GameObject TargetPlane;
         [SerializeField] private GameObject HazardZone;
 
-        private float time = 0f;
-        private GameObject SelfCollider;
+        public float time = 0f;
         public Vector3 TargetPoint;
 
-        private void Awake()
-        {
-            SelfCollider = GetComponentInParent<GameObject>();
-        }
         void Start()
         {
-            spawnrate = spawnrate * 100;
+            spawnrate = spawnrate / 1000;
             time = Time.time;
         }
 
@@ -43,23 +38,25 @@ namespace RedButton.GamePlay
         {
             if (Time.time >= time + EruptionInterval)
             {
-                time = Time.time;
                 Erupt();
             }
-
 
         }
         public void Erupt()
         {
-            while (Time.time < time + Duration)
+            if (Time.time < time + Duration + EruptionInterval)
             {
-                if (Random.Range(0f,1f) < spawnrate)
+                if (Random.Range(0f, 1f) < spawnrate)
                 {
                     NewTarget();
                     SpawnEjecta();
                 }
             }
-            time = Time.time;
+            else
+            {
+                time = Time.time;
+            }
+            
         }
 
         public void SpawnEjecta()
@@ -71,12 +68,12 @@ namespace RedButton.GamePlay
                 return;
             }
 
-            Vector3 origin = new Vector3(TargetPoint.x, height, TargetPoint.z);
-            Vector3 bulletVector = (TargetPoint - origin).normalized;
+            Vector3 SpawnPoint = new Vector3(TargetPoint.x, height, TargetPoint.z);
+            Vector3 bulletVector = (TargetPoint - SpawnPoint).normalized;
             Quaternion rotation = Quaternion.LookRotation(bulletVector);
 
             // spawn the projectile in the correct orientaiton and position
-            GameObject ejecta = Instantiate(Ejecta, origin, rotation);  
+            GameObject ejecta = Instantiate(Ejecta, SpawnPoint, rotation);  
         }
 
         public void NewTarget()
@@ -85,14 +82,13 @@ namespace RedButton.GamePlay
             Vector3 leftTop = TargetPlane.transform.TransformPoint(VerticeList[0]);
             Vector3 rightTop = TargetPlane.transform.TransformPoint(VerticeList[10]);
             Vector3 leftBottom = TargetPlane.transform.TransformPoint(VerticeList[110]);
-            Vector3 rightBottom = TargetPlane.transform.TransformPoint(VerticeList[120]);
             Vector3 XAxis = rightTop - leftTop;
             Vector3 ZAxis = leftBottom - leftTop;
-            Vector3 TargetPoint = leftTop + XAxis * Random.value + ZAxis * Random.value;
+            TargetPoint = leftTop + XAxis * Random.value + ZAxis * Random.value;
 
-            // spawn a warning sign in the random area
-            GameObject Haz = GameObject.Instantiate(HazardZone);
-            Haz.transform.position = TargetPoint + TargetPlane.transform.up * 0.5f;
+            /*TargetPoint.x = Random.Range(leftTop.x, rightTop.x);
+            TargetPoint.y = 0f;
+            TargetPoint.z = Random.Range(leftTop.z, leftBottom.z);*/
         }
         
     }

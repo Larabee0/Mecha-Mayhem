@@ -9,18 +9,15 @@ namespace RedButton.GamePlay
         [Header("Lava Charecteristics: \n")]
         [SerializeField] private int EruptionInterval = 60;
         [SerializeField] private int Duration = 10;
-        [SerializeField] private float height = 20f;
         [SerializeField] public int damage = 50;
 
-        private float timer = 0f;
-        private Vector3 destination;
-        private Vector3 origin;
+        public float timer = 0f;
+        public Vector3 destination;
+        public Vector3 origin;
         // Start is called before the first frame update
         void Start()
         {
             timer = Time.time;
-            Vector3 origin = new Vector3 (gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
-            Vector3 destination = new Vector3 (gameObject.transform.position.x, height, gameObject.transform.position.z);
         }
 
         // Update is called once per frame
@@ -28,38 +25,44 @@ namespace RedButton.GamePlay
         {
             if (Time.time >= timer + EruptionInterval)
             {
-                timer = Time.time;
                 Erupt();
             }
         }
 
         public void Erupt()
         {
-            RaiseLava();
-            if (Time.time > timer + Duration)
+            if (Time.time < timer + Duration + EruptionInterval && gameObject.transform.position.y <= destination.y)
+            {
+                RaiseLava();
+            }
+            if (Time.time > timer + Duration + EruptionInterval && gameObject.transform.position.y > origin.y)
             {
                 LowerLava();
+            }
+            else if (Time.time > timer + Duration + EruptionInterval && gameObject.transform.position.y <= origin.y)
+            {
                 timer = Time.time;
             }
         }
 
         public void RaiseLava()
         {
-            gameObject.transform.Translate(destination);
+            gameObject.transform.Translate(destination * Time.deltaTime);
+        }
+
+             
+        public void LowerLava()
+        {
+            gameObject.transform.Translate(origin * Time.deltaTime);
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.name == "mech")
+            if (collision.gameObject.name == "TestMechVelocityChangeMovement(Clone)")
             {
                 Mech.CentralMechComponent mech = collision.gameObject.GetComponentInParent<Mech.CentralMechComponent>();
                 mech.UpdateHealth(damage);
             }
-        }
-
-        public void LowerLava()
-        {
-            gameObject.transform.Translate(origin);
         }
     }
 }
