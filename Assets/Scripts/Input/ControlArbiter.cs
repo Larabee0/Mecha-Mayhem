@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
+using System.Linq;
+using UnityEngine.InputSystem.UI;
+using UnityEditor.Sprites;
 
 namespace RedButton.Core
 {
@@ -19,9 +22,12 @@ namespace RedButton.Core
             All
         }
 
+
+        public static bool Paused { get; private set; }
         public static Controller playerMode;
-        public static bool OverrideDuplicates;
-        public static ControlArbiter Instance;
+        public static ControlArbiter Instance { get { return instance; } private set { instance = value; } }
+
+        private static ControlArbiter instance;
         public static PlayerInput PlayerOne = null;
         public static PlayerInput PlayerTwo = null;
         public static PlayerInput PlayerThree = null;
@@ -89,19 +95,31 @@ namespace RedButton.Core
 
         private void Awake()
         {
+            // we should find a mainUIController which either has us as its parent, has no parent or has no ControlArbiter in its parent(s).
+            mainUIController = FindObjectsOfType<MainUIController>().Where(obj => obj.transform.parent == transform || obj.transform == null || obj.GetComponentInParent<ControlArbiter>() == null).FirstOrDefault();
+            if(mainUIController == null)
+            {
+                Debug.LogError("Failed to find usable MainController UI Instance", gameObject);
+            }
+            else
+            {
+                mainUIController.transform.parent = transform;
+            }
+            
+            // if an active instance already exists, lets bin ourselves including any UI or playerInput children.
+            if (Instance != this &&(Instance != null|| mainUIController == null))
+            {
+                Destroy(gameObject);
+                return;
+            }
+            StartScreen = mainUIController.StartScene;
+            Instance = this;
+            
+            // if we reach here then we've decided we can go ahead with full start up of the control arbiter instance.
             DontDestroyOnLoad(this);
             InputSystem.onDeviceChange += OnDeviceChanged;
 
-            mainUIController = FindObjectOfType<MainUIController>();
-            if (Instance != null && !OverrideDuplicates)
-            {
-                Debug.LogError("Multiple Control Arbiters in scene! Please remove any duplicates!\nThis may get falsing triggered by switching to a scene with a Control Arbiter in it, set OverrideDuplicate to true before switching to the new scene.");
-                return;
-            }
-            Instance = this;
-
             PollWiimotes();
-            OverrideDuplicates = false;
 
             if (StartScreen)
             {
@@ -136,16 +154,12 @@ namespace RedButton.Core
             }
         }
 
-        private void OnDestroy()
-        {
-            Instance = null;
-        }
-
         /// <summary>
         /// Goes through every InputController in the scene to ensure no duplicate players and controllers exist.
         /// </summary>
         public void ValidateControllersAndPlayers()
         {
+            controllerMap.Clear();
             PlayerInput[] controllers = FindObjectsOfType<PlayerInput>();
             if (controllers.Length == 0)
             {
@@ -167,6 +181,7 @@ namespace RedButton.Core
             {
                 if (allActiveControllers.Contains(controllers[i].Player))
                 {
+                    controllers[i].SetPausingAllowed(false);
                     controllers[i].Disable();
                 }
                 else
@@ -178,6 +193,7 @@ namespace RedButton.Core
                     }
                     controllerMap.Add(controllers[i].DevicePath, controllers[i]);
                     controllers[i].Enable();
+                    controllers[i].SetPausingAllowed(true);
                     allActiveControllers.Add(controllers[i].Player);
                 }
             }
@@ -188,6 +204,18 @@ namespace RedButton.Core
                 if (this[i] != null)
                 {
                     activePlayers.Add(this[i]);
+                }
+            }
+        }
+
+        public void LockOutAllPlayers()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (this[i] != null)
+                {
+                    this[i].Disable();
+                    this[i].SetPausingAllowed(false);
                 }
             }
         }
@@ -220,6 +248,15 @@ namespace RedButton.Core
                     PlayerTwo.playerColour = playerTwoColour;
                     break;
             }
+        }
+
+        public void OverrideUIAssetDevices(PlayerInput player)
+        {
+            LockOutAllPlayers();
+            startScreenUIActionAsset = GetComponent<InputSystemUIInputModule>().actionsAsset;
+            startScreenUIActionAsset.devices = player.Devices;
+            startScreenActionMap.devices = player.Devices;
+            player.EnableUIonly();
         }
 
         #region Hot Start
@@ -263,6 +300,7 @@ namespace RedButton.Core
             for (int i = 0; i < runTo; i++)
             {
                 this[i] = InstantiatePlayer(GetPlayerColour(i), ProcessDevice(devices[i]), (Controller)i);
+                playerMode = (Controller)i;
             }
             ValidateControllersAndPlayers();
         }
@@ -283,6 +321,32 @@ namespace RedButton.Core
             return player;
         }
 
+
+        #region pausing
+        public void PauseGame(PlayerInput pauser)
+        {
+            Paused = true;
+            InputSystem.PauseHaptics();
+            LockOutAllPlayers();
+            pauser.EnableUIonly();
+            pauser.SetPausingAllowed(true);
+            startScreenUIActionAsset.devices = pauser.Devices;
+            startScreenActionMap.devices = pauser.Devices;
+            Time.timeScale = 0;
+        }
+
+        public void UnPauseGame()
+        {
+            Paused = false;
+            Time.timeScale = 1;
+            startScreenUIActionAsset.devices = PlayerOne.Devices;
+            startScreenActionMap.devices = PlayerOne.Devices;
+            ValidateControllersAndPlayers();
+            InputSystem.ResumeHaptics();
+        }
+
+        #endregion
+
         /// <summary>
         /// index based way of getting player colours
         /// </summary>
@@ -299,5 +363,6 @@ namespace RedButton.Core
                 _ => Color.white
             };
         }
+
     }
 }

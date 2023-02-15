@@ -43,6 +43,11 @@ namespace RedButton.Mech
         protected virtual void Update() { }
 
         protected virtual void FixedUpdate() { }
+        protected virtual void OnDestroy()
+        {
+            CMC.MechInputController.OnLeftStick -= OnMove;
+            CMC.MechInputController.OnRightStick -= OnAim;
+        }
 
         protected abstract void OnMove(Vector2 axis);
 
@@ -58,8 +63,10 @@ namespace RedButton.Mech
                 float height = targetPoint.position.y;
                 Ray ray = Camera.main.ScreenPointToRay(axis);
                 Vector3 aimPoint = ExtraMaths.GetPointAtHeight(ray, height);
-                dir = (aimPoint - targetPointParent.position).normalized;
+                aimPoint.y = targetPointParent.position.y;
 
+                dir = (aimPoint - targetPointParent.position).normalized;
+                targetPoint.position = aimPoint;
             }
             else
             {

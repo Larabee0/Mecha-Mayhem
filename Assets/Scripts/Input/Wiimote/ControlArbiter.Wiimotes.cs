@@ -9,6 +9,12 @@ using RedButton.Core.WiimoteSupport;
 
 namespace RedButton.Core
 {
+    /// <summary>
+    /// ControlArbiter.Wiimotes
+    /// this part of hte control arbiter is reliable but should be imporved to make the static properties more robust.
+    /// This part of hte control arbiter is resonsible for talking to the WiimoteAPI.WiimoteManager to get wiimotes,
+    /// and send them to the Input System so they can be used in game.
+    /// </summary>
     public partial class ControlArbiter : MonoBehaviour
     {
         public static Vector3 Wiimote1PointerPos
@@ -92,37 +98,47 @@ namespace RedButton.Core
             }
         }
 
+        public static Action<string> wiimoteAdded;
+        public static Action<string> wiimoteRemoved;
+
         [Header("Wiimote Support")]
+        // Wiimote pointer UI for multiple wiimote support
         [SerializeField] private UIDocument wiimoteOverlay;
         private VisualElement wiimotePointer1;
         private VisualElement wiimotePointer2;
         private VisualElement wiimotePointer3;
         private VisualElement wiimotePointer4;
 
-        private List<Wiimote> connectedWiimotes = new();
-        private Dictionary<string,Wiimote> wiimotePaths = new();
-        private Dictionary<string, WiimoteDevice> ISwiimotePaths = new();
-        private Dictionary<Wiimote, WiimoteDevice> wiimoteToDevice = new();
-        public static Action<string> wiimoteAdded;
-        public static Action<string> wiimoteRemoved;
+        // these strcutures are used to safely add and remove wiimotes from the Input System via the Static actions above.
+        private List<Wiimote> Connected_WiimoteAPI_Wiimotes = new(); // all conneted WiimoteAPI.Wiimotes
+        private Dictionary<string,Wiimote> HID_Paths_To_WiimoteAPI_Wiimote = new(); // WiimoteAPI.Wiimote HID Paths to WiimoteAPI.Wiimote Instances
+        private Dictionary<string, WiimoteDevice> IS_Paths_To_IS_Wiimote = new(); // InputSystem WiimoteDevice Paths to WiimoteDevice Instances
+        private Dictionary<Wiimote, WiimoteDevice> WiimoteAPI_Wiimote_To_IS_Wiimote = new(); // WiimoteAPI.Wiimote to WiimoteDevice Instances
 
+        /// <summary>
+        /// Called from Awake.
+        /// Used to get the initially connected wiimotes and fill up the wiimotePaths Dictionary
+        /// </summary>
         private void PollWiimotes()
         {
             WiimoteManager.FindWiimotes();
             if (WiimoteManager.HasWiimote())
             {
-                connectedWiimotes = new(WiimoteManager.Wiimotes);
-                // init wiimotes
-                connectedWiimotes.ForEach(wiimote =>
+                Connected_WiimoteAPI_Wiimotes = new(WiimoteManager.Wiimotes);
+                // init IS wiimotes
+                Connected_WiimoteAPI_Wiimotes.ForEach(wiimoteAPI_Wiimote =>
                 {
-                    string path = wiimote.hidapi_path;
-                    UpdateWiimote(wiimote);
-                    wiimotePaths.Add(path,wiimote);
-                    wiimoteAdded?.Invoke(path);
+                    string HID_Path = wiimoteAPI_Wiimote.hidapi_path;
+                    UpdateWiimote(wiimoteAPI_Wiimote);
+                    HID_Paths_To_WiimoteAPI_Wiimote.Add(HID_Path,wiimoteAPI_Wiimote);
+                    wiimoteAdded?.Invoke(HID_Path);
                 });
             }
         }
 
+        /// <summary>
+        /// Called from Start. Initilises the UI for the Wiimotes
+        /// </summary>
         private void WiimoteUISetup()
         {
             if (wiimoteOverlay.rootVisualElement == null)
@@ -139,6 +155,12 @@ namespace RedButton.Core
             Wiimote4PointerEnable = false;
         }
 
+        /// <summary>
+        /// Created based off the WiimoteAPI documentation.
+        /// The wiimote class recieves data in a queue, which must be read through to update the class.
+        /// This simply reads through all the data currently in the queue until the quite is empty.
+        /// </summary>
+        /// <param name="remote">Target WiimoteAPI.Wiimote to update the state of</param>
         private void UpdateWiimote(Wiimote remote)
         {
             int ret;
@@ -148,34 +170,41 @@ namespace RedButton.Core
             } while (ret > 0);
         }
 
+        /// <summary>
+        /// This assigns WiimoteAPI.Wiimotes to InputSystem WiimoteDevices.
+        /// This also checks for WiimoteAPI device changes (connected/disconnecte)
+        /// THIS DOES NOT YET HANDLE WIIMOTES DISCONNECTING DURING RUNTIME.
+        /// </summary>
         private void Update()
         {
-            if(ISwiimotePaths.Count != WiimoteDevice.all.Count)
+            // Assigning WiimoteAPI.Wiimotes to InputSystem WiimoteDevices.
+            if (IS_Paths_To_IS_Wiimote.Count != WiimoteDevice.all.Count)
             {
                 for (int i = 0; i < WiimoteDevice.all.Count; i++)
                 {
                     WiimoteDevice wiimote = WiimoteDevice.all[i];
-                    if (ISwiimotePaths.ContainsValue(wiimote)||wiimoteToDevice.ContainsValue(wiimote))
+                    if (IS_Paths_To_IS_Wiimote.ContainsValue(wiimote)||WiimoteAPI_Wiimote_To_IS_Wiimote.ContainsValue(wiimote))
                     {
                         // assume we already have registered a wiimote to this device.
                         continue;
                     }
-                    KeyValuePair<string, Wiimote> res = wiimotePaths.Where(pair => !ISwiimotePaths.ContainsKey(pair.Key) && !wiimoteToDevice.ContainsKey(pair.Value)).First();
-                    ISwiimotePaths.Add(res.Key, wiimote);
-                    wiimoteToDevice.Add(res.Value, wiimote);
+                    KeyValuePair<string, Wiimote> res = HID_Paths_To_WiimoteAPI_Wiimote.Where(pair => !IS_Paths_To_IS_Wiimote.ContainsKey(pair.Key) && !WiimoteAPI_Wiimote_To_IS_Wiimote.ContainsKey(pair.Value)).First();
+                    IS_Paths_To_IS_Wiimote.Add(res.Key, wiimote);
+                    WiimoteAPI_Wiimote_To_IS_Wiimote.Add(res.Value, wiimote);
                     wiimote.RegisterWiimote(res.Value);
                 }
             }
 
-            if ((wiimotePaths.Count != WiimoteManager.Wiimotes.Count && WiimoteManager.HasWiimote()) || WiimoteManager.FindWiimotes())
+            //Checking for WiimoteAPI device changes, firing events accordingly
+            if ((HID_Paths_To_WiimoteAPI_Wiimote.Count != WiimoteManager.Wiimotes.Count && WiimoteManager.HasWiimote()) || WiimoteManager.FindWiimotes())
             {
                 for (int i = 0; i < WiimoteManager.Wiimotes.Count; i++)
                 {
                     Wiimote wiimote = WiimoteManager.Wiimotes[i];
                     string path = wiimote.hidapi_path;
-                    if (!wiimotePaths.ContainsKey(path))
+                    if (!HID_Paths_To_WiimoteAPI_Wiimote.ContainsKey(path))
                     {
-                        wiimotePaths.Add(path, wiimote);
+                        HID_Paths_To_WiimoteAPI_Wiimote.Add(path, wiimote);
                         UpdateWiimote(wiimote);
                         wiimoteAdded?.Invoke(path);
                     }
@@ -183,19 +212,21 @@ namespace RedButton.Core
             }
         }
 
+        /// <summary>
+        /// when the application exits we need to clean up the wiimote bluetooth data.
+        /// </summary>
         private void OnApplicationQuit()
         {
-            connectedWiimotes.Clear();
+            Connected_WiimoteAPI_Wiimotes.Clear();
             Debug.Log("Cleaning up Wiimote bluetooth data");
-            lock (WiimoteManager.Wiimotes)
+            Connected_WiimoteAPI_Wiimotes = new(WiimoteManager.Wiimotes);
+            for (int i = 0; i < Connected_WiimoteAPI_Wiimotes.Count; i++)
             {
-                for (int i = 0; i < WiimoteManager.Wiimotes.Count; i++)
-                {
-                    Wiimote remote = WiimoteManager.Wiimotes[i];
-                    wiimoteRemoved?.Invoke(remote.hidapi_path);
-                    WiimoteManager.Cleanup(remote);
-                }
+                Wiimote remote = Connected_WiimoteAPI_Wiimotes[i];
+                wiimoteRemoved?.Invoke(remote.hidapi_path);
+                WiimoteManager.Cleanup(remote);
             }
+            Connected_WiimoteAPI_Wiimotes.Clear();
         }
     }
 }

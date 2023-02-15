@@ -1,0 +1,15 @@
+.unity-progress-bar__progress {
+    background-color: rgba(101, 214, 0, 255);
+}
+
+.unity-progress-bar__background {
+    background-color: rgba(43, 43, 43, 255);
+    border-left-width: 0.5px;
+    border-right-width: 0.5px;
+    border-top-width: 0.5px;
+    border-bottom-width: 0.5px;
+    border-left-color: rgba(48, 48, 48, 255);
+    border-right-color: rgba(48, 48, 48, 255);
+    border-top-color: rgba(48, 48, 48, 255);
+    border-bottom-color: rgba(48, 48, 48, 255);
+}
