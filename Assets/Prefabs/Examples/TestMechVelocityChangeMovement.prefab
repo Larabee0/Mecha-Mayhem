@@ -609,7 +609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Grouped: 0
   damage: 5
-  controlBinding: 1
+  controlBinding: 0
   controlBehaviour: 2
   projectilePrefab: {fileID: -7607631024499583572, guid: da1ad5b71d4157f4bbcdc376b3b2d698,
     type: 3}
@@ -662,7 +662,7 @@ PrefabInstance:
     - target: {fileID: 2007202325831458682, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3593390795651431979, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
@@ -752,3 +752,29 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6245802022969935119}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7798003191987855774 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4221448791439860881, guid: 30dd6cd09d9348b419e14f268f487b25,
+    type: 3}
+  m_PrefabInstance: {fileID: 6245802022969935119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2036404431354133122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7798003191987855774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41c8c0e4d190bff498fd1ed450c86da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Grouped: 0
+  damage: 1
+  controlBinding: 1
+  controlBehaviour: 2
+  projectilePrefab: {fileID: 0}
+  muzzleOriginPoint: {fileID: 0}
+  animationCentre: {fileID: 0}
+  shield: {fileID: 5581798563665386101}
