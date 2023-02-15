@@ -139,4 +139,27 @@ namespace RedButton.ProGen
             debug_rightValid = rightValid.ToArray();
         }
     }
+
+    public enum Directions : int
+    {
+        North,
+        South,
+        West,
+        East
+    }
+
+    public static class DirectionsExt
+    {
+        public static Directions Opposite(this Directions dir)
+        {
+            return dir switch
+            {
+                Directions.North => Directions.South,
+                Directions.South => Directions.North,
+                Directions.West => Directions.East,
+                Directions.East => Directions.West,
+                _ => dir
+            };
+        }
+    }
 }

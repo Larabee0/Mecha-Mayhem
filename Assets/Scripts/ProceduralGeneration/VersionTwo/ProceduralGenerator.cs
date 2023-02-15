@@ -8,27 +8,30 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 
-namespace RedButton.ProGen.VersionOne
+namespace RedButton.ProGen.VersionTwo
 {
     public class ProceduralGenerator : MonoBehaviour
     {
         [SerializeField] private float tileSize = 6f;
         [SerializeField] private int gridSize = 10;
 
-        [SerializeField] Tile topLeftCorner;
-        [SerializeField] Tile topRightCorner;
-        [SerializeField] Tile bottomLeftCorner;
-        [SerializeField] Tile bottomRightCorner;
+        [SerializeField] private TileCombCounter combCounterPrefab;
+
+        [SerializeField] private Tile topLeftCorner;
+        [SerializeField] private Tile topRightCorner;
+        [SerializeField] private Tile bottomLeftCorner;
+        [SerializeField] private Tile bottomRightCorner;
 
 
-        [SerializeField] Tile LeftSide;
-        [SerializeField] Tile RightSide;
-        [SerializeField] Tile TopSide;
-        [SerializeField] Tile bottomSide;
+        [SerializeField] private Tile LeftSide;
+        [SerializeField] private Tile RightSide;
+        [SerializeField] private Tile TopSide;
+        [SerializeField] private Tile bottomSide;
 
-        [SerializeField]private Tile[] tilePrefabs;
-        [SerializeField]private List<Tile> tileInstances;
+        [SerializeField] private Tile[] tilePrefabs;
+        [SerializeField] private List<Tile> tileInstances;
 
+        private TileCombCounter[] combCounters;
         private VirtualTile[] grid;
         private HashSet<int> resolvedTiles = new();
 
@@ -39,56 +42,25 @@ namespace RedButton.ProGen.VersionOne
         {
             random = new Unity.Mathematics.Random(seed);
             GenerateTilePairs();
-            // GenerateVirtualGrid();
-            // FixEdges();
-            // StartCoroutine(GridResolver());
+
+            for (int i = 0; i < tilePrefabs.Length; i++)
+            {
+                tilePrefabs[i].gameObject.SetActive(false);
+            }
         }
 
         private void OnValidate()
         {
-            //if (Application.isPlaying)
-            //{
-            //    random = new Unity.Mathematics.Random(seed);
-            //    //StopAllCoroutines();
-            //    tileInstances.ForEach(tile => Destroy(tile.gameObject));
-            //    tileInstances.Clear();
-            //    resolvedTiles.Clear();
-            //    GenerateVirtualGrid();
-            //    FixEdges();
-            //    StartCoroutine(GridResolver());
-            //}
-        }
-
-        private void FixEdges()
-        {
-            for (int x = 0, z = 0; x < gridSize; x++, z++)
+            if (Application.isPlaying)
             {
-                int bottomIndex = CoordToIndex(new int2(x, 0));
-                grid[bottomIndex].resolvedTile = bottomSide;
-                resolvedTiles.Add(bottomIndex);
-
-                int topIndex = CoordToIndex(new int2(x, gridSize - 1));
-                grid[topIndex].resolvedTile = TopSide;
-                resolvedTiles.Add(topIndex);
-
-                int leftIndex = CoordToIndex(new int2(0, z));
-                grid[leftIndex].resolvedTile = LeftSide;
-                resolvedTiles.Add(leftIndex);
-
-                int rightIndex = CoordToIndex(new int2(gridSize - 1, z));
-                grid[rightIndex].resolvedTile = RightSide;
-                resolvedTiles.Add(rightIndex);
+                random = new Unity.Mathematics.Random(seed);
+                //StopAllCoroutines();
+                tileInstances.ForEach(tile => Destroy(tile.gameObject));
+                tileInstances.Clear();
+                resolvedTiles.Clear();
+                GenerateVirtualGrid();
+                StartCoroutine(GridResolver());
             }
-
-            int bottomLeftCorner = CoordToIndex(new int2(0, 0));
-            int bottomRightCorner = CoordToIndex(new int2(gridSize - 1, 0));
-            int topLeftCorner = CoordToIndex(new int2(0, gridSize - 1));
-            int topRightCorner = CoordToIndex(new int2(gridSize - 1, gridSize - 1));
-
-            grid[bottomLeftCorner].resolvedTile = this.bottomLeftCorner;
-            grid[bottomRightCorner].resolvedTile = this.bottomRightCorner;
-            grid[topLeftCorner].resolvedTile = this.topLeftCorner;
-            grid[topRightCorner].resolvedTile = this.topRightCorner;
         }
 
         private void GenerateTilePairs()
@@ -158,11 +130,13 @@ namespace RedButton.ProGen.VersionOne
         private void GenerateVirtualGrid()
         {
             grid = new VirtualTile[gridSize * gridSize];
-
+            combCounters = new TileCombCounter[grid.Length];
             for (int i = 0; i < grid.Length; i++)
             {
-                grid[i] = new(gridSize,i, new int2(i % gridSize, i / gridSize));
+                combCounters[i] = Instantiate(combCounterPrefab, new Vector3((i % gridSize) * tileSize, 3.6f, (i / gridSize) * tileSize), Quaternion.Euler(90f,0,0), transform);
+                grid[i] = new(gridSize,i, new int2(i % gridSize, i / gridSize), combCounters[i]);
                 grid[i].potentialTiles.UnionWith(tilePrefabs);
+                grid[i].UpdateComboCounter();
             }
         }
 
@@ -178,6 +152,9 @@ namespace RedButton.ProGen.VersionOne
                 try
                 {
                     Resolve(firstTile);
+                    tileInstances.Add(Instantiate(firstTile.resolvedTile, new Vector3(firstTile.coordinates.x * tileSize, 0, firstTile.coordinates.y * tileSize), Quaternion.identity, transform));
+                    tileInstances[^1].gameObject.SetActive(true);
+                    PropogateToNeighbours(firstTile);
                 }
                 catch
                 {
@@ -185,25 +162,9 @@ namespace RedButton.ProGen.VersionOne
                 }
                 resolvedTiles.Add(firstTileIndex);
                 yield return null;
-                frameCount++;
             }
             Debug.LogFormat("Resolved Grid in {0} frames",frameCount);
 
-            for (int i = 0; i < tilePrefabs.Length; i++)
-            {
-                tilePrefabs[i].gameObject.SetActive(false);
-            }
-            yield return null;
-            for (int i = 0; i < grid.Length; i++)
-            {
-                VirtualTile vT = grid[i];
-                if (vT.resolvedTile != null)
-                {
-                    tileInstances.Add(Instantiate(vT.resolvedTile, new Vector3(vT.coordinates.x * tileSize, 0, vT.coordinates.y * tileSize), Quaternion.identity, transform));
-                    tileInstances[^1].gameObject.SetActive(true);
-                    yield return null;
-                }
-            }
         }
 
         public void Resolve(VirtualTile tile)
@@ -221,6 +182,7 @@ namespace RedButton.ProGen.VersionOne
             }
             tile.resolvedTile = tiles[resolvedTile];
             tile.potentialTiles.Clear();
+            tile.UpdateComboCounter();
             tile.potentialTiles = null;
         }
 
@@ -316,6 +278,11 @@ namespace RedButton.ProGen.VersionOne
             return index;
         }
 
+        public void PropogateToNeighbours(VirtualTile tile)
+        {
+
+        }
+
         public int CoordToIndex(int2 coord)
         {
             return coord.y * gridSize + coord.x;
@@ -335,6 +302,7 @@ namespace RedButton.ProGen.VersionOne
 
     public class VirtualTile
     {
+        public TileCombCounter tileCounter;
         public int gridSize;
         public int X => coordinates.x;
         public int Y => coordinates.y;
@@ -360,13 +328,14 @@ namespace RedButton.ProGen.VersionOne
         }
         public Tile resolvedTile;
 
-        public VirtualTile(int gridSize, int index, int2 coordinates)
+        public VirtualTile(int gridSize, int index, int2 coordinates, TileCombCounter tileCounter)
         {
             this.gridSize = gridSize;
             this.index = index;
             this.coordinates = coordinates;
-            potentialTiles= new HashSet<Tile>();
+            potentialTiles = new HashSet<Tile>();
             resolvedTile = null;
+            this.tileCounter = tileCounter;
         }
 
         public int NeighbourN
@@ -437,11 +406,18 @@ namespace RedButton.ProGen.VersionOne
             }
         }
 
+        public void UpdateComboCounter()
+        {
+            if(tileCounter != null && potentialTiles!= null)
+            {
+                tileCounter.PossibleTiles = potentialTiles.Count;
+            }
+        }
+
         public int CoordToIndex(int2 coord)
         {
             return coord.y * gridSize + coord.x;
         }
 
     }
-
 }
