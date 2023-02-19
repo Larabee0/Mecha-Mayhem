@@ -34,7 +34,10 @@ namespace RedButton.ProGen.VersionTwo
         private TileCombCounter[] combCounters;
         private VirtualTile[] grid;
         private HashSet<int> resolvedTiles = new();
-
+        private HashSet<int> changedNeighbours= new();
+        private HashSet<int> nextPropIterationTiles = new();
+        [SerializeField] private bool computePairs = false;
+        [SerializeField,Range(0f,10f)] private float fillSpeed = 1f;
         [SerializeField, Min(1)] private uint seed = 1;
         private Unity.Mathematics.Random random;
 
@@ -47,24 +50,75 @@ namespace RedButton.ProGen.VersionTwo
             {
                 tilePrefabs[i].gameObject.SetActive(false);
             }
+            tileInstances.ForEach(tile => Destroy(tile.gameObject));
+            tileInstances.Clear();
+            resolvedTiles.Clear();
+            GenerateVirtualGrid();
+            StartCoroutine(GridResolver());
         }
 
         private void OnValidate()
         {
-            if (Application.isPlaying)
-            {
-                random = new Unity.Mathematics.Random(seed);
-                //StopAllCoroutines();
-                tileInstances.ForEach(tile => Destroy(tile.gameObject));
-                tileInstances.Clear();
-                resolvedTiles.Clear();
-                GenerateVirtualGrid();
-                StartCoroutine(GridResolver());
-            }
+            //if (Application.isPlaying)
+            //{
+            //    random = new Unity.Mathematics.Random(seed);
+            //    //StopAllCoroutines();
+            //    tileInstances.ForEach(tile => Destroy(tile.gameObject));
+            //    tileInstances.Clear();
+            //    resolvedTiles.Clear();
+            //    GenerateVirtualGrid();
+            //    StartCoroutine(GridResolver());
+            //}
         }
 
         private void GenerateTilePairs()
         {
+            GenerateEdgePairs();
+            if (computePairs) // generate pairs based off of the edges, like a puzzle
+            {
+                ComputePairs();
+            }
+            else // use the pairs set in the editor
+            {
+                EditorPairs();
+            }
+
+            for (int i = 0; i < tilePrefabs.Length; i++)
+            {
+                tilePrefabs[i].GenerateDebuggingLists();
+            }
+        }
+
+        private void EditorPairs()
+        {
+            for (int i = 0; i < tilePrefabs.Length; i++) // set the current values of the debug lists into their respective hashset
+            {
+                tilePrefabs[i].DebugListsToHashset();
+            }
+
+            for (int i = 0; i < tilePrefabs.Length; i++) // ensure all tiles are correctly paired.
+            {
+                Tile main = tilePrefabs[i];
+                for (Directions d = Directions.North; d <= Directions.East; d++)
+                {
+                    List<Tile> validInDir = main[d].ToList();
+                    validInDir.ForEach(tile => tile[d.Opposite()].Add(main));
+                }
+            }
+        }
+
+        
+
+        private void ComputePairs()
+        {
+            for (int i = 0; i < tilePrefabs.Length; i++)
+            {
+                tilePrefabs[i].topValid.Clear();
+                tilePrefabs[i].bottomValid.Clear();
+                tilePrefabs[i].leftValid.Clear();
+                tilePrefabs[i].rightValid.Clear();
+            }
+
             for (int i = 0; i < tilePrefabs.Length; i++)
             {
                 for (int j = 0; j < tilePrefabs.Length; j++)
@@ -82,7 +136,10 @@ namespace RedButton.ProGen.VersionTwo
                     }
                 }
             }
+        }
 
+        private void GenerateEdgePairs()
+        {
             GeneratePairsEdges(topLeftCorner);
             GeneratePairsEdges(topRightCorner);
             GeneratePairsEdges(bottomLeftCorner);
@@ -91,12 +148,6 @@ namespace RedButton.ProGen.VersionTwo
             GeneratePairsEdges(RightSide);
             GeneratePairsEdges(TopSide);
             GeneratePairsEdges(bottomSide);
-
-
-            for (int i = 0; i < tilePrefabs.Length; i++)
-            {
-                tilePrefabs[i].GenerateDebuggingLists();
-            }
         }
 
         private void GeneratePairsEdges(Tile edgeTile)
@@ -142,28 +193,47 @@ namespace RedButton.ProGen.VersionTwo
 
         private IEnumerator GridResolver()
         {
-            int frameCount = 0;
-            yield return null;
-            frameCount++;
             while (resolvedTiles.Count != grid.Length)
             {
                 VirtualTile firstTile = null;
                 int firstTileIndex = GetNextTile(ref firstTile);
+                Resolve(firstTile);
+                tileInstances.Add(Instantiate(firstTile.resolvedTile,
+                    new Vector3(firstTile.coordinates.x * tileSize, 0, firstTile.coordinates.y * tileSize),
+                    Quaternion.identity, transform));
+                tileInstances[^1].gameObject.SetActive(true);
+                yield return null;
                 try
                 {
-                    Resolve(firstTile);
-                    tileInstances.Add(Instantiate(firstTile.resolvedTile, new Vector3(firstTile.coordinates.x * tileSize, 0, firstTile.coordinates.y * tileSize), Quaternion.identity, transform));
-                    tileInstances[^1].gameObject.SetActive(true);
-                    PropogateToNeighbours(firstTile);
+                    while (nextPropIterationTiles.Count != 0)
+                    {
+                        nextPropIterationTiles.ExceptWith(changedNeighbours);
+                        List<int> currentiterTiles = new(nextPropIterationTiles);
+                        nextPropIterationTiles.Clear();
+                        for (int i = 0; i < currentiterTiles.Count; i++)
+                        {
+                            UpdatePotentials(grid[currentiterTiles[i]]);
+                        }
+                    }
+                    for (int i = 0; i < grid.Length; i++)
+                    {
+                        VirtualTile vt = grid[i];
+                        if (vt.Resolved)
+                        {
+                            vt.tileCounter.PossibleTiles = 0;
+                        }
+                        vt.UpdateComboCounter();
+                    }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Debug.LogException(ex, gameObject);
                     break;
                 }
                 resolvedTiles.Add(firstTileIndex);
-                yield return null;
+                yield return new WaitForSeconds(fillSpeed);
             }
-            Debug.LogFormat("Resolved Grid in {0} frames",frameCount);
+            Debug.Log("Resolved Grids");
 
         }
 
@@ -174,19 +244,22 @@ namespace RedButton.ProGen.VersionTwo
                 Debug.Log("Trying to resolved already resolved tile!");
                 return;
             }
-            List<Tile> tiles = GetPotentialsFromNeighbours(tile);
+            List<Tile> tiles = new(tile.potentialTiles);
             int resolvedTile = random.NextInt(0, tiles.Count);
             if (resolvedTile < 0 || resolvedTile > tiles.Count - 1)
             {
                 throw new InvalidOperationException(string.Format("Index {0} out side collection range {1}", resolvedTile, tiles.Count));
             }
+            changedNeighbours.Clear();
+            changedNeighbours.Add(tile.index);
+            nextPropIterationTiles.UnionWith(tile.Neighbours);
+            nextPropIterationTiles.Remove(-1);
             tile.resolvedTile = tiles[resolvedTile];
             tile.potentialTiles.Clear();
-            tile.UpdateComboCounter();
             tile.potentialTiles = null;
         }
 
-        private List<Tile> GetPotentialsFromNeighbours(VirtualTile tile)
+        private List<Tile> UpdatePotentialsFromNeighbours(VirtualTile tile)
         {
             List<int> neighbours = tile.Neighbours;
             HashSet<Tile> allowedTiles = new(tilePrefabs);
@@ -208,20 +281,54 @@ namespace RedButton.ProGen.VersionTwo
                     allResolved[(int)d] = true;
                 }
             }
-            // unresolvedTiles next
-            // for (Directions d = Directions.North; d <= Directions.East; d++)
-            // {
-            //     if (neighbours[(int)d] >= 0)
-            //     {
-            //         VirtualTile neighbour = grid[neighbours[(int)d]];
-            //         if (!neighbour.Resolved)
-            //         {
-            // 
-            //         }
-            //     }
-            // }
-
+            tile.potentialTiles.IntersectWith(allowedTiles);
             return new List<Tile>(allowedTiles);
+        }
+
+        private void UpdatePotentials(VirtualTile tile)
+        {
+            changedNeighbours.Add(tile.index);
+            if (tile.Resolved)
+            {
+                return;
+            }
+            List<int> neighbours = tile.Neighbours;
+            HashSet<Tile> allowedTiles = new(tilePrefabs);
+            bool4 allModified = false;
+            // resolved tiles First
+            for (Directions d = Directions.North; d <= Directions.East; d++)
+            {
+                if (neighbours[(int)d] >= 0)
+                {
+                    VirtualTile neighbour = grid[neighbours[(int)d]];
+                    if (neighbour.Resolved)
+                    {
+                        allModified[(int)d] = true;
+                        allowedTiles.IntersectWith(neighbour.resolvedTile[d.Opposite()]);
+                    }
+                    else if(neighbour.potentialTiles.Count != tilePrefabs.Length)
+                    {
+                        allModified[(int)d] = true;
+                        List<Tile> neighbourPots = new(neighbour.potentialTiles);
+                        HashSet<Tile> allowedPots = new();
+                        for (int i = 0; i < neighbourPots.Count; i++)
+                        {
+                            allowedPots.UnionWith(neighbourPots[i][d.Opposite()]);
+                        }
+                        allowedTiles.IntersectWith(allowedPots);
+                    }
+                    nextPropIterationTiles.Add(neighbours[(int)d]);
+                }
+                else
+                {
+                    allModified[(int)d] = true;
+                }
+            }
+            if(allowedTiles.Count == 0)
+            {
+                Debug.LogException(new InvalidOperationException(string.Format("Tile at {0} has 0 potentials after potential update!", tile.coordinates)), gameObject);
+            }
+            tile.potentialTiles.IntersectWith(allowedTiles);
         }
 
         public int GetNextTile(ref VirtualTile nextTile)
@@ -231,7 +338,7 @@ namespace RedButton.ProGen.VersionTwo
             {
                 while (nextTile == null)
                 {
-                    tileIndex = random.NextInt(0, grid.Length);
+                    tileIndex = UnityEngine.Random.Range(0, grid.Length);
                     // firstTileIndex = CoordToIndex(new int2(1, 1));
                     if (resolvedTiles.Contains(tileIndex))
                     {
@@ -244,38 +351,35 @@ namespace RedButton.ProGen.VersionTwo
             {
                 nextTile = grid[tileIndex];
             }
+
             return tileIndex;
         }
 
         public int GetLowestPotential()
         {
-            int lowestPotential = 5;
-            int index = -1;
+            HashSet<int> dictKeys= new HashSet<int>();
+            Dictionary<int, HashSet<int>> virtualTilePotentials = new();
             for (int i = 0; i < grid.Length; i++)
             {
-                int potential = 4;
                 if (grid[i].Resolved)
                 {
                     continue;
                 }
-                List<int> neighbours = grid[i].Neighbours;
-                for (int n = 0; n < neighbours.Count; n++)
+                int potential = grid[i].potentialTiles.Count;
+                dictKeys.Add(potential);
+                if (virtualTilePotentials.ContainsKey(potential))
                 {
-                    if (neighbours[n] >= 0)
-                    {
-                        if (grid[neighbours[n]].Resolved)
-                        {
-                            potential--;
-                        }
-                    }
+                    virtualTilePotentials[potential].Add(i);
                 }
-                if(potential < lowestPotential)
+                else
                 {
-                    lowestPotential = potential;
-                    index = i;
+                    virtualTilePotentials.Add(potential, new HashSet<int>() { i });
                 }
             }
-            return index;
+
+            List<int> orderedKeys = dictKeys.ToList();
+            orderedKeys.Sort();
+            return virtualTilePotentials[orderedKeys[0]].ToList()[UnityEngine.Random.Range(0, virtualTilePotentials[orderedKeys[0]].Count)];
         }
 
         public void PropogateToNeighbours(VirtualTile tile)

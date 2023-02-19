@@ -61,6 +61,14 @@ namespace RedButton.ProGen
 
         }
 
+        public void DebugListsToHashset()
+        {
+            topValid = new(debug_topValid);
+            bottomValid = new(debug_bottomValid);
+            leftValid = new(debug_leftValid);
+            rightValid = new(debug_rightValid);
+        }
+
         private void CalculateEdges()
         {
             lengthWidth = math.abs(min) + resolution + math.abs(max ) + resolution;
