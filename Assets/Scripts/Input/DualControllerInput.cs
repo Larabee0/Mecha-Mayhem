@@ -47,7 +47,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Fire 1"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""6317b36e-c303-4637-ae83-f81f51268a05"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
