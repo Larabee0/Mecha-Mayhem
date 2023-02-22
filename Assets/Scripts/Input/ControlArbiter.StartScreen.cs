@@ -10,9 +10,23 @@ using UnityEngine.UIElements;
 
 namespace RedButton.Core
 {
+    public enum StartScreenState
+    {
+        Binding,
+        MainMenu,
+        OptionsMenu,
+        Credits,
+        SetPlayerCount,
+        ControllerAssignment,
+        ConfirmAssignment,
+        LevelSelect,
+        Closed
+    }
+
     public partial class ControlArbiter : MonoBehaviour
     {
         #region Start Screen
+
         /// <summary>
         /// Sets up ControlArbiter for starting from main menu
         /// in the future it will support starting from a map scene to speed up testing
@@ -28,6 +42,10 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Enable();
+            if (UnityUI)
+            {
+                mainUIController.UIShown = false;
+            }
         }
 
         /// <summary>
@@ -55,8 +73,17 @@ namespace RedButton.Core
             startScreenActionMap.UI.Submit.performed -= StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Disable();
 
-            mainUIController.StartScreenController.ShowPlayerCountPicker();
-            EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+            if (UnityUI)
+            {
+                startScreenState = StartScreenState.MainMenu;
+                uiTranslator.StartMenuUI.ShowMainMenu();
+            }
+            else
+            {
+                startScreenState = StartScreenState.SetPlayerCount;
+                mainUIController.StartScreenController.ShowPlayerCountPicker();
+                EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+            }
         }
 
         /// <summary>
@@ -78,6 +105,7 @@ namespace RedButton.Core
         /// </summary>
         public void SkipControllerAssignment()
         {
+            startScreenState = StartScreenState.ConfirmAssignment;
             startScreenActionMap.UI.Enable();
             if (PlayerOne != null)
             {
@@ -85,6 +113,12 @@ namespace RedButton.Core
                 PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
             }
 
+            if (UnityUI)
+            {
+                // uiTranslator.StartMenuUI.PlayerSelectCallback -= MainUIController.StartScreenController.PlayerSelectCallback;
+                EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+                mainUIController.UIShown = true;
+            }
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
             PlayerOne.Enable();
@@ -103,6 +137,13 @@ namespace RedButton.Core
                 // go back to controll assigment screen with controllers assigned but not accepted.
                 PlayerOne.ControlMap.UI.Cancel.performed += GoBackToControllerAssignment;
             }
+            startScreenState = StartScreenState.LevelSelect;
+            if (UnityUI)
+            {
+                MainUIController.UIShown = false;
+                uiTranslator.ShowStartSreen();
+                uiTranslator.StartMenuUI.OpenLvlSelectInternal();
+            }
         }
 
         /// <summary>
@@ -111,6 +152,13 @@ namespace RedButton.Core
         /// <param name="playersToAssign">all players to assign, in order</param>
         public void StartControllerAssignment(Queue<StartScreenUI.ControllerAssignHelper> playersToAssign)
         {
+            startScreenState = StartScreenState.ControllerAssignment;
+            if (UnityUI)
+            {
+                // uiTranslator.StartMenuUI.PlayerSelectCallback -= MainUIController.StartScreenController.PlayerSelectCallback;
+                EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+                mainUIController.UIShown = true;
+            }
             startScreenActionMap.devices = newDevices.ToArray();
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += AssignControllerCallback;
@@ -152,6 +200,8 @@ namespace RedButton.Core
             startScreenActionMap.devices = PlayerOne.Devices;
             PlayerOne.EnableUIonly();
             mainUIController.StartScreenController.ShowAssignmentButtonPanel();
+            startScreenState = StartScreenState.ConfirmAssignment;
+
         }
 
         /// <summary>
@@ -239,7 +289,45 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Enable();
-            mainUIController.StartScreenController.ShowMainMenu();
+
+            startScreenState = StartScreenState.Binding;
+            if (UnityUI)
+            {
+                uiTranslator.StartMenuUI.ShowBindPanel();
+            }
+            else
+            {
+                mainUIController.StartScreenController.ShowMainMenu();
+            }
+        }
+
+        public void GoForwardFromMainMenu()
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMainMenu;
+            }
+        }
+
+        private void GoBackToMainMenu(InputAction.CallbackContext obj)
+        {
+
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
+            }
+            uiTranslator.StartMenuUI.ShowMainMenu();
+            startScreenState = StartScreenState.MainMenu;
+        }
+
+        public void UnSubFromMainMenuBack()
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
+            }
         }
 
         /// <summary>
@@ -261,23 +349,52 @@ namespace RedButton.Core
             if (PlayerOne != null)
             {
                 PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
-                PlayerOne.Disable();
             }
 
-            PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
-            PlayerOne.EnableUIonly();
-            mainUIController.StartScreenController.ShowPlayerCountPicker();
+            startScreenState = StartScreenState.SetPlayerCount;
+            if (UnityUI)
+            {
+                if (PlayerOne != null)
+                {
+                    PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMainMenu;
+                }
+                mainUIController.UIShown = false;
+                uiTranslator.ShowStartSreen();
+                uiTranslator.StartMenuUI.OpenPlayerSelect();
+            }
+            else
+            {
+                if (PlayerOne != null)
+                {
+                    PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
+                }
+                mainUIController.StartScreenController.ShowPlayerCountPicker();
+            }
+
+            if (PlayerOne != null)
+            {
+                PlayerOne.EnableUIonly();
+            }
         }
 
-        private void GoBackToControllerAssignment(InputAction.CallbackContext obj)
+        public void GoBackToControllerAssignment(InputAction.CallbackContext obj)
         {
             if (PlayerOne != null)
             {
                 PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
                 PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToControllerAssignment;
             }
+            if(UnityUI)
+            {
+                uiTranslator.StartMenuUI.CLoseLvlSelectInternal();
+                uiTranslator.HideAll();
+                mainUIController.UIShown = true;
+                EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+            }
 
+            startScreenState = StartScreenState.ControllerAssignment;
             mainUIController.StartScreenController.PlayerSelectCallback(playerMode, true);
+
         }
         #endregion
 

@@ -84,9 +84,13 @@ namespace RedButton.Core
 
         [SerializeField] private MainUIController mainUIController;
         public MainUIController MainUIController => mainUIController;
+        public bool UnityUI => unityUI;
+        [SerializeField] private UnityUITranslationLayer uiTranslator;
 
         [Header("Start Screen Settings")]
+        [SerializeField] private bool unityUI = false;
         [SerializeField] private bool StartScreen = false;
+        public StartScreenState startScreenState = StartScreenState.Binding;
         private DualControllerInput startScreenActionMap;
         private InputActionAsset startScreenUIActionAsset;
         private StartScreenUI.ControllerAssignHelper playerToAssign;
@@ -139,6 +143,11 @@ namespace RedButton.Core
         
         private void Start()
         {
+            if (unityUI)
+            {
+                uiTranslator.StartMenuUI.PlayerSelectCallback += MainUIController.StartScreenController.PlayerSelectCallback;
+            }
+            
             WiimoteUISetup();
         }
 

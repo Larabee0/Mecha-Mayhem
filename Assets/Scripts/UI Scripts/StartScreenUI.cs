@@ -180,8 +180,12 @@ namespace RedButton.Core.UI
         /// </summary>
         private void AcceptControllerAssignmentCallback()
         {
-            //ShowMechSelector()
             ControlArbiter.Instance.AcceptControllerAssignment();
+            //ShowMechSelector()
+            if (ControlArbiter.Instance.UnityUI)
+            {
+                return;
+            }
             ShowLevelSelectScreen();
         }
 
