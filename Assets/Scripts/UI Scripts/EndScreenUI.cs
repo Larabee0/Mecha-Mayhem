@@ -45,6 +45,7 @@ namespace RedButton.Core.UI {
             }
             mainUI.StartScreenController.ReturnToLevelSelectScreenFromLevel();
             rootVisualElement.style.display = DisplayStyle.None;
+            ControlArbiter.Instance.GameArbiterToControlArbiterHandback();
         }
     }
 }

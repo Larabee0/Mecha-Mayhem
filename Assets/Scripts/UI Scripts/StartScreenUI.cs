@@ -88,6 +88,7 @@ namespace RedButton.Core.UI
         /// <param name="existingCheck">check for existing player assignments, default true</param>
         public void PlayerSelectCallback(Controller playerCount, bool existingCheck = true)
         {
+            LevelSelectScreen.style.display = DisplayStyle.None;
             mainMenu.style.display = DisplayStyle.None;
             ControlArbiter.playerMode = playerCount;
             if (existingCheck && TryLoadAssignmentScreenWithCurrent())
@@ -179,7 +180,8 @@ namespace RedButton.Core.UI
         /// </summary>
         private void AcceptControllerAssignmentCallback()
         {
-            //ShowMechSelector();
+            //ShowMechSelector()
+            ControlArbiter.Instance.AcceptControllerAssignment();
             ShowLevelSelectScreen();
         }
 
@@ -207,6 +209,7 @@ namespace RedButton.Core.UI
             ControllerAssignment.style.display = DisplayStyle.Flex;
             if (allExpectPresent)
             {
+                ControlArbiter.Instance.SkipControllerAssignment();
                 ShowAssignmentButtonPanel();
                 return true;
             }
@@ -217,7 +220,7 @@ namespace RedButton.Core.UI
         /// Button callback for going back to assignment screen
         /// Tries to load existing player assignments, if unsucessful will trigger a full controller assignment change.
         /// </summary>
-        private void BackToAssignmentCallback()
+        public void BackToAssignmentCallback()
         {
             if (!TryLoadAssignmentScreenWithCurrent())
             {
@@ -409,6 +412,7 @@ namespace RedButton.Core.UI
         {
             GameSceneManager.Instance.OnActiveSceneChanged -= ReturnToLevelSelectScreen;
             ShowLevelSelectScreen();
+            ControlArbiter.Instance.OverrideUIAssetDevices(ControlArbiter.PlayerOne);
             // enable player one UI control
         }
 
@@ -445,6 +449,7 @@ namespace RedButton.Core.UI
 
         private void OnLevelClickCallback(LevelHelper helper)
         {
+            ControlArbiter.Instance.ControlArbiterToGameArbiterHandoff();
             GameSceneManager.Instance.LoadScene(helper.current.buildIndex);
         }
 

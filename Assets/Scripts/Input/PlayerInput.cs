@@ -35,7 +35,7 @@ namespace RedButton.Core
         public string DeviceName;
         public bool DeviceConnected;
 
-        public InputDevice[] Device
+        public InputDevice[] Devices
         {
             get
             {
@@ -74,10 +74,12 @@ namespace RedButton.Core
         // test settings for manual triggering of rumble motors.
         [Header("Rumble Debugging")]
         public bool controlMapEnabled = false;
+        public bool uiOnlyEnabled = false;
         [SerializeField] private bool debugging;
         [SerializeField] private RumbleMotor rumbleMotor;
         [SerializeField, Range(0f, 1f)] private float rumbleRate;
         [SerializeField] private float rumbleDuration = 10f;
+        [SerializeField] private Vector2 rightStickInput;
 
         public void AssignDevice(InputDevice[] devices, Controller playerNum, bool keyboard = false)
         {
@@ -173,6 +175,7 @@ namespace RedButton.Core
         /// </summary>
         public void Enable()
         {
+            uiOnlyEnabled = false;
             controlMapEnabled = true;
             controlMap.MechControls.Enable();
             controlMap.UI.Enable();
@@ -180,7 +183,31 @@ namespace RedButton.Core
 
         public void EnableUIonly()
         {
+            controlMapEnabled = false;
+            uiOnlyEnabled = true;
             controlMap.UI.Enable();
+            controlMap.MechControls.Disable();
+        }
+
+        public void SetPausingAllowed(bool allowed = false)
+        {
+            if(allowed)
+            {
+                controlMap.UI.PauseGame.performed += PauseCallback;
+                return;
+            }
+            controlMap.UI.PauseGame.performed -= PauseCallback;
+        }
+
+        private void PauseCallback(InputAction.CallbackContext obj)
+        {
+            if (ControlArbiter.Paused)
+            {
+                ControlArbiter.Instance.UnPauseGame();
+                return;
+            }
+            
+            ControlArbiter.Instance.PauseGame(this);
         }
 
         /// <summary>
@@ -188,7 +215,7 @@ namespace RedButton.Core
         /// </summary>
         public void Disable()
         {
-            controlMapEnabled = false;
+            controlMapEnabled= uiOnlyEnabled = false;
             controlMap.MechControls.Disable();
             controlMap.UI.Disable();
             StopAllCoroutines();
@@ -361,6 +388,7 @@ namespace RedButton.Core
         private void RightStickLogic()
         {
             Vector2 value = controlMap.MechControls.RightStick.ReadValue<Vector2>();
+            rightStickInput = value;
             OnRightStick?.Invoke(value, AimAtRightStick);
             if (setWiimotePointer)
             {
