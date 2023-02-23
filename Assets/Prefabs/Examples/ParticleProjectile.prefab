@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -2796544168625011109}
   m_Layer: 0
   m_Name: ParticleProjectile
-  m_TagString: Untagged
+  m_TagString: Projectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

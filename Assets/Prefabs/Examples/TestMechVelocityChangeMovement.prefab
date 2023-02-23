@@ -410,7 +410,7 @@ GameObject:
   - component: {fileID: 2331743069697241314}
   m_Layer: 0
   m_Name: Base
-  m_TagString: Untagged
+  m_TagString: Test
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -609,7 +609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Grouped: 0
   damage: 5
-  controlBinding: 0
+  controlBinding: 1
   controlBehaviour: 2
   projectilePrefab: {fileID: -7607631024499583572, guid: da1ad5b71d4157f4bbcdc376b3b2d698,
     type: 3}
@@ -662,7 +662,7 @@ PrefabInstance:
     - target: {fileID: 2007202325831458682, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3593390795651431979, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
@@ -724,6 +724,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shield2
       objectReference: {fileID: 0}
+    - target: {fileID: 4221448791439860881, guid: 30dd6cd09d9348b419e14f268f487b25,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30dd6cd09d9348b419e14f268f487b25, type: 3}
 --- !u!1 &5581798563665386101 stripped
@@ -772,9 +777,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Grouped: 0
   damage: 1
-  controlBinding: 1
+  controlBinding: 0
   controlBehaviour: 2
   projectilePrefab: {fileID: 0}
   muzzleOriginPoint: {fileID: 0}
   animationCentre: {fileID: 0}
+  shieldCD: 4
   shield: {fileID: 5581798563665386101}

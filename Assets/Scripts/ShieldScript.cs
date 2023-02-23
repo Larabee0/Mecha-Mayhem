@@ -8,6 +8,9 @@ namespace RedButton.Mech
 {
     public class ShieldScript : WeaponCore
     {
+        [SerializeField] int shieldCD;
+        int shieldHealth;
+        bool shieldReady;
         [SerializeField] private GameObject shield;
 
         protected override void BindtoControls()
@@ -40,12 +43,49 @@ namespace RedButton.Mech
         {
             Debug.Log("unfier");
             shield.SetActive(false);
+            shieldReady = false;
+            StartCoroutine("ShieldRecharge");
+
         }
 
         public override void Fire()
         {
-            shield.SetActive(true);
-            Debug.Log("fier");
+            if (shieldReady)
+            {
+                shield.SetActive(true);
+                Debug.Log("fier");
+                shieldHealth = 3;
+            }
+
+        }
+        IEnumerator ShieldRecharge()
+        {
+            yield return new WaitForSeconds(shieldCD);
+            shieldReady = true;
+        }
+
+        IEnumerator ShieldDestroyed()
+        {
+            yield return new WaitForSeconds(shieldCD * 2);
+            shieldReady = true;
+        }
+        private void ShieldACtivated()
+        {
+            
+            
+        }
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Projectile"))
+            {
+                shieldHealth--;
+                if (shieldHealth <= 0)
+                {
+                    shield.SetActive(false);
+                    shieldReady = false;
+                    StartCoroutine("ShieldDestroyed");
+                }
+            }
         }
 
         public override void GroupFire()
@@ -55,7 +95,7 @@ namespace RedButton.Mech
 
         protected override void Update()
         {
-            
+           
         }
     }
 }
