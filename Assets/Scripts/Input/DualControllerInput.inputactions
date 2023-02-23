@@ -25,7 +25,7 @@
                 },
                 {
                     "name": "Fire 1",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "6317b36e-c303-4637-ae83-f81f51268a05",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -230,6 +230,15 @@
                     "type": "PassThrough",
                     "id": "0bcb2c08-cfe1-4300-9d4f-6539d6c9d2ff",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PauseGame",
+                    "type": "Button",
+                    "id": "1ac34e06-d9fe-4743-ab9e-e9892700da66",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -809,6 +818,28 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5221acae-aa0e-4ff3-b1e2-f072be1a1051",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "PauseGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fa65e969-12f3-49f1-a582-14836cf7b19b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "PauseGame",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

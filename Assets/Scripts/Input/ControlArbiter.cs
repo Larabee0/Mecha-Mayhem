@@ -5,6 +5,7 @@ using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
 using System.Linq;
 using UnityEngine.InputSystem.UI;
+using UnityEditor.Sprites;
 
 namespace RedButton.Core
 {
@@ -21,11 +22,12 @@ namespace RedButton.Core
             All
         }
 
+
+        public static bool Paused { get; private set; }
         public static Controller playerMode;
-        public static ControlArbiter Instance { 
-            get { return instance; } 
-            private set { instance = value; } }
-        public static ControlArbiter instance;
+        public static ControlArbiter Instance { get { return instance; } private set { instance = value; } }
+
+        private static ControlArbiter instance;
         public static PlayerInput PlayerOne = null;
         public static PlayerInput PlayerTwo = null;
         public static PlayerInput PlayerThree = null;
@@ -179,6 +181,7 @@ namespace RedButton.Core
             {
                 if (allActiveControllers.Contains(controllers[i].Player))
                 {
+                    controllers[i].SetPausingAllowed(false);
                     controllers[i].Disable();
                 }
                 else
@@ -190,6 +193,7 @@ namespace RedButton.Core
                     }
                     controllerMap.Add(controllers[i].DevicePath, controllers[i]);
                     controllers[i].Enable();
+                    controllers[i].SetPausingAllowed(true);
                     allActiveControllers.Add(controllers[i].Player);
                 }
             }
@@ -211,6 +215,7 @@ namespace RedButton.Core
                 if (this[i] != null)
                 {
                     this[i].Disable();
+                    this[i].SetPausingAllowed(false);
                 }
             }
         }
@@ -315,6 +320,32 @@ namespace RedButton.Core
             player.playerColour= playerColour;
             return player;
         }
+
+
+        #region pausing
+        public void PauseGame(PlayerInput pauser)
+        {
+            Paused = true;
+            InputSystem.PauseHaptics();
+            LockOutAllPlayers();
+            pauser.EnableUIonly();
+            pauser.SetPausingAllowed(true);
+            startScreenUIActionAsset.devices = pauser.Devices;
+            startScreenActionMap.devices = pauser.Devices;
+            Time.timeScale = 0;
+        }
+
+        public void UnPauseGame()
+        {
+            Paused = false;
+            Time.timeScale = 1;
+            startScreenUIActionAsset.devices = PlayerOne.Devices;
+            startScreenActionMap.devices = PlayerOne.Devices;
+            ValidateControllersAndPlayers();
+            InputSystem.ResumeHaptics();
+        }
+
+        #endregion
 
         /// <summary>
         /// index based way of getting player colours

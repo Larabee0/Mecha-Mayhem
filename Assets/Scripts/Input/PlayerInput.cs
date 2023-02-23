@@ -189,6 +189,27 @@ namespace RedButton.Core
             controlMap.MechControls.Disable();
         }
 
+        public void SetPausingAllowed(bool allowed = false)
+        {
+            if(allowed)
+            {
+                controlMap.UI.PauseGame.performed += PauseCallback;
+                return;
+            }
+            controlMap.UI.PauseGame.performed -= PauseCallback;
+        }
+
+        private void PauseCallback(InputAction.CallbackContext obj)
+        {
+            if (ControlArbiter.Paused)
+            {
+                ControlArbiter.Instance.UnPauseGame();
+                return;
+            }
+            
+            ControlArbiter.Instance.PauseGame(this);
+        }
+
         /// <summary>
         /// Disable user input for this player
         /// </summary>
