@@ -93,7 +93,7 @@ namespace RedButton.Core
         public StartScreenState startScreenState = StartScreenState.Binding;
         private DualControllerInput startScreenActionMap;
         private InputActionAsset startScreenUIActionAsset;
-        private StartScreenUI.ControllerAssignHelper playerToAssign;
+        private UnityUITranslationLayer.ControllerAssignHelper playerToAssign;
         [Header("Hot Start Settings")]
         [SerializeField] HotStartControllers hotStartDevices = HotStartControllers.All;
 
@@ -143,10 +143,10 @@ namespace RedButton.Core
         
         private void Start()
         {
-            if (unityUI)
-            {
-                uiTranslator.StartMenuUI.PlayerSelectCallback += MainUIController.StartScreenController.PlayerSelectCallback;
-            }
+            // if (unityUI)
+            // {
+            //     uiTranslator.StartMenuUI.PlayerSelectCallback += MainUIController.StartScreenController.PlayerSelectCallback;
+            // }
             
             WiimoteUISetup();
         }

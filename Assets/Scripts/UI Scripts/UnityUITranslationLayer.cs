@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RedButton.Core.UI
 {
@@ -17,7 +18,7 @@ namespace RedButton.Core.UI
             startMenuController = GetComponentInChildren<StartMenuManagerScript>(true);
             pauseMenuController = GetComponentInChildren<PauseMenuManager>(true);
             startMenuController.enabled = false;
-            startMenuController.PlayerSelectCallback += PlayerSelectCallback;
+            //startMenuController.PlayerSelectCallback += PlayerSelectCallback;
         }
 
         public void ShowStartSreen()
@@ -34,14 +35,61 @@ namespace RedButton.Core.UI
             gameObject.SetActive(false);
         }
 
-        private void PlayerSelectCallback(Controller playerCount, bool existingCheck)
-        {
-            HideAll();
-        }
+        //private void PlayerSelectCallback(Controller playerCount, bool existingCheck)
+        //{
+        //    HideAll();
+        //}
+        //
+        //private void OnDisable()
+        //{
+        //    startMenuController.PlayerSelectCallback -= PlayerSelectCallback;
+        //}
 
-        private void OnDisable()
+        public class ControllerAssignHelper
         {
-            startMenuController.PlayerSelectCallback -= PlayerSelectCallback;
+            public Controller playerNum;
+            public Text lable;
+            public Image image;
+
+            public ControllerAssignHelper(Controller playerNum, Text lable, Image image)
+            {
+                this.playerNum = playerNum;
+                this.lable = lable;
+                this.image = image;
+                lable.text = "";
+                SetShown(false);
+            }
+
+            public void Highlight()
+            {
+                image.color = Color.white;
+                lable.text = "Press Any Button";
+            }
+
+            public void Set(PlayerInput player)
+            {
+                image.color = player.playerColour;
+                lable.text = string.Format("{0}", player.DeviceName);
+            }
+
+            public void SetShown(bool hidden)
+            {
+                lable.transform.parent.gameObject.SetActive(hidden);
+                image.color = Color.gray;
+                lable.text = "";
+            }
+
+            public static string FirstLine(Controller playerNum)
+            {
+                return playerNum switch
+                {
+                    Controller.One => "Player One\n",
+                    Controller.Two => "Player Two\n",
+                    Controller.Three => "Player Three\n",
+                    Controller.Four => "Player Four\n",
+                    _ => "Invalid Player\n"
+                };
+            }
         }
     }
 }

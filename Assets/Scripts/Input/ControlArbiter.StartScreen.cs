@@ -150,14 +150,14 @@ namespace RedButton.Core
         /// starts controller to player assignment, triggered by the start screen UI.
         /// </summary>
         /// <param name="playersToAssign">all players to assign, in order</param>
-        public void StartControllerAssignment(Queue<StartScreenUI.ControllerAssignHelper> playersToAssign)
+        public void StartControllerAssignment(Queue<UnityUITranslationLayer.ControllerAssignHelper> playersToAssign)
         {
             startScreenState = StartScreenState.ControllerAssignment;
             if (UnityUI)
             {
                 // uiTranslator.StartMenuUI.PlayerSelectCallback -= MainUIController.StartScreenController.PlayerSelectCallback;
-                EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
-                mainUIController.UIShown = true;
+                // EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+                // mainUIController.UIShown = true;
             }
             startScreenActionMap.devices = newDevices.ToArray();
             startScreenUIActionAsset.devices = newDevices.ToArray();
@@ -177,7 +177,7 @@ namespace RedButton.Core
         /// </summary>
         /// <param name="playersToAssign">all players to assign, in order</param>
         /// <returns></returns>
-        private IEnumerator ControllerAssignmentCoroutine(Queue<StartScreenUI.ControllerAssignHelper> playersToAssign)
+        private IEnumerator ControllerAssignmentCoroutine(Queue<UnityUITranslationLayer.ControllerAssignHelper> playersToAssign)
         {
             while (playersToAssign.Count > 0 || playerToAssign != null)
             {
@@ -199,7 +199,9 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
             PlayerOne.EnableUIonly();
-            mainUIController.StartScreenController.ShowAssignmentButtonPanel();
+            // mainUIController.StartScreenController.ShowAssignmentButtonPanel();
+
+            uiTranslator.StartMenuUI.EnableOkBtn();
             startScreenState = StartScreenState.ConfirmAssignment;
 
         }

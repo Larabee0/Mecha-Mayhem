@@ -43,8 +43,14 @@ namespace RedButton.Core.UI
 
         [SerializeField] Sprite bgSprite;
         [SerializeField] Sprite willSprite;
+        
+        private UnityUITranslationLayer.ControllerAssignHelper PlayerOneAssign;
+        private UnityUITranslationLayer.ControllerAssignHelper PlayerTwoAssign;
+        private UnityUITranslationLayer.ControllerAssignHelper PlayerThreeAssign;
+        private UnityUITranslationLayer.ControllerAssignHelper PlayerFourAssign;
 
-        public PlayerCountSelect PlayerSelectCallback;
+
+        //public PlayerCountSelect PlayerSelectCallback;
 
         public void ShowBindPanel()
         {
@@ -52,17 +58,24 @@ namespace RedButton.Core.UI
             btnPanel.SetActive(false);
         }
 
-
-        private void Update()
+        private void Awake()
         {
-            if (bindPanel.activeSelf)
-            {
-                if (Input.anyKeyDown)
-                {
-                    ShowMainMenu();
-                }
-            }
+            PlayerOneAssign = new(Controller.One, p1ControllerTxt, p1Bg);
+            PlayerTwoAssign = new(Controller.Two, p2ControllerTxt, p2Bg);
+            PlayerThreeAssign = new(Controller.Three, p3ControllerTxt, p3Bg);
+            PlayerFourAssign = new(Controller.Four, p4ControllerTxt, p4Bg);
         }
+
+        // private void Update()
+        // {
+        //     if (bindPanel.activeSelf)
+        //     {
+        //         if (Input.anyKeyDown)
+        //         {
+        //             ShowMainMenu();
+        //         }
+        //     }
+        // }
 
 
         public void ShowMainMenu()
@@ -75,6 +88,8 @@ namespace RedButton.Core.UI
             willCreditsPanel.SetActive(false);
             PlayerAssignPanel.SetActive(false);
             lvlSelectPanel.SetActive(false);
+            DisableOkBtn();
+
             EventSystem.current.SetSelectedGameObject(btnPanelBtn);
             //controller binding goes here
         }
@@ -89,12 +104,17 @@ namespace RedButton.Core.UI
             creditsPanel.SetActive(false);
             EventSystem.current.SetSelectedGameObject(playerNumPanelBtn);
             ControlArbiter.Instance.GoForwardFromMainMenu();
+
+            PlayerOneAssign.SetShown(false);
+            PlayerTwoAssign.SetShown(false);
+            PlayerThreeAssign.SetShown(false);
+            PlayerFourAssign.SetShown(false);
         }
 
         public void ClosePlayerSelect()
         {
-            ControlArbiter.Instance.GoBackToControllerAssignment(new UnityEngine.InputSystem.InputAction.CallbackContext());
-            return;
+            //ControlArbiter.Instance.GoBackToControllerAssignment(new UnityEngine.InputSystem.InputAction.CallbackContext());
+            //return;
             btnPanel.SetActive(true);
             playerNumPanel.SetActive(false);
             EventSystem.current.SetSelectedGameObject(btnPanelBtn);
@@ -106,10 +126,136 @@ namespace RedButton.Core.UI
             Controller playerCount = (Controller)(playerNum- 1);  // will stay
             ControlArbiter.Instance.UnSubFromMainMenuBack();
             ControlArbiter.Instance.startScreenState = StartScreenState.ControllerAssignment;
-            PlayerSelectCallback?.Invoke(playerCount); // will stay
+            //PlayerSelectCallback?.Invoke(playerCount); // will stay
+            PlayerSelectCallback(playerCount);
+        }
+
+        public void PlayerSelectCallback(Controller playerCount,bool existingCheck = true)
+        {
+            playerNumPanel.SetActive(false);
+            DisableOkBtn();
+            ControlArbiter.playerMode = playerCount;
+            if(existingCheck && TryLoadAssignmentScreenWithCurrent())
+            {
+                return;
+            }
+
+            PlayerOneAssign.SetShown(true);
+            PlayerTwoAssign.SetShown(false);
+            PlayerThreeAssign.SetShown(false);
+            PlayerFourAssign.SetShown(false);
+            UIAssignPlayerOne();
+
+            Queue<UnityUITranslationLayer.ControllerAssignHelper> players = new();
+            if(ControlArbiter.PlayerOne == null)
+            {
+                players.Enqueue(PlayerOneAssign);
+            }
+
+            switch (ControlArbiter.playerMode)
+            {
+                case Controller.Two:
+                    players.Enqueue(PlayerTwoAssign);
+                    PlayerTwoAssign.SetShown(true);
+                    break;
+                case Controller.Three:
+                    players.Enqueue(PlayerTwoAssign);
+                    players.Enqueue(PlayerThreeAssign);
+                    PlayerTwoAssign.SetShown(true);
+                    PlayerThreeAssign.SetShown(true);
+                    break;
+                case Controller.Four:
+                    players.Enqueue(PlayerTwoAssign);
+                    players.Enqueue(PlayerThreeAssign);
+                    players.Enqueue(PlayerFourAssign);
+                    PlayerTwoAssign.SetShown(true);
+                    PlayerThreeAssign.SetShown(true);
+                    PlayerFourAssign.SetShown(true);
+                    break;
+            }
+
+
             PlayerAssignPanel.SetActive(true);
             playerNumPanel.SetActive(false);
+
             EventSystem.current.SetSelectedGameObject(returnBtn);
+
+
+            ControlArbiter.Instance.StartControllerAssignment(players);
+        }
+
+        public bool TryLoadAssignmentScreenWithCurrent()
+        {
+            PlayerOneAssign.SetShown(false);
+            PlayerTwoAssign.SetShown(false);
+            PlayerThreeAssign.SetShown(false);
+            PlayerFourAssign.SetShown(false);
+
+            bool allExpectPresent = ControlArbiter.playerMode switch
+            {
+                Controller.Two => UIAssignPlayerOne() && UIAssignPlayerTwo(),
+                Controller.Three => UIAssignPlayerOne() && UIAssignPlayerTwo() && UIAssignPlayerThree(),
+                Controller.Four => UIAssignPlayerOne() && UIAssignPlayerTwo() && UIAssignPlayerThree() && UIAssignPlayerFour(),
+                _ => UIAssignPlayerOne(),
+            };
+
+            PlayerAssignPanel.SetActive(true);
+            playerNumPanel.SetActive(false);
+
+            if (allExpectPresent)
+            {
+                ControlArbiter.Instance.SkipControllerAssignment();
+                EnableOkBtn();
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool UIAssignPlayerOne()
+        {
+            if (ControlArbiter.PlayerOne != null)
+            {
+                UIAssignPlayer(ControlArbiter.PlayerOne, PlayerOneAssign);
+                return true;
+            }
+            return false;
+        }
+
+        private bool UIAssignPlayerTwo()
+        {
+            if (ControlArbiter.PlayerTwo != null)
+            {
+                UIAssignPlayer(ControlArbiter.PlayerTwo, PlayerTwoAssign);
+                return true;
+            }
+            return false;
+        }
+
+        private bool UIAssignPlayerThree()
+        {
+            if (ControlArbiter.PlayerThree != null)
+            {
+                UIAssignPlayer(ControlArbiter.PlayerThree, PlayerThreeAssign);
+                return true;
+            }
+            return false;
+        }
+        private bool UIAssignPlayerFour()
+        {
+            if (ControlArbiter.PlayerFour != null)
+            {
+                UIAssignPlayer(ControlArbiter.PlayerFour, PlayerFourAssign);
+                return true;
+            }
+            return false;
+        }
+
+
+        public void UIAssignPlayer(PlayerInput playerInput, UnityUITranslationLayer.ControllerAssignHelper controllerAssignHelper)
+        {
+            controllerAssignHelper.SetShown(true);
+            controllerAssignHelper.Set(playerInput);
         }
 
         public void ChangeAssignment()
@@ -125,6 +271,7 @@ namespace RedButton.Core.UI
         {
             okBtn.SetActive(true);
             changeBtn.SetActive(true);
+            returnBtn.SetActive(true);
             EventSystem.current.SetSelectedGameObject(okBtn);
         }
 
@@ -132,6 +279,7 @@ namespace RedButton.Core.UI
         {
             okBtn.SetActive(false);
             changeBtn.SetActive(false);
+            returnBtn.SetActive(false);
             EventSystem.current.SetSelectedGameObject(returnBtn);
         }
 

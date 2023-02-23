@@ -132,7 +132,7 @@ namespace RedButton.Core.UI
             ControllerAssignment.style.display = DisplayStyle.Flex;
             controllerAssignmentButtonPanel.style.display = DisplayStyle.None;
 
-            ControlArbiter.Instance.StartControllerAssignment(players);
+            //ControlArbiter.Instance.StartControllerAssignment(players);
         }
         #endregion
 
