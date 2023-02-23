@@ -88,6 +88,7 @@ namespace RedButton.Core.UI
             willCreditsPanel.SetActive(false);
             PlayerAssignPanel.SetActive(false);
             lvlSelectPanel.SetActive(false);
+            PlayerAssignPanel.SetActive(false);
             DisableOkBtn();
 
             EventSystem.current.SetSelectedGameObject(btnPanelBtn);
@@ -264,7 +265,7 @@ namespace RedButton.Core.UI
             p2Bg.color = Color.white;
             p3Bg.color = Color.gray;
             p4Bg.color = Color.gray;
-            DisableOkBtn();
+            ControlArbiter.Instance.ResetControllerAssignment();
         }
 
         public void EnableOkBtn()
@@ -295,6 +296,7 @@ namespace RedButton.Core.UI
         // modified to work around the lack of controller assignment screen
         public void OpenLvlSelect()
         {
+            ControlArbiter.Instance.AcceptControllerAssignment();
             lvlSelectPanel.SetActive(true);
             PlayerAssignPanel.SetActive(false);
             EventSystem.current.SetSelectedGameObject(lvlSelectPanelBtn);
@@ -325,7 +327,7 @@ namespace RedButton.Core.UI
         public void CLoseLvlSelectInternal()
         {
             lvlSelectPanel.SetActive(false);
-            PlayerAssignPanel.SetActive(true);
+            // PlayerAssignPanel.SetActive(true);
         }
 
         public void OpenOptions()

@@ -113,12 +113,12 @@ namespace RedButton.Core
                 PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
             }
 
-            if (UnityUI)
-            {
-                // uiTranslator.StartMenuUI.PlayerSelectCallback -= MainUIController.StartScreenController.PlayerSelectCallback;
-                EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
-                mainUIController.UIShown = true;
-            }
+            // if (UnityUI)
+            // {
+            //     // uiTranslator.StartMenuUI.PlayerSelectCallback -= MainUIController.StartScreenController.PlayerSelectCallback;
+            //     EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+            //     mainUIController.UIShown = true;
+            // }
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
             PlayerOne.Enable();
@@ -140,9 +140,9 @@ namespace RedButton.Core
             startScreenState = StartScreenState.LevelSelect;
             if (UnityUI)
             {
-                MainUIController.UIShown = false;
-                uiTranslator.ShowStartSreen();
-                uiTranslator.StartMenuUI.OpenLvlSelectInternal();
+                // MainUIController.UIShown = false;
+                // uiTranslator.ShowStartSreen();
+                // uiTranslator.StartMenuUI.OpenLvlSelectInternal();
             }
         }
 
@@ -153,12 +153,7 @@ namespace RedButton.Core
         public void StartControllerAssignment(Queue<UnityUITranslationLayer.ControllerAssignHelper> playersToAssign)
         {
             startScreenState = StartScreenState.ControllerAssignment;
-            if (UnityUI)
-            {
-                // uiTranslator.StartMenuUI.PlayerSelectCallback -= MainUIController.StartScreenController.PlayerSelectCallback;
-                // EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
-                // mainUIController.UIShown = true;
-            }
+            
             startScreenActionMap.devices = newDevices.ToArray();
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += AssignControllerCallback;
@@ -166,6 +161,13 @@ namespace RedButton.Core
             startScreenActionMap.UI.Enable();
             if (PlayerOne != null)
             {
+                if (UnityUI)
+                {
+                    PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
+                    // uiTranslator.StartMenuUI.PlayerSelectCallback -= MainUIController.StartScreenController.PlayerSelectCallback;
+                    // EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+                    // mainUIController.UIShown = true;
+                }
                 PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
                 PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
             }
@@ -360,7 +362,7 @@ namespace RedButton.Core
                 {
                     PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMainMenu;
                 }
-                mainUIController.UIShown = false;
+                //mainUIController.UIShown = false;
                 uiTranslator.ShowStartSreen();
                 uiTranslator.StartMenuUI.OpenPlayerSelect();
             }
@@ -389,13 +391,17 @@ namespace RedButton.Core
             if(UnityUI)
             {
                 uiTranslator.StartMenuUI.CLoseLvlSelectInternal();
-                uiTranslator.HideAll();
-                mainUIController.UIShown = true;
-                EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+                // uiTranslator.HideAll();
+                // mainUIController.UIShown = true;
+                uiTranslator.StartMenuUI.PlayerSelectCallback(playerMode, true);
+                // EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
             }
-
+            else
+            {
+                mainUIController.StartScreenController.PlayerSelectCallback(playerMode, true);
+            }
+            
             startScreenState = StartScreenState.ControllerAssignment;
-            mainUIController.StartScreenController.PlayerSelectCallback(playerMode, true);
 
         }
         #endregion
@@ -407,7 +413,15 @@ namespace RedButton.Core
         {
             UnassignPlayers(true);
             newDevices = new HashSet<InputDevice>(InputSystem.devices);
-            mainUIController.StartScreenController.PlayerSelectCallback(playerMode, false);
+            if (UnityUI)
+            {
+                uiTranslator.StartMenuUI.PlayerSelectCallback(playerMode, false);
+            }
+            else
+            {
+                mainUIController.StartScreenController.PlayerSelectCallback(playerMode, false);
+            }
+            
         }
 
         /// <summary>
