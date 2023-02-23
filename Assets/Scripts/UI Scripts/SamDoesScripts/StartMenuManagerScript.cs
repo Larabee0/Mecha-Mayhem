@@ -18,6 +18,7 @@ namespace RedButton.Core.UI
         [SerializeField] GameObject creditsPanel;
         [SerializeField] GameObject willCreditsPanel;
         [SerializeField] GameObject playerNumPanel;
+        [SerializeField] GameObject PlayerAssignPanel;
         [SerializeField] GameObject lvlSelectPanel;
 
         [Header("Buttons")]
@@ -25,7 +26,20 @@ namespace RedButton.Core.UI
         [SerializeField] GameObject optionsPanelBtn;
         [SerializeField] GameObject creditsPanelBtn;
         [SerializeField] GameObject playerNumPanelBtn;
+        [SerializeField] GameObject returnBtn;
+        [SerializeField] GameObject okBtn;
+        [SerializeField] GameObject changeBtn;
         [SerializeField] GameObject lvlSelectPanelBtn;
+
+        [Header("Assignment Stuff")]
+        [SerializeField] Image p1Bg;
+        [SerializeField] Text p1ControllerTxt;
+        [SerializeField] Image p2Bg;
+        [SerializeField] Text p2ControllerTxt;
+        [SerializeField] Image p3Bg;
+        [SerializeField] Text p3ControllerTxt;
+        [SerializeField] Image p4Bg;
+        [SerializeField] Text p4ControllerTxt;
 
         [SerializeField] Sprite bgSprite;
         [SerializeField] Sprite willSprite;
@@ -59,6 +73,8 @@ namespace RedButton.Core.UI
             optionsPanel.SetActive(false);
             creditsPanel.SetActive(false);
             willCreditsPanel.SetActive(false);
+            PlayerAssignPanel.SetActive(false);
+            lvlSelectPanel.SetActive(false);
             EventSystem.current.SetSelectedGameObject(btnPanelBtn);
             //controller binding goes here
         }
@@ -84,26 +100,61 @@ namespace RedButton.Core.UI
             EventSystem.current.SetSelectedGameObject(btnPanelBtn);
         }
 
-
-        // modified to work around the lack of controller assignment screen
-        public void OpenLvlSelect(int playerNum)
+        public void OpenAssignment(int playerNum)
         {
-
-            playerNumPanel.SetActive(false);
-            // lvlSelectPanel.SetActive(true);
-
+            Debug.Log(playerNum); // will bin
             Controller playerCount = (Controller)(playerNum- 1);  // will stay
-            Debug.Log(playerCount); // will bin
             ControlArbiter.Instance.UnSubFromMainMenuBack();
             ControlArbiter.Instance.startScreenState = StartScreenState.ControllerAssignment;
             PlayerSelectCallback?.Invoke(playerCount); // will stay
-            // EventSystem.current.SetSelectedGameObject(lvlSelectPanelBtn);
+            PlayerAssignPanel.SetActive(true);
+            playerNumPanel.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(returnBtn);
+        }
 
+        public void ChangeAssignment()
+        {
+            p1Bg.color = Color.white; //Should be player 1 colour
+            p2Bg.color = Color.white;
+            p3Bg.color = Color.gray;
+            p4Bg.color = Color.gray;
+            DisableOkBtn();
+        }
+
+        public void EnableOkBtn()
+        {
+            okBtn.SetActive(true);
+            changeBtn.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(okBtn);
+        }
+
+        public void DisableOkBtn()
+        {
+            okBtn.SetActive(false);
+            changeBtn.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(returnBtn);
+        }
+
+        public void CloseAssignment()
+        {
+            PlayerAssignPanel.SetActive(false);
+            playerNumPanel.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(playerNumPanelBtn);
+        }
+
+
+
+        // modified to work around the lack of controller assignment screen
+        public void OpenLvlSelect()
+        {
+            lvlSelectPanel.SetActive(true);
+            PlayerAssignPanel.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(lvlSelectPanelBtn);
         }
         // added work around because lack of controller assignment screen
         public void OpenLvlSelectInternal()
         {
-            playerNumPanel.SetActive(false);
+            PlayerAssignPanel.SetActive(false);
             lvlSelectPanel.SetActive(true);
             EventSystem.current.SetSelectedGameObject(lvlSelectPanelBtn);
         }
@@ -118,7 +169,7 @@ namespace RedButton.Core.UI
         {
             ControlArbiter.Instance.GoBackToControllerAssignment(new UnityEngine.InputSystem.InputAction.CallbackContext());
             return;
-            playerNumPanel.SetActive(true);
+            PlayerAssignPanel.SetActive(true);
             bgPanel.GetComponent<Image>().sprite = bgSprite;
             EventSystem.current.SetSelectedGameObject(playerNumPanelBtn);
         }
@@ -126,6 +177,7 @@ namespace RedButton.Core.UI
         public void CLoseLvlSelectInternal()
         {
             lvlSelectPanel.SetActive(false);
+            PlayerAssignPanel.SetActive(true);
         }
 
         public void OpenOptions()
