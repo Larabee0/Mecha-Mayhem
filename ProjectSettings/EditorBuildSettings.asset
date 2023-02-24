@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scene/Start Screen.unity
-    guid: 8cb0f268ae71c2c47a6ac48560fd4d82
+    path: Assets/Scene/SamDoesUI.unity
+    guid: c19301e6450e0df4a8f95cb97aa197a8
   - enabled: 1
     path: Assets/Scene/WillTesting.unity
     guid: ed2dd0d5b9e982442b4e2b55872a5b0d
   - enabled: 1
     path: Assets/Scene/Test Ground Blockout.unity
     guid: f9f21309fc819ef42a1d8f865ef77127
+  - enabled: 1
+    path: Assets/Scene/Start Screen.unity
+    guid: 8cb0f268ae71c2c47a6ac48560fd4d82
   m_configObjects: {}
