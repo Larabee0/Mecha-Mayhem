@@ -84,14 +84,19 @@ namespace RedButton.Core
 
         [SerializeField] private MainUIController mainUIController;
         public MainUIController MainUIController => mainUIController;
+        public bool UnityUI => unityUI;
+        [SerializeField] private UnityUITranslationLayer uiTranslator;
 
         [Header("Start Screen Settings")]
+        [SerializeField] private bool unityUI = false;
         [SerializeField] private bool StartScreen = false;
+        public StartScreenState startScreenState = StartScreenState.Binding;
         private DualControllerInput startScreenActionMap;
         private InputActionAsset startScreenUIActionAsset;
-        private StartScreenUI.ControllerAssignHelper playerToAssign;
+        private UnityUITranslationLayer.ControllerAssignHelper playerToAssign;
         [Header("Hot Start Settings")]
         [SerializeField] HotStartControllers hotStartDevices = HotStartControllers.All;
+        public Pluse OnPauseMenuQuit;
 
         private void Awake()
         {
@@ -139,6 +144,11 @@ namespace RedButton.Core
         
         private void Start()
         {
+            // if (unityUI)
+            // {
+            //     uiTranslator.StartMenuUI.PlayerSelectCallback += MainUIController.StartScreenController.PlayerSelectCallback;
+            // }
+            
             WiimoteUISetup();
         }
 
@@ -257,6 +267,7 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = player.Devices;
             startScreenActionMap.devices = player.Devices;
             player.EnableUIonly();
+            uiTranslator.SetUIHoverTint(player.playerColour);
         }
 
         #region Hot Start
@@ -330,6 +341,8 @@ namespace RedButton.Core
             LockOutAllPlayers();
             pauser.EnableUIonly();
             pauser.SetPausingAllowed(true);
+            uiTranslator.SetUIHoverTint(pauser.playerColour);
+            uiTranslator.ShowPauseMenu();
             startScreenUIActionAsset.devices = pauser.Devices;
             startScreenActionMap.devices = pauser.Devices;
             Time.timeScale = 0;
@@ -337,12 +350,14 @@ namespace RedButton.Core
 
         public void UnPauseGame()
         {
+            uiTranslator.HideAll();
             Paused = false;
             Time.timeScale = 1;
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
             ValidateControllersAndPlayers();
             InputSystem.ResumeHaptics();
+            
         }
 
         #endregion

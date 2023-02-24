@@ -132,7 +132,7 @@ namespace RedButton.Core.UI
             ControllerAssignment.style.display = DisplayStyle.Flex;
             controllerAssignmentButtonPanel.style.display = DisplayStyle.None;
 
-            ControlArbiter.Instance.StartControllerAssignment(players);
+            //ControlArbiter.Instance.StartControllerAssignment(players);
         }
         #endregion
 
@@ -180,8 +180,12 @@ namespace RedButton.Core.UI
         /// </summary>
         private void AcceptControllerAssignmentCallback()
         {
-            //ShowMechSelector()
             ControlArbiter.Instance.AcceptControllerAssignment();
+            //ShowMechSelector()
+            if (ControlArbiter.Instance.UnityUI)
+            {
+                return;
+            }
             ShowLevelSelectScreen();
         }
 
@@ -411,7 +415,7 @@ namespace RedButton.Core.UI
         private void ReturnToLevelSelectScreen()
         {
             GameSceneManager.Instance.OnActiveSceneChanged -= ReturnToLevelSelectScreen;
-            ShowLevelSelectScreen();
+            //ShowLevelSelectScreen();
             ControlArbiter.Instance.OverrideUIAssetDevices(ControlArbiter.PlayerOne);
             // enable player one UI control
         }
