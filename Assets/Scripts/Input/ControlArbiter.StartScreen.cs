@@ -10,9 +10,23 @@ using UnityEngine.UIElements;
 
 namespace RedButton.Core
 {
+    public enum StartScreenState
+    {
+        Binding,
+        MainMenu,
+        OptionsMenu,
+        Credits,
+        SetPlayerCount,
+        ControllerAssignment,
+        ConfirmAssignment,
+        LevelSelect,
+        Closed
+    }
+
     public partial class ControlArbiter : MonoBehaviour
     {
         #region Start Screen
+
         /// <summary>
         /// Sets up ControlArbiter for starting from main menu
         /// in the future it will support starting from a map scene to speed up testing
@@ -28,6 +42,10 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Enable();
+            if (UnityUI)
+            {
+                mainUIController.UIShown = false;
+            }
         }
 
         /// <summary>
@@ -55,8 +73,17 @@ namespace RedButton.Core
             startScreenActionMap.UI.Submit.performed -= StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Disable();
 
-            mainUIController.StartScreenController.ShowPlayerCountPicker();
-            EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+            if (UnityUI)
+            {
+                startScreenState = StartScreenState.MainMenu;
+                uiTranslator.StartMenuUI.ShowMainMenu();
+            }
+            else
+            {
+                startScreenState = StartScreenState.SetPlayerCount;
+                mainUIController.StartScreenController.ShowPlayerCountPicker();
+                EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
+            }
         }
 
         /// <summary>
@@ -326,7 +353,6 @@ namespace RedButton.Core
             if (PlayerOne != null)
             {
                 PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
-                PlayerOne.Disable();
             }
 
             startScreenState = StartScreenState.SetPlayerCount;
