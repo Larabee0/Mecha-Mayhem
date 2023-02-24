@@ -266,6 +266,7 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = player.Devices;
             startScreenActionMap.devices = player.Devices;
             player.EnableUIonly();
+            uiTranslator.SetUIHoverTint(player.playerColour);
         }
 
         #region Hot Start

@@ -9,16 +9,27 @@ namespace RedButton.Core.UI
     {
         [SerializeField] private StartMenuManagerScript startMenuController;
         [SerializeField] private PauseMenuManager pauseMenuController;
-
+        [SerializeField] private Button[] allButtons;
         public StartMenuManagerScript StartMenuUI => startMenuController;
         public PauseMenuManager PauseMenuUI => pauseMenuController;
 
         private void Awake()
         {
+            allButtons = GetComponentsInChildren<Button>();
             startMenuController = GetComponentInChildren<StartMenuManagerScript>(true);
             pauseMenuController = GetComponentInChildren<PauseMenuManager>(true);
             startMenuController.enabled = false;
             //startMenuController.PlayerSelectCallback += PlayerSelectCallback;
+        }
+
+        public void SetUIHoverTint(Color colour)
+        {
+            for (int i = 0; i < allButtons.Length; i++)
+            {
+                ColorBlock block = allButtons[i].colors;
+                block.selectedColor = colour;
+                allButtons[i].colors = block;
+            }
         }
 
         public void ShowStartSreen()
