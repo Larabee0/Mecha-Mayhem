@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
 using System.Linq;
+using UnityEngine.InputSystem.UI;
+using UnityEditor.Sprites;
 
 namespace RedButton.Core
 {
@@ -20,11 +22,12 @@ namespace RedButton.Core
             All
         }
 
+
+        public static bool Paused { get; private set; }
         public static Controller playerMode;
-        public static ControlArbiter Instance { 
-            get { return instance; } 
-            private set { instance = value; } }
-        public static ControlArbiter instance;
+        public static ControlArbiter Instance { get { return instance; } private set { instance = value; } }
+
+        private static ControlArbiter instance;
         public static PlayerInput PlayerOne = null;
         public static PlayerInput PlayerTwo = null;
         public static PlayerInput PlayerThree = null;
@@ -81,14 +84,19 @@ namespace RedButton.Core
 
         [SerializeField] private MainUIController mainUIController;
         public MainUIController MainUIController => mainUIController;
+        public bool UnityUI => unityUI;
+        [SerializeField] private UnityUITranslationLayer uiTranslator;
 
         [Header("Start Screen Settings")]
+        [SerializeField] private bool unityUI = false;
         [SerializeField] private bool StartScreen = false;
+        public StartScreenState startScreenState = StartScreenState.Binding;
         private DualControllerInput startScreenActionMap;
         private InputActionAsset startScreenUIActionAsset;
-        private StartScreenUI.ControllerAssignHelper playerToAssign;
+        private UnityUITranslationLayer.ControllerAssignHelper playerToAssign;
         [Header("Hot Start Settings")]
         [SerializeField] HotStartControllers hotStartDevices = HotStartControllers.All;
+        public Pluse OnPauseMenuQuit;
 
         private void Awake()
         {
@@ -109,6 +117,7 @@ namespace RedButton.Core
                 Destroy(gameObject);
                 return;
             }
+            StartScreen = mainUIController.StartScene;
             Instance = this;
             
             // if we reach here then we've decided we can go ahead with full start up of the control arbiter instance.
@@ -135,6 +144,11 @@ namespace RedButton.Core
         
         private void Start()
         {
+            // if (unityUI)
+            // {
+            //     uiTranslator.StartMenuUI.PlayerSelectCallback += MainUIController.StartScreenController.PlayerSelectCallback;
+            // }
+            
             WiimoteUISetup();
         }
 
@@ -177,6 +191,7 @@ namespace RedButton.Core
             {
                 if (allActiveControllers.Contains(controllers[i].Player))
                 {
+                    controllers[i].SetPausingAllowed(false);
                     controllers[i].Disable();
                 }
                 else
@@ -188,6 +203,7 @@ namespace RedButton.Core
                     }
                     controllerMap.Add(controllers[i].DevicePath, controllers[i]);
                     controllers[i].Enable();
+                    controllers[i].SetPausingAllowed(true);
                     allActiveControllers.Add(controllers[i].Player);
                 }
             }
@@ -209,6 +225,7 @@ namespace RedButton.Core
                 if (this[i] != null)
                 {
                     this[i].Disable();
+                    this[i].SetPausingAllowed(false);
                 }
             }
         }
@@ -241,6 +258,16 @@ namespace RedButton.Core
                     PlayerTwo.playerColour = playerTwoColour;
                     break;
             }
+        }
+
+        public void OverrideUIAssetDevices(PlayerInput player)
+        {
+            LockOutAllPlayers();
+            startScreenUIActionAsset = GetComponent<InputSystemUIInputModule>().actionsAsset;
+            startScreenUIActionAsset.devices = player.Devices;
+            startScreenActionMap.devices = player.Devices;
+            player.EnableUIonly();
+            uiTranslator.SetUIHoverTint(player.playerColour);
         }
 
         #region Hot Start
@@ -304,6 +331,36 @@ namespace RedButton.Core
             player.playerColour= playerColour;
             return player;
         }
+
+
+        #region pausing
+        public void PauseGame(PlayerInput pauser)
+        {
+            Paused = true;
+            InputSystem.PauseHaptics();
+            LockOutAllPlayers();
+            pauser.EnableUIonly();
+            pauser.SetPausingAllowed(true);
+            uiTranslator.SetUIHoverTint(pauser.playerColour);
+            uiTranslator.ShowPauseMenu();
+            startScreenUIActionAsset.devices = pauser.Devices;
+            startScreenActionMap.devices = pauser.Devices;
+            Time.timeScale = 0;
+        }
+
+        public void UnPauseGame()
+        {
+            uiTranslator.HideAll();
+            Paused = false;
+            Time.timeScale = 1;
+            startScreenUIActionAsset.devices = PlayerOne.Devices;
+            startScreenActionMap.devices = PlayerOne.Devices;
+            ValidateControllersAndPlayers();
+            InputSystem.ResumeHaptics();
+            
+        }
+
+        #endregion
 
         /// <summary>
         /// index based way of getting player colours

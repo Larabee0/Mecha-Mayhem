@@ -4,7 +4,6 @@ using UnityEngine;
 using RedButton.Core;
 using RedButton.Mech;
 using RedButton.Core.UI;
-using System.Data.Common;
 
 namespace RedButton.GamePlay
 {
@@ -32,6 +31,7 @@ namespace RedButton.GamePlay
                 Debug.Log("Missing Control Arbiter, creating one for hot start...");
                 Instantiate(controlArbiterPrefab);
             }
+            ControlArbiter.Instance.OnPauseMenuQuit += EndRound;
         }
 
         private void Start()
@@ -129,6 +129,11 @@ namespace RedButton.GamePlay
                 // end round
                 EndRound();
             }
+        }
+
+        private void OnDestroy()
+        {
+            ControlArbiter.Instance.OnPauseMenuQuit -= EndRound;
         }
     }
 }
