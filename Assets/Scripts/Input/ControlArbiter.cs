@@ -5,7 +5,6 @@ using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
 using System.Linq;
 using UnityEngine.InputSystem.UI;
-using UnityEditor.Sprites;
 
 namespace RedButton.Core
 {
@@ -148,7 +147,11 @@ namespace RedButton.Core
             // {
             //     uiTranslator.StartMenuUI.PlayerSelectCallback += MainUIController.StartScreenController.PlayerSelectCallback;
             // }
-            
+
+            if (UnityUI)
+            {
+                mainUIController.UIShown = false;
+            }
             WiimoteUISetup();
         }
 

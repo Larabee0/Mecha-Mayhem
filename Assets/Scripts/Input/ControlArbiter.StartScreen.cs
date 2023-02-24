@@ -42,10 +42,6 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Enable();
-            if (UnityUI)
-            {
-                mainUIController.UIShown = false;
-            }
         }
 
         /// <summary>
