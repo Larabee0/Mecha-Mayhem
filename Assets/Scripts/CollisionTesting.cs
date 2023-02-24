@@ -6,6 +6,6 @@ public class CollisionTesting : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("We expirecned a collision");
+        Debug.Log("We expirienced a collision");
     }
 }

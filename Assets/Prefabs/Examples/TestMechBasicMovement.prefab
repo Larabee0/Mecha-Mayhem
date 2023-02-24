@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 8233164234714935994}
   m_Layer: 0
   m_Name: TestMechBasicMovement
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -208,6 +208,7 @@ MonoBehaviour:
   inputController: {fileID: 0}
   movementCore: {fileID: 0}
   weapons: []
+  mechColliders: []
 --- !u!114 &8233164234714935994
 MonoBehaviour:
   m_ObjectHideFlags: 0
