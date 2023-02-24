@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 namespace RedButton.Mech.Examples
 {
@@ -10,6 +11,7 @@ namespace RedButton.Mech.Examples
     public class BasicConeShotgunWeapon : WeaponCore
     {
         private float fireInterval = 0f;
+        [SerializeField] GameObject shield;
 
         [Header("Physics Cone Weapon Settings")]
         [SerializeField] float angleOfBullets;
@@ -25,14 +27,17 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void Fire()
         {
-            fireInterval -= Time.deltaTime;
-
-            switch (fireInterval)
+            if (!shield.activeSelf)
             {
-                case <= 0f:
-                    fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
-                    PhysicsShoot();
-                    break;
+                fireInterval -= Time.deltaTime;
+
+                switch (fireInterval)
+                {
+                    case <= 0f:
+                        fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
+                        PhysicsShoot();
+                        break;
+                }
             }
         }
 
@@ -41,7 +46,10 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void GroupFire()
         {
-            PhysicsShoot();
+            if (!shield.activeSelf)
+            {
+                PhysicsShoot();
+            }
         }
 
         /// <summary>
@@ -71,53 +79,14 @@ namespace RedButton.Mech.Examples
 
             // Because awake is called immidately for the projectile, its colliders property will now be set (assuming it has any)
             // so we can safely ignore collisions between them and the colliders in the origin mech.
-            for (int p = 0; p < projectile.ProjectileColliders.Length; p++)
-            {
-                for (int m = 0; m < CMC.MechColliders.Length; m++)
-                {
-                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], CMC.MechColliders[m]);
-                }
-            }
 
-            for (int p = 0; p < projectile.ProjectileColliders.Length; p++)
-            {
-                for (int r = 0; r < leftProjectile.ProjectileColliders.Length; r++)
-                {
-                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], leftProjectile.ProjectileColliders[r]);
-                }
-            }
+            IgnoreCollisions(projectile);
+            IgnoreCollisions(leftProjectile);
+            IgnoreCollisions(rightProjectile);
 
-            for (int p = 0; p < projectile.ProjectileColliders.Length; p++)
-            {
-                for (int r = 0; r < leftProjectile.ProjectileColliders.Length; r++)
-                {
-                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], rightProjectile.ProjectileColliders[r]);
-                }
-            }
-
-            for (int p = 0; p < projectile.ProjectileColliders.Length; p++)
-            {
-                for (int r = 0; r < leftProjectile.ProjectileColliders.Length; r++)
-                {
-                    Physics.IgnoreCollision(rightProjectile.ProjectileColliders[p], leftProjectile.ProjectileColliders[r]);
-                }
-            }
-
-            for (int p = 0; p < leftProjectile.ProjectileColliders.Length; p++)
-            {
-                for (int m = 0; m < CMC.MechColliders.Length; m++)
-                {
-                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], CMC.MechColliders[m]);
-                }
-            }
-
-            for (int p = 0; p < rightProjectile.ProjectileColliders.Length; p++)
-            {
-                for (int m = 0; m < CMC.MechColliders.Length; m++)
-                {
-                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], CMC.MechColliders[m]);
-                }
-            }
+            IgnoreCollisions(projectile, leftProjectile);
+            IgnoreCollisions(projectile, rightProjectile);
+            IgnoreCollisions(leftProjectile, rightProjectile);
 
             projectile.Initilise(CMC, damage);
 
@@ -130,6 +99,33 @@ namespace RedButton.Mech.Examples
             leftProjectile.Rigidbody.AddForce(leftBulletVector * shootForce, ForceMode.Impulse);
 
             rightProjectile.Rigidbody.AddForce(rightBulletVector * shootForce, ForceMode.Impulse);
+        }
+
+        private void IgnoreCollisions(ProjectileCore projectile)
+        {
+            // Because awake is called immidately for the projectile, its colliders property will now be set (assuming it has any)
+            // so we can safely ignore collisions between them and the colliders in the origin mech.
+            for (int p = 0; p < projectile.ProjectileColliders.Length; p++)
+            {
+                for (int m = 0; m < CMC.MechColliders.Length; m++)
+                {
+                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], CMC.MechColliders[m]);
+                }
+            }
+        }
+
+
+        private void IgnoreCollisions(ProjectileCore projectile, ProjectileCore other)
+        {
+            // Because awake is called immidately for the projectile, its colliders property will now be set (assuming it has any)
+            // so we can safely ignore collisions between them and the colliders in the origin mech.
+            for (int p = 0; p < projectile.ProjectileColliders.Length; p++)
+            {
+                for (int m = 0; m < other.ProjectileColliders.Length; m++)
+                {
+                    Physics.IgnoreCollision(projectile.ProjectileColliders[p], other.ProjectileColliders[m]);
+                }
+            }
         }
     }
 }

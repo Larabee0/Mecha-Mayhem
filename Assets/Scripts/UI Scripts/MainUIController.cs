@@ -24,6 +24,21 @@ namespace RedButton.Core.UI
         public HealthBarsUI[] healthBarsUI = new HealthBarsUI[4];
         public bool StartScene => startScreenUI != null;
 
+        public bool UIShown
+        {
+            set
+            {
+                if(value)
+                {
+                    RootVisualElenement.style.display = DisplayStyle.Flex;
+                }
+                else
+                {
+                    RootVisualElenement.style.display = DisplayStyle.None;
+                }
+            }
+        }
+
         private void Awake()
         {
             mainDocument = GetComponent<UIDocument>();
