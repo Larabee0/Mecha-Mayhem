@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8193141111344339457}
   - component: {fileID: 8193141111344339458}
   - component: {fileID: 8193141111344339459}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ExampleBasicProjectile
   m_TagString: Projectiles
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 8193141111882643281}
   - component: {fileID: 8193141111882643282}
   - component: {fileID: 8193141111882643283}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 8193141112892354798}
   - component: {fileID: 8193141112892354799}
   - component: {fileID: 8193141112892354792}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

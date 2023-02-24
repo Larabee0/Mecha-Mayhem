@@ -10,9 +10,13 @@ namespace RedButton.Mech
     {
         [SerializeField] int shieldCD;
         int shieldHealth;
-        bool shieldReady;
+        [SerializeField] bool shieldReady;
         [SerializeField] private GameObject shield;
-
+        protected override void Awake()
+        {
+            base.Awake();
+            StartCoroutine(ShieldRecharge());
+        }
         protected override void BindtoControls()
         {
             ButtonEventContainer buttonEventContainer = controlBinding switch
@@ -44,7 +48,7 @@ namespace RedButton.Mech
             Debug.Log("unfier");
             shield.SetActive(false);
             shieldReady = false;
-            StartCoroutine("ShieldRecharge");
+            StartCoroutine(ShieldRecharge());
 
         }
 
@@ -69,11 +73,7 @@ namespace RedButton.Mech
             yield return new WaitForSeconds(shieldCD * 2);
             shieldReady = true;
         }
-        private void ShieldACtivated()
-        {
-            
-            
-        }
+
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.CompareTag("Projectile"))
@@ -83,7 +83,7 @@ namespace RedButton.Mech
                 {
                     shield.SetActive(false);
                     shieldReady = false;
-                    StartCoroutine("ShieldDestroyed");
+                    StartCoroutine(ShieldDestroyed());
                 }
             }
         }

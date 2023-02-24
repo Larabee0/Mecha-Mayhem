@@ -10,7 +10,7 @@ namespace RedButton.Mech.Examples
     public class ExampleBasicProjectile : ProjectileCore
     {
         [SerializeField] protected CentralMechComponent origin;
-        private int damage;
+        protected int damage;
 
         /// <summary>
         /// set the damage nad origin mech properties.
