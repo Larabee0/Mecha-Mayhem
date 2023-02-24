@@ -791,7 +791,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 251103224}
+  m_TargetGraphic: {fileID: 568274943}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -925,7 +925,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 267918182}
+  m_TargetGraphic: {fileID: 1335998831}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -1060,7 +1060,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 284120337}
+  m_TargetGraphic: {fileID: 1972910663}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -1071,7 +1071,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2187,7 +2187,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 496303429}
+  m_TargetGraphic: {fileID: 384391988}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -2482,7 +2482,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 570156162}
+  m_TargetGraphic: {fileID: 1272356656}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -2493,7 +2493,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3675,7 +3675,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 824345503}
+  m_TargetGraphic: {fileID: 949414745}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -4246,6 +4246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMenuController: {fileID: 180565485}
   pauseMenuController: {fileID: 0}
+  allButtons: []
 --- !u!1 &1026597710
 GameObject:
   m_ObjectHideFlags: 0
@@ -4590,7 +4591,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1054543673}
+  m_TargetGraphic: {fileID: 836180914}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -4724,7 +4725,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1066394331}
+  m_TargetGraphic: {fileID: 1949929913}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -5307,7 +5308,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1172937374}
+  m_TargetGraphic: {fileID: 314296157}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -6103,7 +6104,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1467761719}
+  m_TargetGraphic: {fileID: 1799276955}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -6843,7 +6844,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1616073378}
+  m_TargetGraphic: {fileID: 650116355}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -7057,7 +7058,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1625583274}
+  m_TargetGraphic: {fileID: 2143859949}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -7878,7 +7879,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1727972481}
+  m_TargetGraphic: {fileID: 1068502386}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -8093,7 +8094,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1737286788}
+  m_TargetGraphic: {fileID: 1582902144}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -8104,7 +8105,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -8241,7 +8242,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1760827917}
+  m_TargetGraphic: {fileID: 1981277142}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -9009,7 +9010,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1952148379}
+  m_TargetGraphic: {fileID: 978671364}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -9473,7 +9474,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2007837193}
+  m_TargetGraphic: {fileID: 665573289}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -9896,7 +9897,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2033815063}
+  m_TargetGraphic: {fileID: 1913870902}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -10618,7 +10619,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2141771919}
+  m_TargetGraphic: {fileID: 434947642}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -10629,7 +10630,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -10846,7 +10847,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2146255583}
+  m_TargetGraphic: {fileID: 1026597712}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -10940,13 +10941,13 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 3266924992087568633}
+  m_TargetGraphic: {fileID: 877255428477557721}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8920366873679235030}
         m_TargetAssemblyTypeName: RedButton.Core.UI.PauseMenuManager, Assembly-CSharp
-        m_MethodName: ExitButton
+        m_MethodName: CloseButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10996,13 +10997,13 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 9120041684416849473}
+  m_TargetGraphic: {fileID: 1673585747666761462}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8920366873679235030}
         m_TargetAssemblyTypeName: RedButton.Core.UI.PauseMenuManager, Assembly-CSharp
-        m_MethodName: CloseButton
+        m_MethodName: ExitButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11651,6 +11652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd0dad62da51694da3c7f5dbe6fb175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  continueButton: {fileID: 8816306110133888613}
 --- !u!114 &9120041684416849473
 MonoBehaviour:
   m_ObjectHideFlags: 0

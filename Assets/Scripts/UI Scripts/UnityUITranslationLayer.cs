@@ -15,7 +15,7 @@ namespace RedButton.Core.UI
 
         private void Awake()
         {
-            allButtons = GetComponentsInChildren<Button>();
+            allButtons = GetComponentsInChildren<Button>(true);
             startMenuController = GetComponentInChildren<StartMenuManagerScript>(true);
             pauseMenuController = GetComponentInChildren<PauseMenuManager>(true);
             startMenuController.enabled = false;
@@ -36,6 +36,13 @@ namespace RedButton.Core.UI
         {
             startMenuController.gameObject.SetActive(true);
             pauseMenuController.gameObject.SetActive(false);
+            gameObject.SetActive(true);
+        }
+
+        public void ShowPauseMenu()
+        {
+            startMenuController.gameObject.SetActive(false);
+            pauseMenuController.Open();
             gameObject.SetActive(true);
         }
 

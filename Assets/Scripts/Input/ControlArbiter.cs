@@ -96,6 +96,7 @@ namespace RedButton.Core
         private UnityUITranslationLayer.ControllerAssignHelper playerToAssign;
         [Header("Hot Start Settings")]
         [SerializeField] HotStartControllers hotStartDevices = HotStartControllers.All;
+        public Pluse OnPauseMenuQuit;
 
         private void Awake()
         {
@@ -341,6 +342,7 @@ namespace RedButton.Core
             pauser.EnableUIonly();
             pauser.SetPausingAllowed(true);
             uiTranslator.SetUIHoverTint(pauser.playerColour);
+            uiTranslator.ShowPauseMenu();
             startScreenUIActionAsset.devices = pauser.Devices;
             startScreenActionMap.devices = pauser.Devices;
             Time.timeScale = 0;
@@ -348,12 +350,14 @@ namespace RedButton.Core
 
         public void UnPauseGame()
         {
+            uiTranslator.HideAll();
             Paused = false;
             Time.timeScale = 1;
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
             ValidateControllersAndPlayers();
             InputSystem.ResumeHaptics();
+            
         }
 
         #endregion
