@@ -70,6 +70,7 @@ namespace RedButton.Core
             PlayerOne.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
             PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
             PlayerOne.EnableUIonly();
+            uiTranslator.SetUIHoverTint(PlayerOneColour);
             startScreenActionMap.UI.Submit.performed -= StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Disable();
 

@@ -340,6 +340,7 @@ namespace RedButton.Core
             LockOutAllPlayers();
             pauser.EnableUIonly();
             pauser.SetPausingAllowed(true);
+            uiTranslator.SetUIHoverTint(pauser.playerColour);
             startScreenUIActionAsset.devices = pauser.Devices;
             startScreenActionMap.devices = pauser.Devices;
             Time.timeScale = 0;
