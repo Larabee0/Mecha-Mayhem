@@ -47,7 +47,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Fire 1"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""6317b36e-c303-4637-ae83-f81f51268a05"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -189,7 +189,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4587717f-2b7f-4afd-bdc3-c2578a94605b"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -200,7 +200,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""75dec6c5-304e-4848-8816-b6f7d57b1219"",
-                    ""path"": ""<WiimoteDevice>/aButton"",
+                    ""path"": ""<WiimoteDevice>/bButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -222,7 +222,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bc19a8f8-dc1e-45ca-ba0d-46e76fd95699"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -233,7 +233,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""704265c1-06d7-46d7-bad5-5b8ab9211c93"",
-                    ""path"": ""<WiimoteDevice>/bButton"",
+                    ""path"": ""<WiimoteDevice>/aButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -861,6 +861,17 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
+                    ""action"": ""PauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b85d824-1e54-4109-ae76-f310a4c3f43a"",
+                    ""path"": ""<WiimoteDevice>/homeButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""PauseGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

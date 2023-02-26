@@ -31,6 +31,7 @@ namespace RedButton.GamePlay
                 Debug.Log("Missing Control Arbiter, creating one for hot start...");
                 Instantiate(controlArbiterPrefab);
             }
+            ControlArbiter.Instance.OnPauseMenuQuit += EndRound;
         }
 
         private void Start()
@@ -128,6 +129,11 @@ namespace RedButton.GamePlay
                 // end round
                 EndRound();
             }
+        }
+
+        private void OnDestroy()
+        {
+            ControlArbiter.Instance.OnPauseMenuQuit -= EndRound;
         }
     }
 }

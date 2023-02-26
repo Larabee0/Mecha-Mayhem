@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8193141111344339457}
   - component: {fileID: 8193141111344339458}
   - component: {fileID: -2796544168625011109}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ParticleProjectile
-  m_TagString: Untagged
+  m_TagString: Projectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 6789834758745285863}
   - component: {fileID: 3200844531781857604}
   - component: {fileID: 6828954854820375574}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
