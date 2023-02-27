@@ -24,14 +24,17 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void Fire()
         {
-            fireInterval -= Time.deltaTime;
-
-            switch (fireInterval)
+            if(!CMC.ShieldActive)
             {
-                case <= 0f:
-                    fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
-                    PhysicsShoot();
-                    break;
+                fireInterval -= Time.deltaTime;
+
+                switch (fireInterval)
+                {
+                    case <= 0f:
+                        fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
+                        PhysicsShoot();
+                        break;
+                }
             }
         }
 
@@ -40,7 +43,10 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void GroupFire()
         {
-            PhysicsShoot();
+            if (!CMC.ShieldActive)
+            {
+                PhysicsShoot();
+            }
         }
 
         /// <summary>
