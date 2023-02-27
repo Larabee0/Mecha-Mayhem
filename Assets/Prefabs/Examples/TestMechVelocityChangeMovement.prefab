@@ -616,7 +616,7 @@ MonoBehaviour:
   muzzleOriginPoint: {fileID: 1303482295}
   animationCentre: {fileID: 2331743068668870359}
   shield: {fileID: 5581798563665386101}
-  angleOfBullets: 20
+  angleOfBullets: 25
   shootForce: 20
   fireIntervalMin: 0.75
   fireIntervalMax: 1

@@ -68,20 +68,14 @@ namespace RedButton.Mech.Examples
             Vector3 bulletVector = (TargetPos - muzzleOriginPoint.position).normalized;
             Quaternion rotation = Quaternion.LookRotation(bulletVector);
             Vector3 leftBulletVector = Quaternion.AngleAxis(-angleOfBullets, Vector3.up) * bulletVector;// (TargetPos +  - muzzleOriginPoint.position).normalized;
-            Vector3 rightBulletVector = Quaternion.AngleAxis(angleOfBullets/2, Vector3.up) * bulletVector;
-            Vector3 leftMidBulletVector = Quaternion.AngleAxis(-angleOfBullets/2, Vector3.up) * bulletVector;
-            Vector3 rightMidBulletVector = Quaternion.AngleAxis(angleOfBullets, Vector3.up) * bulletVector;
+            Vector3 rightBulletVector = Quaternion.AngleAxis(angleOfBullets, Vector3.up) * bulletVector;
             Quaternion leftRotation = Quaternion.LookRotation(leftBulletVector);
             Quaternion rightRotation = Quaternion.LookRotation(rightBulletVector);
-            Quaternion leftMidRotation = Quaternion.LookRotation(leftMidBulletVector);
-            Quaternion rightMidRotation = Quaternion.LookRotation(rightMidBulletVector);
 
             // spawn the projectile in the correct orientaiton and position
             ProjectileCore projectile = Instantiate(projectilePrefab, muzzleOriginPoint.position, rotation);
             ProjectileCore leftProjectile = Instantiate(projectilePrefab, muzzleOriginPoint.position, leftRotation);
             ProjectileCore rightProjectile = Instantiate(projectilePrefab, muzzleOriginPoint.position, rightRotation);
-            ProjectileCore leftMidProjectile = Instantiate(projectilePrefab, muzzleOriginPoint.position, leftMidRotation);
-            ProjectileCore rightMidProjectile = Instantiate(projectilePrefab, muzzleOriginPoint.position, rightMidRotation);
 
             // Because awake is called immidately for the projectile, its colliders property will now be set (assuming it has any)
             // so we can safely ignore collisions between them and the colliders in the origin mech.
@@ -89,19 +83,10 @@ namespace RedButton.Mech.Examples
             IgnoreCollisions(projectile);
             IgnoreCollisions(leftProjectile);
             IgnoreCollisions(rightProjectile);
-            IgnoreCollisions(leftMidProjectile);
-            IgnoreCollisions(rightMidProjectile);
 
             IgnoreCollisions(projectile, leftProjectile);
             IgnoreCollisions(projectile, rightProjectile);
-            IgnoreCollisions(projectile, leftMidProjectile);
-            IgnoreCollisions(projectile, rightMidProjectile);
             IgnoreCollisions(leftProjectile, rightProjectile);
-            IgnoreCollisions(leftProjectile, leftMidProjectile);
-            IgnoreCollisions(leftProjectile, rightMidProjectile);
-            IgnoreCollisions(rightProjectile, leftMidProjectile);
-            IgnoreCollisions(rightProjectile, rightMidProjectile);
-            IgnoreCollisions(leftMidProjectile, rightMidProjectile);
 
             projectile.Initilise(CMC, damage);
 
@@ -109,19 +94,11 @@ namespace RedButton.Mech.Examples
 
             rightProjectile.Initilise(CMC, damage);
 
-            leftMidProjectile.Initilise(CMC, damage);
-
-            rightMidProjectile.Initilise(CMC, damage);
-
             projectile.Rigidbody.AddForce(bulletVector * shootForce, ForceMode.Impulse);
 
             leftProjectile.Rigidbody.AddForce(leftBulletVector * shootForce, ForceMode.Impulse);
 
             rightProjectile.Rigidbody.AddForce(rightBulletVector * shootForce, ForceMode.Impulse);
-
-            leftMidProjectile.Rigidbody.AddForce(leftMidBulletVector * shootForce, ForceMode.Impulse);
-
-            rightMidProjectile.Rigidbody.AddForce(rightMidBulletVector * shootForce, ForceMode.Impulse);
         }
 
         private void IgnoreCollisions(ProjectileCore projectile)

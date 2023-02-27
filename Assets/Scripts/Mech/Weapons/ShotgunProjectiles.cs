@@ -6,13 +6,13 @@ namespace RedButton.Mech.Examples
 {
     public class ShotgunProjectiles : ExampleBasicProjectile
     {
-        [SerializeField, Range(0, 1)] float shotgunRange = 0.25f;
+        [SerializeField]
         private GameObject projectileExplosion;
 
         public override void Initilise(CentralMechComponent origin, int damage)
         {
             this.damage = damage;
-            Destroy(gameObject, shotgunRange);
+            Destroy(gameObject, 0.5f);
         }
         protected override void OnCollisionEnter(Collision collision)
         {

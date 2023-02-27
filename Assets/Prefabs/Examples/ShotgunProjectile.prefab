@@ -65,7 +65,8 @@ MonoBehaviour:
   rigid: {fileID: 8193141111344339458}
   projectileColliders: []
   origin: {fileID: 0}
-  shotgunRange: 0.375
+  projectileExplosion: {fileID: 408059303074732908, guid: a9349b29de6aa2b45a0c7a4720deb2fb,
+    type: 3}
 --- !u!1 &8266346388783292048
 GameObject:
   m_ObjectHideFlags: 0
