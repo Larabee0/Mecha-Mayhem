@@ -5,6 +5,8 @@ using UnityEngine.PlayerLoop;
 
 public class BarrierMoves : MonoBehaviour
 {
+    [SerializeField] GameObject thingToDestroy;
+
     [SerializeField] int timeUp;
 
     [SerializeField] float barrierHeight;
@@ -36,7 +38,7 @@ public class BarrierMoves : MonoBehaviour
             gameObject.transform.position = gameObject.transform.position - new Vector3(0, 0.1f, 0);
             yield return new WaitForSeconds(0.01f);
         }
-        Destroy(gameObject);
+        Destroy(thingToDestroy);
         
     }
     
