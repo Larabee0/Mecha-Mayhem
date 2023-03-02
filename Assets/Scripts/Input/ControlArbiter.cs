@@ -316,6 +316,8 @@ namespace RedButton.Core
                 this[i] = InstantiatePlayer(GetPlayerColour(i), ProcessDevice(devices[i]), (Controller)i);
                 playerMode = (Controller)i;
             }
+            uiTranslator.HideAll();
+            mainUIController.UIShown = true;
             ValidateControllersAndPlayers();
         }
         #endregion
