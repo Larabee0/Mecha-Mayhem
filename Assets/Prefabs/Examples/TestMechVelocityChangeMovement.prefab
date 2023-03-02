@@ -1290,7 +1290,7 @@ MonoBehaviour:
   Grouped: 0
   damage: 5
   controlBinding: 1
-  controlBehaviour: 2
+  controlBehaviour: 0
   projectilePrefab: {fileID: -7607631024499583572, guid: da1ad5b71d4157f4bbcdc376b3b2d698,
     type: 3}
   muzzleOriginPoint: {fileID: 1303482295}

@@ -9,13 +9,12 @@ namespace RedButton.Mech.Examples
     /// </summary>
     public class ExampleBasicPhysicsWeapon : WeaponCore
     {
-        private float fireInterval = 0f;
-
         [Header("Physics Weapon Settings")]
-        [SerializeField] float shootForce;
-        [SerializeField][Range(0f, 1f)] float fireIntervalMin = 0.01f;
-        [SerializeField][Range(0f, 1f)] float fireIntervalMax = 0.05f;
-
+        [SerializeField] protected float shootForce;
+        [SerializeField][Range(0f, 1f)] protected float fireIntervalMin = 0.01f;
+        [SerializeField][Range(0f, 1f)] protected float fireIntervalMax = 0.05f;
+        private Coroutine coolDownProcess;
+        
         /// <summary>
         /// Fire is one of the methods that requires implmentation.
         /// Here whenever Fire() is called, it simply counts down a timer called FireInterval.
@@ -24,15 +23,22 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void Fire()
         {
-            fireInterval -= Time.deltaTime;
-
-            switch (fireInterval)
+            switch (coolDownProcess)
             {
-                case <= 0f:
-                    fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
+                case null:
+                    break;
+                default:
                     PhysicsShoot();
+                    coolDownProcess = StartCoroutine(CoolDownCoroutine());
                     break;
             }
+        }
+
+
+        private IEnumerator CoolDownCoroutine()
+        {
+            yield return new WaitForSeconds(Random.Range(fireIntervalMin, fireIntervalMax));
+            coolDownProcess = null;
         }
 
         /// <summary>
