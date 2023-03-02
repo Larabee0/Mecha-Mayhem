@@ -59,7 +59,7 @@ namespace RedButton.Mech.Examples
         /// <summary>
         /// This is basically a copy of the weapon from the demo game. only it has been modified to use the ProjecitleCore script.
         /// </summary>
-        private void PhysicsShoot()
+        protected virtual void PhysicsShoot()
         {
             // safety measure.
             if (muzzleOriginPoint == null || targetObject == null)
