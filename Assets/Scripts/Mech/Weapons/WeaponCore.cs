@@ -33,7 +33,6 @@ namespace RedButton.Mech
         [SerializeField] protected Transform muzzleOriginPoint; // point at which projectiles are spawned from or the ray cast is cast from.
         [SerializeField] protected Transform animationCentre; // centre point of the visual portion of the weapon. this will be made to look at the targetObject
 
-
         protected virtual void Awake()
         {
             CMC = GetComponentInParent<CentralMechComponent>();
@@ -54,6 +53,7 @@ namespace RedButton.Mech
         protected virtual void Start()
         {
             targetObject = CMC.MechMovementCore.TargetPoint;
+
         }
 
         protected virtual void OnDestroy()

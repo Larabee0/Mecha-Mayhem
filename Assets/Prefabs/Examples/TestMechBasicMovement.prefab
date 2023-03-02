@@ -201,6 +201,7 @@ MonoBehaviour:
   - {fileID: 2331743069697241314}
   - {fileID: 2331743069289660091}
   - {fileID: 2331743068919907987}
+  shield: {fileID: 0}
   healthBackgroundDeath: {fileID: 0}
   minHealth: 0
   maxHealth: 100
