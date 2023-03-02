@@ -12,7 +12,7 @@ namespace RedButton.Mech
     {
         [Header("Base Movement Settings")]
         [SerializeField] protected CentralMechComponent CMC;
-        [SerializeField, Range(1f, 20f)] private float aimSpeed = 5;
+        [SerializeField] private float aimSpeed = 5;
         [SerializeField] protected Transform targetPointParent;
         [SerializeField] protected Transform targetPoint;
         [SerializeField] private float targetPointDistance = 5f;

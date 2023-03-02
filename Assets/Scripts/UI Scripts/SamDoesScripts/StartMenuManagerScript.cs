@@ -8,8 +8,6 @@ namespace RedButton.Core.UI
 {
     public class StartMenuManagerScript : MonoBehaviour
     {
-        public delegate void PlayerCountSelect(Controller playerCount, bool existingCheck = true);
-
         [Header("Panels")]
         [SerializeField] GameObject bgPanel;
         [SerializeField] GameObject bindPanel;
@@ -49,15 +47,6 @@ namespace RedButton.Core.UI
         private UnityUITranslationLayer.ControllerAssignHelper PlayerThreeAssign;
         private UnityUITranslationLayer.ControllerAssignHelper PlayerFourAssign;
 
-
-        //public PlayerCountSelect PlayerSelectCallback;
-
-        public void ShowBindPanel()
-        {
-            bindPanel.SetActive(true);
-            btnPanel.SetActive(false);
-        }
-
         private void Awake()
         {
             PlayerOneAssign = new(Controller.One, p1ControllerTxt, p1Bg);
@@ -66,17 +55,12 @@ namespace RedButton.Core.UI
             PlayerFourAssign = new(Controller.Four, p4ControllerTxt, p4Bg);
         }
 
-        // private void Update()
-        // {
-        //     if (bindPanel.activeSelf)
-        //     {
-        //         if (Input.anyKeyDown)
-        //         {
-        //             ShowMainMenu();
-        //         }
-        //     }
-        // }
-
+        #region MainMenu & binding
+        public void ShowBindPanel()
+        {
+            bindPanel.SetActive(true);
+            btnPanel.SetActive(false);
+        }
 
         public void ShowMainMenu()
         {
@@ -94,8 +78,62 @@ namespace RedButton.Core.UI
             EventSystem.current.SetSelectedGameObject(btnPanelBtn);
         }
 
+        #region MainMenu Other Buttons
+        public void OpenOptions()
+        {
+            ControlArbiter.Instance.startScreenState = StartScreenState.OptionsMenu;
+            btnPanel.SetActive(false);
+            optionsPanel.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(optionsPanelBtn);
+            ControlArbiter.Instance.GoForwardFromMainMenu();
+        }
+        public void CloseOptions()
+        {
+            btnPanel.SetActive(true);
+            optionsPanel.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(btnPanelBtn);
+        }
+
+        public void OpenCredits()
+        {
+            ControlArbiter.Instance.startScreenState = StartScreenState.Credits;
+            btnPanel.SetActive(false);
+            creditsPanel.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(creditsPanelBtn);
+            ControlArbiter.Instance.GoForwardFromMainMenu();
+        }
+        public void CloseCredits()
+        {
+            btnPanel.SetActive(true);
+            creditsPanel.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(btnPanelBtn);
+        }
+
+        //Will Credits
+        public void OpenWillCredits()
+        {
+            bgPanel.GetComponent<Image>().sprite = willSprite;
+            btnPanel.SetActive(false);
+            willCreditsPanel.SetActive(true);
+        }
+        public void CloseWillCredits()
+        {
+            bgPanel.GetComponent<Image>().sprite = bgSprite;
+            btnPanel.SetActive(true);
+            willCreditsPanel.SetActive(false);
+        }
 
 
+
+        public void Quit()
+        {
+            Debug.Log("Quitting");
+            Application.Quit();
+        }
+        #endregion
+        #endregion
+
+        #region Player Selector
         public void OpenPlayerSelect()
         {
             ControlArbiter.Instance.startScreenState = StartScreenState.SetPlayerCount;
@@ -116,6 +154,7 @@ namespace RedButton.Core.UI
             ControlArbiter.Instance.GoBackToMainMenu(new());
         }
 
+        #region Controller Assignment
         public void OpenAssignment(int playerNum)
         {
             Controller playerCount = (Controller)(playerNum- 1);
@@ -235,6 +274,7 @@ namespace RedButton.Core.UI
             }
             return false;
         }
+
         private bool UIAssignPlayerFour()
         {
             if (ControlArbiter.PlayerFour != null)
@@ -283,19 +323,15 @@ namespace RedButton.Core.UI
             playerNumPanel.SetActive(true);
             EventSystem.current.SetSelectedGameObject(playerNumPanelBtn);
         }
+        #endregion
+        #endregion
 
+        #region Level selector
         public void OpenLvlSelect()
         {
             ControlArbiter.Instance.AcceptControllerAssignment();
             lvlSelectPanel.SetActive(true);
             PlayerAssignPanel.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(lvlSelectPanelBtn);
-        }
-        // added work around because lack of controller assignment screen
-        public void OpenLvlSelectInternal()
-        {
-            PlayerAssignPanel.SetActive(false);
-            lvlSelectPanel.SetActive(true);
             EventSystem.current.SetSelectedGameObject(lvlSelectPanelBtn);
         }
 
@@ -312,70 +348,13 @@ namespace RedButton.Core.UI
         {
             ControlArbiter.Instance.GoBackToControllerAssignment(new UnityEngine.InputSystem.InputAction.CallbackContext());
             return;
-            PlayerAssignPanel.SetActive(true);
-            bgPanel.GetComponent<Image>().sprite = bgSprite;
-            EventSystem.current.SetSelectedGameObject(playerNumPanelBtn);
         }
 
         public void CLoseLvlSelectInternal()
         {
             lvlSelectPanel.SetActive(false);
-            // PlayerAssignPanel.SetActive(true);
         }
+        #endregion
 
-        public void OpenOptions()
-        {
-            ControlArbiter.Instance.startScreenState = StartScreenState.OptionsMenu;
-            btnPanel.SetActive(false);
-            optionsPanel.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(optionsPanelBtn);
-            ControlArbiter.Instance.GoForwardFromMainMenu();
-        }
-        public void CloseOptions()
-        {
-            btnPanel.SetActive(true);
-            optionsPanel.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(btnPanelBtn);
-        }
-
-
-
-        public void OpenCredits()
-        {
-            ControlArbiter.Instance.startScreenState = StartScreenState.Credits;
-            btnPanel.SetActive(false);
-            creditsPanel.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(creditsPanelBtn);
-            ControlArbiter.Instance.GoForwardFromMainMenu();
-        }
-        public void CloseCredits()
-        {
-            btnPanel.SetActive(true);
-            creditsPanel.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(btnPanelBtn);
-        }
-
-        //Will Credits
-        public void OpenWillCredits()
-        {
-            bgPanel.GetComponent<Image>().sprite = willSprite;
-            btnPanel.SetActive(false);
-            willCreditsPanel.SetActive(true);
-            //ControlArbiter.Instance.GoForwardFromMainMenu();
-        }
-        public void CloseWillCredits()
-        {
-            bgPanel.GetComponent<Image>().sprite = bgSprite;
-            btnPanel.SetActive(true);
-            willCreditsPanel.SetActive(false);
-        }
-
-
-
-        public void Quit()
-        {
-            Debug.Log("Quitting");
-            Application.Quit();
-        }
     }
 }

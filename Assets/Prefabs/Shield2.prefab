@@ -152,4 +152,4 @@ MonoBehaviour:
   animationCentre: {fileID: 0}
   shieldCD: 4
   shieldReady: 0
-  shield: {fileID: 2007202325831458682}
+  shieldObject: {fileID: 2007202325831458682}

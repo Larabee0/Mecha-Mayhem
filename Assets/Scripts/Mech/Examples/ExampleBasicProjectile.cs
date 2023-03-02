@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace RedButton.Mech.Examples
 {
@@ -11,18 +12,18 @@ namespace RedButton.Mech.Examples
     {
         [SerializeField] protected CentralMechComponent origin;
         protected int damage;
-
+        bool hitShield = false;
         /// <summary>
         /// set the damage nad origin mech properties.
         /// also if this object has not hit anything after 20 seconds, destroys itself
         /// </summary>
         /// <param name="origin"></param>
         /// <param name="damage"></param>
-        public override void Initilise(CentralMechComponent origin,int damage)
+        public override void Initilise(CentralMechComponent origin,int damage,float destroyDelay = 20f)
         {
             this.origin = origin;
             this.damage = damage;
-            Destroy(gameObject, 20f);
+            Destroy(gameObject, destroyDelay);
         }
 
         /// <summary>
@@ -34,10 +35,19 @@ namespace RedButton.Mech.Examples
         protected override void OnCollisionEnter(Collision collision)
         {
             Destroy(gameObject);
-            CentralMechComponent mech = collision.gameObject.GetComponentInParent<CentralMechComponent>();
-            if (mech && mech != origin)
+            ShieldScript hitShield = collision.collider.gameObject.GetComponentInParent<ShieldScript>();
+            this.hitShield = hitShield != null && hitShield != origin.shield;
+            if (!this.hitShield)
             {
-                mech.UpdateHealth(damage);
+                CentralMechComponent mech = collision.gameObject.GetComponentInParent<CentralMechComponent>();
+                if (mech && mech != origin)
+                {
+                    mech.UpdateHealth(damage);
+                }
+            }
+            else
+            {
+                hitShield.DamageShield();
             }
         }
     }

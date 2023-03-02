@@ -11,7 +11,6 @@ namespace RedButton.Mech.Examples
     public class BasicConeShotgunWeapon : WeaponCore
     {
         private float fireInterval = 0f;
-        [SerializeField] GameObject shield;
 
         [Header("Physics Cone Weapon Settings")]
         [SerializeField] float angleOfBullets;
@@ -27,7 +26,7 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void Fire()
         {
-            if (!shield.activeSelf)
+            if (!CMC.ShieldActive)
             {
                 fireInterval -= Time.deltaTime;
 
@@ -46,7 +45,7 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void GroupFire()
         {
-            if (!shield.activeSelf)
+            if (!CMC.ShieldActive)
             {
                 PhysicsShoot();
             }
@@ -105,7 +104,7 @@ namespace RedButton.Mech.Examples
             //IgnoreCollisions(rightProjectile, rightMidProjectile);
             //IgnoreCollisions(leftMidProjectile, rightMidProjectile);
 
-            projectile.Initilise(CMC, damage);
+            projectile.Initilise(CMC, damage, 0.5f);
 
             //leftProjectile.Initilise(CMC, damage);
 

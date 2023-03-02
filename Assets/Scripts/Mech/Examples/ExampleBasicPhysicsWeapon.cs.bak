@@ -14,7 +14,7 @@ namespace RedButton.Mech.Examples
         [SerializeField][Range(0f, 1f)] protected float fireIntervalMin = 0.01f;
         [SerializeField][Range(0f, 1f)] protected float fireIntervalMax = 0.05f;
         private Coroutine coolDownProcess;
-
+        
         /// <summary>
         /// Fire is one of the methods that requires implmentation.
         /// Here whenever Fire() is called, it simply counts down a timer called FireInterval.
@@ -23,18 +23,28 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void Fire()
         {
-            if (!CMC.ShieldActive)
+<<<<<<< HEAD
+            switch (coolDownProcess)
             {
-                switch (coolDownProcess)
-                {
-                    case null:
-                        break;
-                    default:
-                        PhysicsShoot();
-                        coolDownProcess = StartCoroutine(CoolDownCoroutine());
-                        break;
+                case null:
+                    break;
+                default:
+                    PhysicsShoot();
+                    coolDownProcess = StartCoroutine(CoolDownCoroutine());
+                    break;
+=======
+            if(!CMC.ShieldActive)
+            {
+                fireInterval -= Time.deltaTime;
 
+                switch (fireInterval)
+                {
+                    case <= 0f:
+                        fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
+                        PhysicsShoot();
+                        break;
                 }
+>>>>>>> origin/main
             }
         }
 

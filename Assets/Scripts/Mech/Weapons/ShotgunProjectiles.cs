@@ -11,8 +11,9 @@ namespace RedButton.Mech.Examples
         private GameObject projectileExplosion;
         [SerializeField] private Transform shotgunCollider;
 
-        public override void Initilise(CentralMechComponent origin, int damage)
+        public override void Initilise(CentralMechComponent origin, int damage, float destroyDelay = 20f)
         {
+            this.origin = origin;
             this.damage = damage;
             StartCoroutine(GoBig());
         }
