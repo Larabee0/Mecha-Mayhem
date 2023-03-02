@@ -9,7 +9,8 @@ namespace RedButton.Mech
     public class ShieldScript : WeaponCore
     {
         [SerializeField] int shieldCD;
-        int shieldHealth;
+        [SerializeField] private int shieldHealth;
+        [HideInInspector] public int currentShieldHealth;
         [SerializeField] bool shieldReady;
         [SerializeField] private GameObject shieldObject;
         public bool ShieldActive => shieldObject.activeSelf;
@@ -49,7 +50,9 @@ namespace RedButton.Mech
             Debug.Log("unfier");
             shieldObject.SetActive(false);
             shieldReady = false;
+            currentShieldHealth = 0;
             StartCoroutine(ShieldRecharge());
+            
 
         }
 
@@ -59,7 +62,7 @@ namespace RedButton.Mech
             {
                 shieldObject.SetActive(true);
                 Debug.Log("fier");
-                shieldHealth = 3;
+                currentShieldHealth += shieldHealth;
             }
 
         }
@@ -85,8 +88,8 @@ namespace RedButton.Mech
 
         public void DamageShield()
         {
-            shieldHealth--;
-            if (shieldHealth <= 0)
+            currentShieldHealth--;
+            if (currentShieldHealth <= 0)
             {
                 shieldObject.SetActive(false);
                 shieldReady = false;
