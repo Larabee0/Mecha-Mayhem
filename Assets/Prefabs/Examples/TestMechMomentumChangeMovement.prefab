@@ -337,7 +337,7 @@ MonoBehaviour:
   targetPoint: {fileID: 2331743069289660093}
   targetPointDistance: 5
   rb: {fileID: 2331743068901684098}
-  moveSpeed: 20
+  moveSpeed: 30
   rotationSpeed: 10
 --- !u!1 &2331743068919907998
 GameObject:

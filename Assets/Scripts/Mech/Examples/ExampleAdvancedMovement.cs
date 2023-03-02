@@ -14,7 +14,7 @@ namespace RedButton.Mech.Examples
     {
         [Header("Movement settings")]
         [SerializeField] protected Rigidbody rb;
-        [SerializeField, Range(0.1f, 20f)] protected float moveSpeed = 20;
+        [SerializeField] protected float moveSpeed = 20;
         [SerializeField] protected float rotationSpeed = 5 ;
         protected float moveInput;
         protected Vector3 moveDir;
