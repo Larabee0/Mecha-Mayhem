@@ -10,8 +10,6 @@ namespace RedButton.Mech.Examples
     /// </summary>
     public class BasicConeShotgunWeapon : ExampleBasicPhysicsWeapon
     {
-        private float fireInterval = 0f;
-
         [Header("Physics Cone Weapon Settings")]
         [SerializeField] float angleOfBullets;
 

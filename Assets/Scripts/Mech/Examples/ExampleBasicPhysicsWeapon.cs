@@ -28,12 +28,9 @@ namespace RedButton.Mech.Examples
                 switch (coolDownProcess)
                 {
                     case null:
-                        break;
-                    default:
                         PhysicsShoot();
                         coolDownProcess = StartCoroutine(CoolDownCoroutine());
                         break;
-
                 }
             }
         }
