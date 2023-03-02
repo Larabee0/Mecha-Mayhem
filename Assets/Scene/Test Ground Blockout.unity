@@ -1099,8 +1099,8 @@ MonoBehaviour:
     type: 3}
   playerCount: 0
   editorMechs:
-  - {fileID: 52958292, guid: d21c1abb9336a3947ac91a7b92794cf8, type: 3}
   - {fileID: 52958292, guid: 63a7186cd238a2a49b2165a6366e4cf9, type: 3}
+  - {fileID: 52958292, guid: d21c1abb9336a3947ac91a7b92794cf8, type: 3}
   spawnPoints:
   - {x: 12.00024, y: 7.742, z: 18.000359}
   - {x: 5.4, y: 7.742, z: 18.000359}
