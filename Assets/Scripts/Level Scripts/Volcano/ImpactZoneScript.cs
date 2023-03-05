@@ -11,7 +11,7 @@ namespace RedButton.GamePlay
 
         private void Awake()
         {
-            GameObject Caldera = GameObject.Find("Caldera");
+            GameObject Caldera = GameObject.Find("TargetPlane");
             damage = Caldera.GetComponent<VolcanoGimmick>().damage;
             Destroy(gameObject, 3f);
         }

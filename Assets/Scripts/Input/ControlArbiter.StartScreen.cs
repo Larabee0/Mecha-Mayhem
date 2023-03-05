@@ -451,7 +451,7 @@ namespace RedButton.Core
             }
         }
         #endregion
-
+        
         public void ControlArbiterToGameArbiterHandoff()
         {
             if (PlayerOne != null)
@@ -472,5 +472,6 @@ namespace RedButton.Core
             uiTranslator.ShowStartSreen();
             uiTranslator.StartMenuUI.OpenLvlSelect();
         }
+
     }
 }

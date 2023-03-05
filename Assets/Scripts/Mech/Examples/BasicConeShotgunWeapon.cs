@@ -8,54 +8,15 @@ namespace RedButton.Mech.Examples
     /// <summary>
     /// Example cone wepaon
     /// </summary>
-    public class BasicConeShotgunWeapon : WeaponCore
+    public class BasicConeShotgunWeapon : ExampleBasicPhysicsWeapon
     {
-        private float fireInterval = 0f;
-        [SerializeField] GameObject shield;
-
         [Header("Physics Cone Weapon Settings")]
         [SerializeField] float angleOfBullets;
-        [SerializeField] float shootForce;
-        [SerializeField][Range(0f, 1f)] float fireIntervalMin = 0.01f;
-        [SerializeField][Range(0f, 1f)] float fireIntervalMax = 0.05f;
-
-        /// <summary>
-        /// Fire is one of the methods that requires implmentation.
-        /// Here whenever Fire() is called, it simply counts down a timer called FireInterval.
-        /// When this values is less than zero it fires the weapon by calling PhysicsShoot().
-        /// It also then resets the fireInteral to a random time between a min and max value which you can set in the editor.
-        /// </summary>
-        public override void Fire()
-        {
-            if (!shield.activeSelf)
-            {
-                fireInterval -= Time.deltaTime;
-
-                switch (fireInterval)
-                {
-                    case <= 0f:
-                        fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
-                        PhysicsShoot();
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// GroupFire is a pass through to call PhysicsShoot() directly as timing is handled by the WeaponGroup.
-        /// </summary>
-        public override void GroupFire()
-        {
-            if (!shield.activeSelf)
-            {
-                PhysicsShoot();
-            }
-        }
 
         /// <summary>
         /// This is basically a copy of the weapon from the demo game. only it has been modified to use the ProjecitleCore script.
         /// </summary>
-        private void PhysicsShoot()
+        protected override void PhysicsShoot()
         {
             // safety measure.
             if (muzzleOriginPoint == null || targetObject == null)
@@ -88,11 +49,11 @@ namespace RedButton.Mech.Examples
             IgnoreCollisions(projectile, rightProjectile);
             IgnoreCollisions(leftProjectile, rightProjectile);
 
-            projectile.Initilise(CMC, damage);
+            projectile.Initilise(CMC, damage, 0.5f);
 
-            leftProjectile.Initilise(CMC, damage);
+            leftProjectile.Initilise(CMC, damage, 0.5f);
 
-            rightProjectile.Initilise(CMC, damage);
+            rightProjectile.Initilise(CMC, damage,0.5f);
 
             projectile.Rigidbody.AddForce(bulletVector * shootForce, ForceMode.Impulse);
 
