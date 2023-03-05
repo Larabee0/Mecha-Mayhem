@@ -1,5 +1,55 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1868170382627060170
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4353908924703524598}
+  - component: {fileID: 5024477043341582190}
+  m_Layer: 0
+  m_Name: BarrierMoves
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4353908924703524598
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868170382627060170}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.125, y: 0, z: -0.75}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4359318289648584915}
+  - {fileID: 6728148960780457971}
+  m_Father: {fileID: 6949112160959568308}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5024477043341582190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868170382627060170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ac65a7ad069c7449857b5eb2aa23f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thingToDestroy: {fileID: 4094973514419791250}
+  timeUp: 2
+  barrierHeight: 5
+  animWaitTime: 1.5
 --- !u!1 &4094973514419791250
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,7 +59,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6949112160959568308}
-  - component: {fileID: 8058975899834322581}
+  - component: {fileID: 576067822155028633}
+  - component: {fileID: 5595215333951463164}
   m_Layer: 0
   m_Name: BarrierL2
   m_TagString: Untagged
@@ -29,26 +80,36 @@ Transform:
   m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 6728148960780457971}
-  - {fileID: 4359318289648584915}
+  - {fileID: 4353908924703524598}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8058975899834322581
-MonoBehaviour:
+--- !u!65 &576067822155028633
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4094973514419791250}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87ac65a7ad069c7449857b5eb2aa23f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeUp: 2
-  barrierHeight: 5
-  animWaitTime: 1.5
+  serializedVersion: 2
+  m_Size: {x: 3, y: 2, z: 0.5}
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!65 &5595215333951463164
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094973514419791250}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 2, z: 2}
+  m_Center: {x: 1.5, y: 2, z: -0.75}
 --- !u!1 &5125810765843593503
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +121,6 @@ GameObject:
   - component: {fileID: 4359318289648584915}
   - component: {fileID: 1612920413780447040}
   - component: {fileID: 6711283293239560063}
-  - component: {fileID: 8007367504668382974}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -75,13 +135,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5125810765843593503}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 0, z: -0.75}
-  m_LocalScale: {x: 0.5, y: 2, z: 2}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.4375, y: 0, z: 0}
+  m_LocalScale: {x: 1.25, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6949112160959568308}
-  m_RootOrder: 1
+  m_Father: {fileID: 4353908924703524598}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1612920413780447040
 MeshFilter:
@@ -133,19 +193,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8007367504668382974
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5125810765843593503}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6358129076156973397
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +204,6 @@ GameObject:
   - component: {fileID: 6728148960780457971}
   - component: {fileID: 2296411490709271890}
   - component: {fileID: 6763382151605378172}
-  - component: {fileID: 5648975097652850448}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -172,13 +218,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6358129076156973397}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 2, z: 0.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.3125, y: 0, z: 1.875}
+  m_LocalScale: {x: 7.5, y: 5, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6949112160959568308}
-  m_RootOrder: 0
+  m_Father: {fileID: 4353908924703524598}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2296411490709271890
 MeshFilter:
@@ -230,16 +276,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5648975097652850448
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6358129076156973397}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

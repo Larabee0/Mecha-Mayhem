@@ -8,7 +8,7 @@ namespace RedButton.GamePlay
     {
         [Header("Ejecta Charecteristics")]
         private float velocity;
-        private Vector3 TargetPoint;
+        [SerializeField] private Vector3 TargetPoint;
         [Header("\nImpact")]
         [SerializeField] GameObject impact;
         [Header("\nHazard Zone")]
@@ -16,7 +16,7 @@ namespace RedButton.GamePlay
 
         private void Awake()
         {
-            GameObject Caldera = GameObject.Find("Caldera");
+            GameObject Caldera = GameObject.Find("TargetPlane");
             velocity = Caldera.GetComponent<VolcanoGimmick>().Velocity;
             TargetPoint = Caldera.GetComponent<VolcanoGimmick>().TargetPoint;
             Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
@@ -31,7 +31,7 @@ namespace RedButton.GamePlay
             Destroy(gameObject);
             GameObject Haz = GameObject.Find("Hazard Zone(Clone)");
             Destroy(Haz);
-            GameObject Impact = GameObject.Instantiate(impact);
+            GameObject Impact = Instantiate(impact);
             Impact.transform.position = TargetPoint;
         }
     }

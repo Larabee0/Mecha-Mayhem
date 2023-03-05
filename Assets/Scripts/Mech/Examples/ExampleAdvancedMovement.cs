@@ -14,7 +14,8 @@ namespace RedButton.Mech.Examples
     {
         [Header("Movement settings")]
         [SerializeField] protected Rigidbody rb;
-        [SerializeField, Range(0.1f, 20f)] protected float moveSpeed = 20;
+        [SerializeField] protected float moveSpeed = 20;
+        [SerializeField] protected float forceMultiplier = 1;
         [SerializeField] protected float rotationSpeed = 5 ;
         protected float moveInput;
         protected Vector3 moveDir;
@@ -37,12 +38,12 @@ namespace RedButton.Mech.Examples
         /// </summary>
         protected override void FixedUpdate()
         {
-            if (rb.velocity.y < float.Epsilon)
+            if (moveInput > float.Epsilon)
             {
-                Vector3 currentDir = rb.velocity.normalized;
+                Vector3 currentDir = new Vector3(rb.velocity.x, 0, rb.velocity.z).normalized;
                 Vector3 delta = currentDir - moveDir;
-                rb.AddForce(moveInput * (-moveSpeed * 2) * delta, ForceMode.Force);
-                rb.AddForce(moveInput * moveSpeed * moveDir, ForceMode.Force);
+                rb.AddForce(moveInput * ((-moveSpeed * forceMultiplier) * 2) * delta, ForceMode.Force);
+                rb.AddForce(moveInput * moveSpeed * forceMultiplier * moveDir, ForceMode.Force);
             }
         }
     }

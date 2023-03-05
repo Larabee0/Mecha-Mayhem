@@ -17,8 +17,11 @@ namespace RedButton.Mech
         protected override void Awake()
         {
             base.Awake();
-            StartCoroutine(ShieldRecharge());
+            StartCoroutine(ShieldRecharge(shieldCD));
+            shieldObject.transform.SetParent(null, true);
+            UnFire();
         }
+
         protected override void BindtoControls()
         {
             ButtonEventContainer buttonEventContainer = controlBinding switch
@@ -47,44 +50,24 @@ namespace RedButton.Mech
 
         private void UnFire()
         {
-            Debug.Log("unfier");
             shieldObject.SetActive(false);
-            shieldReady = false;
             currentShieldHealth = 0;
-            StartCoroutine(ShieldRecharge());
-            
-
         }
 
         public override void Fire()
         {
-            if (shieldReady)
+            if (shieldReady && !shieldObject.activeSelf)
             {
                 shieldObject.SetActive(true);
-                Debug.Log("fier");
                 currentShieldHealth += shieldHealth;
             }
 
         }
-        IEnumerator ShieldRecharge()
+        IEnumerator ShieldRecharge(float time)
         {
-            yield return new WaitForSeconds(shieldCD);
+            yield return new WaitForSeconds(time);
             shieldReady = true;
         }
-
-        IEnumerator ShieldDestroyed()
-        {
-            yield return new WaitForSeconds(shieldCD * 2);
-            shieldReady = true;
-        }
-
-        // private void OnCollisionEnter(Collision collision)
-        // {
-        //     if (collision.gameObject.CompareTag("Projectile"))
-        //     {
-        //         DamageShield();
-        //     }
-        // }
 
         public void DamageShield()
         {
@@ -93,7 +76,7 @@ namespace RedButton.Mech
             {
                 shieldObject.SetActive(false);
                 shieldReady = false;
-                StartCoroutine(ShieldDestroyed());
+                StartCoroutine(ShieldRecharge(shieldCD * 2));
             }
         }
 
@@ -104,7 +87,8 @@ namespace RedButton.Mech
 
         protected override void Update()
         {
-           
+            shieldObject.transform.position = transform.position;
+            shieldObject.transform.forward = transform.forward;
         }
     }
 }
