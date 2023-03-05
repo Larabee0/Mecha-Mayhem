@@ -24,6 +24,7 @@ namespace RedButton.GamePlay
         [SerializeField] private GameObject TargetPlane;
         [SerializeField] private GameObject HazardZone;
 
+        [Header("Debugging")]
         public float time = 0f;
         public Vector3 TargetPoint;
 

@@ -17,7 +17,10 @@ namespace RedButton.Mech
         {
             base.Awake();
             StartCoroutine(ShieldRecharge());
+            shieldObject.transform.SetParent(null, true);
+            UnFire();
         }
+
         protected override void BindtoControls()
         {
             ButtonEventContainer buttonEventContainer = controlBinding switch
@@ -46,19 +49,16 @@ namespace RedButton.Mech
 
         private void UnFire()
         {
-            Debug.Log("unfier");
             shieldObject.SetActive(false);
-            shieldReady = false;
-            StartCoroutine(ShieldRecharge());
-
+            // shieldReady = false;
+            // StartCoroutine(ShieldRecharge());
         }
 
         public override void Fire()
         {
-            if (shieldReady)
+            if (shieldReady && !shieldObject.activeSelf)
             {
                 shieldObject.SetActive(true);
-                Debug.Log("fier");
                 shieldHealth = 3;
             }
 
@@ -74,14 +74,6 @@ namespace RedButton.Mech
             yield return new WaitForSeconds(shieldCD * 2);
             shieldReady = true;
         }
-
-        // private void OnCollisionEnter(Collision collision)
-        // {
-        //     if (collision.gameObject.CompareTag("Projectile"))
-        //     {
-        //         DamageShield();
-        //     }
-        // }
 
         public void DamageShield()
         {
@@ -101,7 +93,8 @@ namespace RedButton.Mech
 
         protected override void Update()
         {
-           
+            shieldObject.transform.position = transform.position;
+            shieldObject.transform.forward = transform.forward;
         }
     }
 }
