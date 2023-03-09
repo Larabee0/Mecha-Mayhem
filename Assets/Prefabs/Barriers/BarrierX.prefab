@@ -206,7 +206,7 @@ MonoBehaviour:
   thingToDestroy: {fileID: 4904347609391547740}
   timeUp: 2
   barrierHeight: 5
-  animWaitTime: 1.5
+  animWaitTime: 0.25
 --- !u!1 &8943332068411417457
 GameObject:
   m_ObjectHideFlags: 0
