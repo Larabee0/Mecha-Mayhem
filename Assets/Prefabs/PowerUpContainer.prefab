@@ -60,6 +60,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUpCore: {fileID: 0}
+  manager: {fileID: 0}
+  mechInTrigger: 0
+  powerUpActive: 0
+  spinSpeed: 500
 --- !u!1 &1061957101399959709
 GameObject:
   m_ObjectHideFlags: 0
