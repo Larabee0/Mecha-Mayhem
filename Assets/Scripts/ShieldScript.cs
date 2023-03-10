@@ -9,14 +9,19 @@ namespace RedButton.Mech
     public class ShieldScript : WeaponCore
     {
         [SerializeField] int shieldCD;
-        int shieldHealth;
+        [SerializeField] private int shieldHealth;
+        [HideInInspector] public int currentShieldHealth;
         [SerializeField] bool shieldReady;
-        [SerializeField] private GameObject shield;
+        [SerializeField] private GameObject shieldObject;
+        public bool ShieldActive => shieldObject.activeSelf;
         protected override void Awake()
         {
             base.Awake();
-            StartCoroutine(ShieldRecharge());
+            StartCoroutine(ShieldRecharge(shieldCD));
+            shieldObject.transform.SetParent(null, true);
+            UnFire();
         }
+
         protected override void BindtoControls()
         {
             ButtonEventContainer buttonEventContainer = controlBinding switch
@@ -45,46 +50,33 @@ namespace RedButton.Mech
 
         private void UnFire()
         {
-            Debug.Log("unfier");
-            shield.SetActive(false);
-            shieldReady = false;
-            StartCoroutine(ShieldRecharge());
-
+            shieldObject.SetActive(false);
+            currentShieldHealth = 0;
         }
 
         public override void Fire()
         {
-            if (shieldReady)
+            if (shieldReady && !shieldObject.activeSelf)
             {
-                shield.SetActive(true);
-                Debug.Log("fier");
-                shieldHealth = 3;
+                shieldObject.SetActive(true);
+                currentShieldHealth += shieldHealth;
             }
 
         }
-        IEnumerator ShieldRecharge()
+        IEnumerator ShieldRecharge(float time)
         {
-            yield return new WaitForSeconds(shieldCD);
+            yield return new WaitForSeconds(time);
             shieldReady = true;
         }
 
-        IEnumerator ShieldDestroyed()
+        public void DamageShield()
         {
-            yield return new WaitForSeconds(shieldCD * 2);
-            shieldReady = true;
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (collision.gameObject.CompareTag("Projectile"))
+            currentShieldHealth--;
+            if (currentShieldHealth <= 0)
             {
-                shieldHealth--;
-                if (shieldHealth <= 0)
-                {
-                    shield.SetActive(false);
-                    shieldReady = false;
-                    StartCoroutine(ShieldDestroyed());
-                }
+                shieldObject.SetActive(false);
+                shieldReady = false;
+                StartCoroutine(ShieldRecharge(shieldCD * 2));
             }
         }
 
@@ -95,7 +87,8 @@ namespace RedButton.Mech
 
         protected override void Update()
         {
-           
+            shieldObject.transform.position = transform.position;
+            shieldObject.transform.forward = transform.forward;
         }
     }
 }

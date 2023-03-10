@@ -250,7 +250,7 @@ namespace RedButton.Core
                     PlayerTwo.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
                     break;
                 case Controller.Three:
-                    if (PlayerTwo == null)
+                    if (PlayerThree == null)
                     {
                         PlayerThree = Instantiate(playerInputControllerPrefab, transform);
                     }
@@ -260,7 +260,7 @@ namespace RedButton.Core
                     PlayerThree.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
                     break;
                 case Controller.Four:
-                    if (PlayerTwo == null)
+                    if (PlayerFour == null)
                     {
                         PlayerFour = Instantiate(playerInputControllerPrefab, transform);
                     }
@@ -451,7 +451,7 @@ namespace RedButton.Core
             }
         }
         #endregion
-
+        
         public void ControlArbiterToGameArbiterHandoff()
         {
             if (PlayerOne != null)
@@ -472,5 +472,6 @@ namespace RedButton.Core
             uiTranslator.ShowStartSreen();
             uiTranslator.StartMenuUI.OpenLvlSelect();
         }
+
     }
 }

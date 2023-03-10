@@ -11,6 +11,7 @@ namespace RedButton.GamePlay
         [SerializeField] private int Duration = 10;
         [SerializeField] public int damage = 50;
 
+        public Vector3 LavaSpeed;
         public float timer = 0f;
         public Vector3 destination;
         public Vector3 origin;
@@ -35,7 +36,7 @@ namespace RedButton.GamePlay
             {
                 RaiseLava();
             }
-            if (Time.time > timer + Duration + EruptionInterval && gameObject.transform.position.y > origin.y)
+            else if (Time.time > timer + Duration + EruptionInterval && gameObject.transform.position.y > origin.y)
             {
                 LowerLava();
             }
@@ -47,13 +48,13 @@ namespace RedButton.GamePlay
 
         public void RaiseLava()
         {
-            gameObject.transform.Translate(destination * Time.deltaTime);
+            gameObject.transform.Translate(LavaSpeed * Time.deltaTime);
         }
 
              
         public void LowerLava()
         {
-            gameObject.transform.Translate(origin * Time.deltaTime);
+            gameObject.transform.Translate(-LavaSpeed * Time.deltaTime);
         }
 
         private void OnCollisionEnter(Collision collision)

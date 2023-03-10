@@ -2,6 +2,7 @@ using RedButton.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace RedButton.Mech
 {
@@ -17,6 +18,7 @@ namespace RedButton.Mech
         [SerializeField] private MeshRenderer[] colourables;
 
         [Header("Health")]
+        public ShieldScript shield;
         [SerializeField] private Texture2D healthBackgroundDeath;
         public Texture2D HealthBackgroundDeath => healthBackgroundDeath;
         [SerializeField] private int minHealth = 0;
@@ -40,6 +42,7 @@ namespace RedButton.Mech
         public MovementCore MechMovementCore => movementCore;
         public Collider[] MechColliders => mechColliders;
         public Color MechAccentColour => inputController.playerColour;
+        public bool ShieldActive => shield != null && shield.ShieldActive;
 
         private void Awake()
         {
@@ -53,6 +56,14 @@ namespace RedButton.Mech
 
             mechColliders = GetComponentsInChildren<Collider>();
             weapons = GetComponentsInChildren<WeaponCore>();
+
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                if (weapons[i] is ShieldScript shield)
+                {
+                    this.shield = shield;
+                }
+            }
 
             if(movementCore == null)
             {

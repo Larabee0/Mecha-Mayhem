@@ -9,12 +9,11 @@ namespace RedButton.Mech.Examples
     /// </summary>
     public class ExampleBasicPhysicsWeapon : WeaponCore
     {
-        private float fireInterval = 0f;
-
         [Header("Physics Weapon Settings")]
-        [SerializeField] float shootForce;
-        [SerializeField][Range(0f, 1f)] float fireIntervalMin = 0.01f;
-        [SerializeField][Range(0f, 1f)] float fireIntervalMax = 0.05f;
+        [SerializeField] protected float shootForce;
+        [SerializeField][Range(0f, 1f)] protected float fireIntervalMin = 0.01f;
+        [SerializeField][Range(0f, 1f)] protected float fireIntervalMax = 0.05f;
+        private Coroutine coolDownProcess;
 
         /// <summary>
         /// Fire is one of the methods that requires implmentation.
@@ -24,15 +23,22 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void Fire()
         {
-            fireInterval -= Time.deltaTime;
-
-            switch (fireInterval)
+            if (!CMC.ShieldActive)
             {
-                case <= 0f:
-                    fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
-                    PhysicsShoot();
-                    break;
+                switch (coolDownProcess)
+                {
+                    case null:
+                        PhysicsShoot();
+                        coolDownProcess = StartCoroutine(CoolDownCoroutine());
+                        break;
+                }
             }
+        }
+
+        private IEnumerator CoolDownCoroutine()
+        {
+            yield return new WaitForSeconds(Random.Range(fireIntervalMin, fireIntervalMax));
+            coolDownProcess = null;
         }
 
         /// <summary>
@@ -40,13 +46,16 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void GroupFire()
         {
-            PhysicsShoot();
+            if (!CMC.ShieldActive)
+            {
+                PhysicsShoot();
+            }
         }
 
         /// <summary>
         /// This is basically a copy of the weapon from the demo game. only it has been modified to use the ProjecitleCore script.
         /// </summary>
-        private void PhysicsShoot()
+        protected virtual void PhysicsShoot()
         {
             // safety measure.
             if (muzzleOriginPoint == null || targetObject == null)

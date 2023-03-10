@@ -52,14 +52,17 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void Fire()
         {
-            fireInterval -= Time.deltaTime;
-            switch (fireInterval)
+            if (!CMC.ShieldActive)
             {
-                case <= 0f:
-                    fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
-                    showTime = fireInterval / 2f; // showTime is half the time of the new fireInterval to ensure the laser visual is hidden before it fires again.
-                    BasicRayCaster();
-                    break;
+                fireInterval -= Time.deltaTime;
+                switch (fireInterval)
+                {
+                    case <= 0f:
+                        fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
+                        showTime = fireInterval / 2f; // showTime is half the time of the new fireInterval to ensure the laser visual is hidden before it fires again.
+                        BasicRayCaster();
+                        break;
+                }
             }
         }
 
@@ -68,10 +71,13 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void GroupFire()
         {
-            // we still set showTime so the laser is shown for a reasonable time. 
-            // this is less important than in Fire() as the same weapon will not fire twice in a row.
-            showTime = Random.Range(fireIntervalMin, fireIntervalMax) / 2f;
-            BasicRayCaster();
+            if (!CMC.ShieldActive)
+            {
+                // we still set showTime so the laser is shown for a reasonable time. 
+                // this is less important than in Fire() as the same weapon will not fire twice in a row.
+                showTime = Random.Range(fireIntervalMin, fireIntervalMax) / 2f;
+                BasicRayCaster();
+            }
         }
 
         /// <summary>
@@ -96,6 +102,12 @@ namespace RedButton.Mech.Examples
             {
                 case true:
                     endPoint = hit.point; // if the sphere cast hits something we can set the end point to the hit point.
+                    ShieldScript hitShield = hit.collider.gameObject.GetComponentInParent<ShieldScript>();
+                    if(hitShield != null && hitShield != CMC.shield)
+                    {
+                        hitShield.DamageShield();
+                        break;
+                    }
                     CentralMechComponent otherMech = hit.collider.gameObject.GetComponentInParent<CentralMechComponent>();
                     if(otherMech != null && otherMech != CMC) // saftey in case we hit ourselves.
                     {

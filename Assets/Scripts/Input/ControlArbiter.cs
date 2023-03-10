@@ -64,7 +64,7 @@ namespace RedButton.Core
 
         public static Color PlayerOneColour => Instance.playerOneColour;
         public static Color PlayerTwoColour => Instance.playerTwoColour;
-        public static Color PlayerThreeColour => Instance.playerTwoColour;
+        public static Color PlayerThreeColour => Instance.playerThreeColour;
         public static Color PlayerFourColour => Instance.playerFourColour;
 
         private readonly Dictionary<string, PlayerInput> controllerMap = new();
@@ -316,6 +316,8 @@ namespace RedButton.Core
                 this[i] = InstantiatePlayer(GetPlayerColour(i), ProcessDevice(devices[i]), (Controller)i);
                 playerMode = (Controller)i;
             }
+            uiTranslator.HideAll();
+            mainUIController.UIShown = true;
             ValidateControllersAndPlayers();
         }
         #endregion

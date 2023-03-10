@@ -36,6 +36,6 @@ namespace RedButton.Mech
         /// </summary>
         /// <param name="origin"></param>
         /// <param name="damage"></param>
-        public abstract void Initilise(CentralMechComponent origin, int damage);
+        public abstract void Initilise(CentralMechComponent origin, int damage, float destroyDelay = 20f);
     }
 }

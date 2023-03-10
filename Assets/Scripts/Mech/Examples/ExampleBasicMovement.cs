@@ -11,7 +11,7 @@ namespace RedButton.Mech.Examples
     {
         [Header("Movement settings")]
         [SerializeField] protected Rigidbody rb;
-        [SerializeField, Range(0.1f, 20f)] protected float moveSpeed = 20;
+        [SerializeField] protected float moveSpeed = 20;
         [SerializeField] protected float rotationSpeed = 5;
         protected float moveInput;
         protected Vector3 moveDir;
@@ -23,7 +23,7 @@ namespace RedButton.Mech.Examples
         protected override void OnMove(Vector2 axis)
         {
             moveInput = axis.magnitude;
-            moveDir = moveInput > 0 ? new Vector3(axis.x, 0f, axis.y) : transform.forward;
+            moveDir = moveInput > 0 ? new Vector3(axis.x, 0f, axis.y).normalized : transform.forward;
             targetPointParentForward = targetPointParent.forward;
             Vector3 pos = targetPoint.transform.position;
             pos.y = targetPointParent.transform.position.y;
