@@ -75,7 +75,7 @@ namespace RedButton.GamePlay
             {
                 manager.activePowerUps.Remove(this);
                 manager.inactivePowerUps.Add(this);
-                manager.ReleasePowerUp(powerUpCore);
+                manager.ReleasePowerUp(powerUpCore.GetType());
                 Destroy(powerUpCore);
             }
             StartCoroutine(ReSpawner());

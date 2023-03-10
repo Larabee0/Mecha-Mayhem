@@ -50,6 +50,11 @@ namespace RedButton.GamePlay
             }
             inactivePowerUps.UnionWith(powerUpInstances);
 
+            InitilisePowerUps();
+        }
+
+        public void InitilisePowerUps()
+        {
             StartCoroutine(Initializer());
         }
 
@@ -103,9 +108,9 @@ namespace RedButton.GamePlay
             return lowestType;
         }
 
-        public void ReleasePowerUp(PowerUpCore powerUp)
+        public void ReleasePowerUp(Type powerUpType)
         {
-            onMapPowerUps[powerUp.GetType()] = onMapPowerUps[powerUp.GetType()] <= 0 ? 0 : onMapPowerUps[powerUp.GetType()]--;
+            onMapPowerUps[powerUpType] = onMapPowerUps[powerUpType] <= 0 ? 0 : onMapPowerUps[powerUpType]-=1;
         }
     }
 }
