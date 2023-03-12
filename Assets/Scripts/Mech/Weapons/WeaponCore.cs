@@ -30,20 +30,20 @@ namespace RedButton.Mech
 
         [SerializeField] protected ProjectileCore projectilePrefab; // optional projectileCore prefab slot
 
-        [SerializeField] protected Transform muzzleOriginPoint; // point at which projectiles are spawned from or the ray cast is cast from.
+        protected Transform muzzleOriginPoint; // point at which projectiles are spawned from or the ray cast is cast from.
         [SerializeField] protected Transform animationCentre; // centre point of the visual portion of the weapon. this will be made to look at the targetObject
 
         protected virtual void Awake()
         {
             CMC = GetComponentInParent<CentralMechComponent>();
-
+            
             if (CMC == null)
             {
                 Debug.LogErrorFormat("Weapon attached to {0}, was unable to find the CMC! of its mech", gameObject.name);
                 enabled = false;
                 return;
             }
-
+            muzzleOriginPoint = CMC.GetNextWeaponOrigin();
             if (!Grouped)
             {
                 BindtoControls();

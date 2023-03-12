@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 261.9007, g: 324.45554, b: 429.43463, a: 1}
+  m_IndirectSpecularColor: {r: 262.3369, g: 325.0498, b: 430.21924, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -611,6 +611,7 @@ MonoBehaviour:
   maxTimeBetweenBarriers: 5
   upperBound: 4
   guaranteeBarriers: 0
+  numberOfBarriers: 12
 --- !u!1001 &903096736
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -756,6 +757,7 @@ MonoBehaviour:
   maxTimeBetweenBarriers: 5
   upperBound: 4
   guaranteeBarriers: 0
+  numberOfBarriers: 12
 --- !u!4 &947540756
 Transform:
   m_ObjectHideFlags: 0
