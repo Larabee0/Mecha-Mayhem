@@ -22,6 +22,11 @@ namespace RedButton.Mech
             UnFire();
         }
 
+        protected override void Start()
+        {
+            targetObject = CMC.MechMovementCore.TargetPoint;
+        }
+
         protected override void BindtoControls()
         {
             ButtonEventContainer buttonEventContainer = controlBinding switch
