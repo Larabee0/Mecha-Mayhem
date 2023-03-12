@@ -465,9 +465,9 @@ GameObject:
   - component: {fileID: 2331743068901684098}
   - component: {fileID: 1202031556362224852}
   - component: {fileID: 52958292}
-  - component: {fileID: 1974390960388751965}
+  - component: {fileID: 8835444828769217910}
   m_Layer: 0
-  m_Name: TestMechVelocityChangeMovement
+  m_Name: ShotGunMech
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -481,7 +481,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2331743068901684111}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.2999997, y: 0.5, z: 0.049999952}
+  m_LocalPosition: {x: -0.8888889, y: 0.72222215, z: 3.3333335}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -501,7 +501,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2331743068901684111}
   serializedVersion: 2
-  m_Mass: 20
+  m_Mass: 10
   m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -538,6 +538,7 @@ MonoBehaviour:
   - {fileID: 2331743069697241314}
   - {fileID: 2331743069289660091}
   - {fileID: 2331743068919907987}
+  shield: {fileID: 0}
   healthBackgroundDeath: {fileID: 0}
   minHealth: 0
   maxHealth: 100
@@ -547,7 +548,7 @@ MonoBehaviour:
   movementCore: {fileID: 0}
   weapons: []
   mechColliders: []
---- !u!114 &1974390960388751965
+--- !u!114 &8835444828769217910
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -556,16 +557,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 2331743068901684111}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f85452ce201b2d419264431f17821cc, type: 3}
+  m_Script: {fileID: 11500000, guid: e21ea812ad821924994d72e34ee0d3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CMC: {fileID: 0}
-  aimSpeed: 7
+  aimSpeed: 5
   targetPointParent: {fileID: 7909276584442108872}
   targetPoint: {fileID: 2331743069289660093}
   targetPointDistance: 5
   rb: {fileID: 2331743068901684098}
   moveSpeed: 30
+  forceMultiplier: 10
   rotationSpeed: 5
 --- !u!1 &2331743068919907998
 GameObject:
@@ -1295,11 +1297,10 @@ MonoBehaviour:
     type: 3}
   muzzleOriginPoint: {fileID: 1303482295}
   animationCentre: {fileID: 2331743068668870359}
-  shield: {fileID: 5581798563665386101}
-  angleOfBullets: 25
   shootForce: 20
   fireIntervalMin: 0.75
   fireIntervalMax: 1
+  angleOfBullets: 25
 --- !u!1 &4947881106096219320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1943,32 +1944,32 @@ PrefabInstance:
     - target: {fileID: 3593390795651431979, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3593390795651431979, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3593390795651431979, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3593390795651431979, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3593390795651431979, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3593390795651431979, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3593390795651431979, guid: 30dd6cd09d9348b419e14f268f487b25,
         type: 3}
@@ -1982,12 +1983,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30dd6cd09d9348b419e14f268f487b25, type: 3}
---- !u!1 &5581798563665386101 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2007202325831458682, guid: 30dd6cd09d9348b419e14f268f487b25,
-    type: 3}
-  m_PrefabInstance: {fileID: 6245802022969935119}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7454515366844971812 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3593390795651431979, guid: 30dd6cd09d9348b419e14f268f487b25,
