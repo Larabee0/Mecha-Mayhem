@@ -13,6 +13,7 @@ namespace RedButton.Mech
         [HideInInspector] public int currentShieldHealth;
         [SerializeField] bool shieldReady;
         [SerializeField] private GameObject shieldObject;
+        [SerializeField] private Material shieldMaterial;
         public bool ShieldActive => shieldObject.activeSelf;
         protected override void Awake()
         {
@@ -80,6 +81,8 @@ namespace RedButton.Mech
             }
         }
 
+
+
         public override void GroupFire()
         {
             
@@ -89,6 +92,26 @@ namespace RedButton.Mech
         {
             shieldObject.transform.position = transform.position;
             shieldObject.transform.forward = transform.forward;
+        }
+
+        private void ShieldColour()
+        {
+            if (shieldHealth > 3)
+            {
+                //Make barreir blue
+            }
+            else if(shieldHealth == 3)
+            {
+                //Make barrier green
+            }
+            else if(shieldHealth == 2)
+            {
+                //Make barrier orange
+            }
+            else if(shieldHealth == 1)
+            {
+                //Make barrier red
+            }
         }
     }
 }
