@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 2615345559587224645}
   - component: {fileID: 889755793319926088}
   - component: {fileID: 8433596072126875969}
+  - component: {fileID: 1615739709745365508}
   m_Layer: 0
-  m_Name: PowerUpContainer
+  m_Name: HealContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,6 +61,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUpCore: {fileID: 0}
+  manager: {fileID: 0}
+  mechInTrigger: 0
+  powerUpActive: 0
+  spinSpeed: 1
+--- !u!114 &1615739709745365508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022544573477853711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d304bd2b3216c1e4399ba8896bcaab94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limit: 3
+  powerUpColour: {r: 0.042452812, g: 1, b: 0.39516968, a: 1}
+  healAmount: 50
 --- !u!1 &1061957101399959709
 GameObject:
   m_ObjectHideFlags: 0

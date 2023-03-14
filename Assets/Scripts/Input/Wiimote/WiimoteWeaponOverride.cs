@@ -27,7 +27,6 @@ namespace RedButton.Core.WiimoteSupport
 
         protected override void Update()
         {
-            base.Update();
             if(wiimoteInput!= null)
             {
                 if (wiimoteInput.ButtonB)
