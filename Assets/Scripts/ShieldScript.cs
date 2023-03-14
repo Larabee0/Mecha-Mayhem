@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.PlayerLoop;
 
 namespace RedButton.Mech
 {
@@ -13,7 +13,7 @@ namespace RedButton.Mech
         [HideInInspector] public int currentShieldHealth;
         [SerializeField] bool shieldReady;
         [SerializeField] private GameObject shieldObject;
-        [SerializeField] private Material shieldMaterial;
+        
         public bool ShieldActive => shieldObject.activeSelf;
         protected override void Awake()
         {
@@ -35,7 +35,7 @@ namespace RedButton.Mech
             buttonEventContainer.OnButtonPressed += Fire;
             buttonEventContainer.OnButtonReleased += UnFire;
         }
-
+        
         protected override void UnBindControls()
         {
             ButtonEventContainer buttonEventContainer = controlBinding switch
@@ -81,7 +81,7 @@ namespace RedButton.Mech
             }
         }
 
-
+        
 
         public override void GroupFire()
         {
@@ -92,24 +92,35 @@ namespace RedButton.Mech
         {
             shieldObject.transform.position = transform.position;
             shieldObject.transform.forward = transform.forward;
+            ShieldColour();
         }
 
+        
         private void ShieldColour()
         {
+            MeshRenderer shieldColour = GetComponent<MeshRenderer>();
             if (shieldHealth > 3)
             {
+                shieldColour.material.SetColor("_FrontColor", Color.blue);
+                shieldColour.material.SetColor("_BackColor", Color.blue);
                 //Make barreir blue
             }
             else if(shieldHealth == 3)
             {
+                shieldColour.material.SetColor("_FrontColor", Color.green);
+                shieldColour.material.SetColor("_BackColor", Color.green);
                 //Make barrier green
             }
             else if(shieldHealth == 2)
             {
-                //Make barrier orange
+                shieldColour.material.SetColor("_FrontColor", Color.yellow);
+                shieldColour.material.SetColor("_BackColor", Color.yellow);
+                //Make barrier yellow
             }
             else if(shieldHealth == 1)
             {
+                shieldColour.material.SetColor("_FrontColor", Color.red);
+                shieldColour.material.SetColor("_BackColor", Color.red);
                 //Make barrier red
             }
         }

@@ -183,5 +183,8 @@ MonoBehaviour:
   muzzleOriginPoint: {fileID: 0}
   animationCentre: {fileID: 0}
   shieldCD: 4
+  shieldHealth: 0
+  currentShieldHealth: 0
   shieldReady: 0
   shieldObject: {fileID: 2853907090583780071}
+  shieldMaterial: {fileID: 2100000, guid: e0b96bfe48cd5de40b3b4c130e81a35d, type: 2}
