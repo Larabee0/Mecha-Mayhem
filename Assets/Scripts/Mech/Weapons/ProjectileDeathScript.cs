@@ -6,7 +6,7 @@ using UnityEngine;
 public class ProjectileDeathScript : ExampleBasicProjectile
 {
     [SerializeField]
-    private GameObject projectileExplosion;
+    protected GameObject projectileExplosion;
 
     protected override void OnCollisionEnter(Collision collision)
     {

@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace RedButton.Mech.Examples
 {
-    public class ShotgunProjectiles : ExampleBasicProjectile
+    public class ShotgunProjectiles : ProjectileDeathScript
     {
         [SerializeField] Vector3 finalScale;
         [SerializeField, Range(0, 1)] float shotgunRange;
-        private GameObject projectileExplosion;
         [SerializeField] private Transform shotgunCollider;
 
         public override void Initilise(CentralMechComponent origin, int damage, float destroyDelay = 20f)

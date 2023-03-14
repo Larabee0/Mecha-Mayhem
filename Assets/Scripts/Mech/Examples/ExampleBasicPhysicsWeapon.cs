@@ -35,12 +35,6 @@ namespace RedButton.Mech.Examples
             }
         }
 
-        private IEnumerator CoolDownCoroutine()
-        {
-            yield return new WaitForSeconds(Random.Range(fireIntervalMin, fireIntervalMax));
-            coolDownProcess = null;
-        }
-
         /// <summary>
         /// GroupFire is a pass through to call PhysicsShoot() directly as timing is handled by the WeaponGroup.
         /// </summary>
@@ -84,6 +78,12 @@ namespace RedButton.Mech.Examples
             projectile.Initilise(CMC, damage);
 
             projectile.Rigidbody.AddForce(bulletVector * shootForce, ForceMode.Impulse);
+        }
+
+        private IEnumerator CoolDownCoroutine()
+        {
+            yield return new WaitForSeconds(Random.Range(fireIntervalMin, fireIntervalMax));
+            coolDownProcess = null;
         }
     }
 }

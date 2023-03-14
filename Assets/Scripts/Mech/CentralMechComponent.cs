@@ -16,6 +16,9 @@ namespace RedButton.Mech
 
         [Header("Items that should recieve the player colour")]
         [SerializeField] private MeshRenderer[] colourables;
+        [SerializeField] protected Transform animationCentre;
+        [SerializeField] private Transform[] weaponOriginPoints;
+        private int weaponOriginIndex = 0;
 
         [Header("Health")]
         public ShieldScript shield;
@@ -87,6 +90,9 @@ namespace RedButton.Mech
 
         private void Update()
         {
+            Vector3 lookTarget = MechMovementCore.TargetPoint.position;
+            lookTarget.y = animationCentre.position.y;
+            animationCentre.LookAt(lookTarget);
 #if UNITY_EDITOR
             if (debugging)
             {
@@ -100,6 +106,18 @@ namespace RedButton.Mech
                 }
             }
 #endif
+        }
+
+        public Transform GetNextWeaponOrigin()
+        {
+            Transform origin = weaponOriginPoints[weaponOriginIndex];
+            weaponOriginIndex = (weaponOriginIndex + 1) % weaponOriginPoints.Length;
+            return origin;
+        }
+
+        public void ResetWeaponOriginIndex()
+        {
+            weaponOriginIndex = 0;
         }
 
         public void AssignInputController(PlayerInput inputController)

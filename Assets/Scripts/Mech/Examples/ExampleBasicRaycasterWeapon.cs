@@ -147,10 +147,12 @@ namespace RedButton.Mech.Examples
         /// <returns></returns>
         private IEnumerator Hide()
         {
+            float startTime = showTime;
             while(showTime > 0)
             {
                 showTime -= Time.deltaTime;
-                projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(laserStart), transform.InverseTransformPoint(laserEnd) });
+                Vector3 currentStart = Vector3.Lerp(laserStart, laserEnd, Mathf.InverseLerp(startTime, 0, showTime));
+                projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(currentStart), transform.InverseTransformPoint(laserEnd) });
                 yield return null;
             }
             projectileMeshRenderer.enabled = false;
