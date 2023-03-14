@@ -63,7 +63,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4848389855903872897}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -210,7 +210,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8266346388783292048}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: fbb2d865f4b112f4c89ee2df308badc7, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 6b25a03d3c78c5045aac6d20aed7d20d, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
