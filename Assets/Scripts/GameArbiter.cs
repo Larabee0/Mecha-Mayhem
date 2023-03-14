@@ -59,7 +59,6 @@ namespace RedButton.GamePlay
         {
             if(spawnPoints.Length == 0)
             {
-                //Debug.LogException(new System.InvalidOperationException("Spawn points array is empty, cannot spawn any mechs"), gameObject);
                 throw new System.InvalidOperationException("Spawn points array is empty, cannot spawn any mechs");
             }
             if(playerCount > spawnPoints.Length)

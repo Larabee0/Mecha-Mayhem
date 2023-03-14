@@ -147,7 +147,7 @@ namespace RedButton.Mech.Examples
         /// <returns></returns>
         private IEnumerator Hide()
         {
-            float startTime = showTime/1.5f;
+            float startTime = showTime;
             while(showTime > 0)
             {
                 showTime -= Time.deltaTime;

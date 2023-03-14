@@ -5,6 +5,7 @@ using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
 using System.Linq;
 using UnityEngine.InputSystem.UI;
+using UnityEditor.Sprites;
 
 namespace RedButton.Core
 {
@@ -366,6 +367,16 @@ namespace RedButton.Core
         }
 
         #endregion
+
+        public void GiveInputAuthority(int playerIndex)
+        {
+            PlayerInput player = this[playerIndex];
+            LockOutAllPlayers();
+            player.EnableUIonly();
+            uiTranslator.SetUIHoverTint(player.playerColour);
+            startScreenUIActionAsset.devices = player.Devices;
+            startScreenActionMap.devices = player.Devices;
+        }
 
         /// <summary>
         /// index based way of getting player colours

@@ -589,6 +589,7 @@ MonoBehaviour:
   p4ControllerTxt: {fileID: 84272894}
   bgSprite: {fileID: 21300000, guid: 1b105dac2aebdfd49a7bf34d192fa314, type: 3}
   willSprite: {fileID: 21300000, guid: 291faab785fe8004b92b20dd4e6c9960, type: 3}
+  mechSelectorManager: {fileID: 2032857601658021133}
 --- !u!1 &251103221
 GameObject:
   m_ObjectHideFlags: 0
@@ -1059,7 +1060,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &301830620
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6526,7 +6527,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 180565485}
         m_TargetAssemblyTypeName: RedButton.Core.UI.StartMenuManagerScript, Assembly-CSharp
-        m_MethodName: OpenLvlSelect
+        m_MethodName: OpenMechSelector
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10607,6 +10608,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: RightCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &413015047144264770
 GameObject:
   m_ObjectHideFlags: 0
@@ -10737,6 +10750,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: LeftCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -11025,7 +11050,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &666149629985156348
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11097,23 +11122,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10434e8b14d56764fa07674e71c83f8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startMenuManager: {fileID: 0}
   returnButton: {fileID: 2529896827686830351}
   player1:
+    playerIndex: 0
     selectLeft: {fileID: 7948158176282580747}
     selectRight: {fileID: 4642778647209777645}
     confirmSelection: {fileID: 409371186040244083}
     previewImage: {fileID: 7480431015990181930}
   player2:
+    playerIndex: 0
     selectLeft: {fileID: 2767150294198068823}
     selectRight: {fileID: 5011057844122093433}
     confirmSelection: {fileID: 2845390921874444916}
     previewImage: {fileID: 6508388688699566557}
   player3:
+    playerIndex: 0
     selectLeft: {fileID: 8379298551535149018}
     selectRight: {fileID: 4854594537516558000}
     confirmSelection: {fileID: 1608196892935513159}
     previewImage: {fileID: 1775235826824357911}
   player4:
+    playerIndex: 0
     selectLeft: {fileID: 7470535924055151704}
     selectRight: {fileID: 7471206810981551645}
     confirmSelection: {fileID: 1955090192469905142}
@@ -11121,27 +11151,27 @@ MonoBehaviour:
   mechs:
   - name: Single Laser
     description: Mech with single laser weapon
-    previewImage: {fileID: 2800000, guid: 0c7018b151e205641bfdb785059446ae, type: 3}
-    prefab: {fileID: 0}
+    previewImage: {fileID: 21300000, guid: 0c7018b151e205641bfdb785059446ae, type: 3}
+    prefab: {fileID: 52958292, guid: 63a7186cd238a2a49b2165a6366e4cf9, type: 3}
   - name: Single Particle
     description: Mech with single particle weapon
-    previewImage: {fileID: 2800000, guid: f34312c754aad0d439786b9a32ccd6e3, type: 3}
-    prefab: {fileID: 0}
+    previewImage: {fileID: 21300000, guid: f34312c754aad0d439786b9a32ccd6e3, type: 3}
+    prefab: {fileID: 52958292, guid: d21c1abb9336a3947ac91a7b92794cf8, type: 3}
   - name: Dual Laser
     description: Mech with twin laser weapons
-    previewImage: {fileID: 2800000, guid: 30a47b33148916c4489d753f55afafe3, type: 3}
+    previewImage: {fileID: 21300000, guid: 30a47b33148916c4489d753f55afafe3, type: 3}
     prefab: {fileID: 0}
   - name: Dual Particle
     description: Mech with twin particle weapons
-    previewImage: {fileID: 2800000, guid: f87c72444beecc04ba6a9e706552e5cf, type: 3}
+    previewImage: {fileID: 21300000, guid: f87c72444beecc04ba6a9e706552e5cf, type: 3}
     prefab: {fileID: 0}
   - name: Dual Laser Mini Guns
     description: Mech with twin laser mini guns
-    previewImage: {fileID: 2800000, guid: a0d8c886b9e5453428d8d8448340c3f6, type: 3}
+    previewImage: {fileID: 21300000, guid: a0d8c886b9e5453428d8d8448340c3f6, type: 3}
     prefab: {fileID: 0}
   - name: Dual Shotguns
     description: Mech with twin shotguns
-    previewImage: {fileID: 2800000, guid: a0d8c886b9e5453428d8d8448340c3f6, type: 3}
+    previewImage: {fileID: 21300000, guid: 1b8c4d995783b504192d9bc10881d117, type: 3}
     prefab: {fileID: 0}
   thisDoesNothingPaddingForMechDiscriptors: 0
 --- !u!1 &1087977061991338022
@@ -11181,9 +11211,9 @@ RectTransform:
   m_Father: {fileID: 3691460337478074165}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 682.5, y: -85.94}
   m_SizeDelta: {x: 195, y: 171.88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3617994810915131420
@@ -11354,6 +11384,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: RightCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -11572,6 +11614,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: LeftCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1855744315390491722
 GameObject:
   m_ObjectHideFlags: 0
@@ -11702,6 +11756,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: LeftCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -12150,9 +12216,9 @@ RectTransform:
   m_Father: {fileID: 53717088734369429}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 121.3914, y: -314.59183}
   m_SizeDelta: {x: 242.7828, y: 36.8148}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8927377229972760385
@@ -12237,9 +12303,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 180565485}
-        m_TargetAssemblyTypeName: RedButton.Core.UI.StartMenuManagerScript, Assembly-CSharp
-        m_MethodName: CloseLvlSelect
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: ReturnCallback
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12379,9 +12445,9 @@ RectTransform:
   m_Father: {fileID: 53717088734369429}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 121.39142, y: -168.52266}
   m_SizeDelta: {x: 780, y: 171.88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1231753773108427274
@@ -12994,6 +13060,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: SelectCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4667235201379501138
 GameObject:
   m_ObjectHideFlags: 0
@@ -13590,6 +13668,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: LeftCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5565946124843008309
 GameObject:
   m_ObjectHideFlags: 0
@@ -14157,6 +14247,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: SelectCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6097284832428726315
 GameObject:
   m_ObjectHideFlags: 0
@@ -14437,6 +14539,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: SelectCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6234076986693017094
 GameObject:
   m_ObjectHideFlags: 0
@@ -14571,6 +14685,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: RightCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6311907671366699969
 GameObject:
   m_ObjectHideFlags: 0
@@ -14608,9 +14734,9 @@ RectTransform:
   m_Father: {fileID: 3691460337478074165}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 292.5, y: -85.94}
   m_SizeDelta: {x: 195, y: 171.88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4017242255129618353
@@ -14768,9 +14894,9 @@ RectTransform:
   m_Father: {fileID: 3691460337478074165}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 487.5, y: -85.94}
   m_SizeDelta: {x: 195, y: 171.88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2278875695405501656
@@ -14928,9 +15054,9 @@ RectTransform:
   m_Father: {fileID: 3691460337478074165}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 97.5, y: -85.94}
   m_SizeDelta: {x: 195, y: 171.88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1824514689921871660
@@ -15333,6 +15459,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: SelectCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -15841,6 +15979,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2032857601658021133}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.MechSelectorManager, Assembly-CSharp
+        m_MethodName: RightCallback
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8807477280779878662
 GameObject:
   m_ObjectHideFlags: 0
@@ -16100,9 +16250,9 @@ RectTransform:
   m_Father: {fileID: 53717088734369429}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 121.3914, y: -25.860886}
   m_SizeDelta: {x: 242.7828, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7522500296297558978

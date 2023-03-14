@@ -41,6 +41,9 @@ namespace RedButton.Core.UI
 
         [SerializeField] Sprite bgSprite;
         [SerializeField] Sprite willSprite;
+
+        [Header("Mech Selector")]
+        [SerializeField] private MechSelectorManager mechSelectorManager;
         
         private UnityUITranslationLayer.ControllerAssignHelper PlayerOneAssign;
         private UnityUITranslationLayer.ControllerAssignHelper PlayerTwoAssign;
@@ -326,10 +329,20 @@ namespace RedButton.Core.UI
         #endregion
         #endregion
 
+        #region Mech selector
+        public void OpenMechSelector()
+        {
+            PlayerAssignPanel.SetActive(false);
+            ControlArbiter.Instance.AcceptControllerAssignment();
+            mechSelectorManager.OpenSelector();
+        }
+        #endregion
+
         #region Level selector
         public void OpenLvlSelect()
         {
-            ControlArbiter.Instance.AcceptControllerAssignment();
+            mechSelectorManager.gameObject.SetActive(false);
+            ControlArbiter.Instance.GoForwardFromMechSelector();
             lvlSelectPanel.SetActive(true);
             PlayerAssignPanel.SetActive(false);
             EventSystem.current.SetSelectedGameObject(lvlSelectPanelBtn);
@@ -347,7 +360,6 @@ namespace RedButton.Core.UI
         public void CloseLvlSelect()
         {
             ControlArbiter.Instance.GoBackToControllerAssignment(new UnityEngine.InputSystem.InputAction.CallbackContext());
-            return;
         }
 
         public void CLoseLvlSelectInternal()

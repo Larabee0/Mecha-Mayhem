@@ -19,6 +19,7 @@ namespace RedButton.Core
         SetPlayerCount,
         ControllerAssignment,
         ConfirmAssignment,
+        MechSelect,
         LevelSelect,
         Closed
     }
@@ -110,12 +111,6 @@ namespace RedButton.Core
                 PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
             }
 
-            // if (UnityUI)
-            // {
-            //     // uiTranslator.StartMenuUI.PlayerSelectCallback -= MainUIController.StartScreenController.PlayerSelectCallback;
-            //     EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
-            //     mainUIController.UIShown = true;
-            // }
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
             PlayerOne.Enable();
@@ -134,13 +129,7 @@ namespace RedButton.Core
                 // go back to controll assigment screen with controllers assigned but not accepted.
                 PlayerOne.ControlMap.UI.Cancel.performed += GoBackToControllerAssignment;
             }
-            startScreenState = StartScreenState.LevelSelect;
-            if (UnityUI)
-            {
-                // MainUIController.UIShown = false;
-                // uiTranslator.ShowStartSreen();
-                // uiTranslator.StartMenuUI.OpenLvlSelectInternal();
-            }
+            startScreenState = StartScreenState.MechSelect;
         }
 
         /// <summary>
@@ -161,9 +150,6 @@ namespace RedButton.Core
                 if (UnityUI)
                 {
                     PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
-                    // uiTranslator.StartMenuUI.PlayerSelectCallback -= MainUIController.StartScreenController.PlayerSelectCallback;
-                    // EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
-                    // mainUIController.UIShown = true;
                 }
                 PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
                 PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
@@ -198,7 +184,6 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
             PlayerOne.EnableUIonly();
-            // mainUIController.StartScreenController.ShowAssignmentButtonPanel();
 
             uiTranslator.StartMenuUI.EnableOkBtn();
             startScreenState = StartScreenState.ConfirmAssignment;
@@ -340,7 +325,6 @@ namespace RedButton.Core
         {
             StopAllCoroutines();
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
-            //mainUIController.StartScreenController.ShowPlayerCountPicker();
             startScreenActionMap.UI.Disable();
             startScreenActionMap.devices = new[] { obj.control.device };
             startScreenUIActionAsset.devices = new[] { obj.control.device };
@@ -359,7 +343,6 @@ namespace RedButton.Core
                 {
                     PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMainMenu;
                 }
-                //mainUIController.UIShown = false;
                 uiTranslator.ShowStartSreen();
                 uiTranslator.StartMenuUI.DisableOkBtn();
                 uiTranslator.StartMenuUI.OpenPlayerSelect();
@@ -389,10 +372,7 @@ namespace RedButton.Core
             if(UnityUI)
             {
                 uiTranslator.StartMenuUI.CLoseLvlSelectInternal();
-                // uiTranslator.HideAll();
-                // mainUIController.UIShown = true;
                 uiTranslator.StartMenuUI.PlayerSelectCallback(playerMode, true);
-                // EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
             }
             else
             {
@@ -401,6 +381,26 @@ namespace RedButton.Core
             
             startScreenState = StartScreenState.ControllerAssignment;
 
+        }
+
+        public void GoForwardFromMechSelector()
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMechSelector;
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToControllerAssignment;
+            }
+            startScreenState = StartScreenState.LevelSelect;
+        }
+
+        public void GoBackToMechSelector(InputAction.CallbackContext obj)
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToControllerAssignment;
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMechSelector;
+            }
+            startScreenState = StartScreenState.MechSelect;
         }
         #endregion
 
