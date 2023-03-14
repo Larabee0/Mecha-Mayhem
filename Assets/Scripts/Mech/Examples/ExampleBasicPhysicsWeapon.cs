@@ -35,7 +35,6 @@ namespace RedButton.Mech.Examples
             }
         }
 
-
         private IEnumerator CoolDownCoroutine()
         {
             yield return new WaitForSeconds(Random.Range(fireIntervalMin, fireIntervalMax));

@@ -15,7 +15,7 @@ namespace RedButton.GamePlay
         [SerializeField] private int playerCount;
         [SerializeField] private CentralMechComponent[] editorMechs;
         [SerializeField] private Vector3[] spawnPoints = new Vector3[4];
-        private HashSet<int> usedSpawnPoints = new();
+        private readonly HashSet<int> usedSpawnPoints = new();
         [SerializeField] private List<CentralMechComponent> activeMechs = new();
         [SerializeField] private Stack<CentralMechComponent> deathOrder = new();
         
@@ -23,8 +23,11 @@ namespace RedButton.GamePlay
         public bool RoundStarted => roundStarted;
         public Pluse OnActiveSceneChanged;
 
+        [SerializeField] private PowerUpsManager powerUpsManager;
+
         private void Awake()
         {
+            powerUpsManager = FindObjectOfType<PowerUpsManager>();
             roundStarted = false;
             if (ControlArbiter.Instance == null)
             {
@@ -89,6 +92,10 @@ namespace RedButton.GamePlay
 
         private void StartRound()
         {
+            if (powerUpsManager != null)
+            {
+                powerUpsManager.SetUpPowerUps();
+            }
             deathOrder.Clear();
             ControlArbiter.Instance.ValidateControllersAndPlayers();
             roundStarted= true;
