@@ -102,11 +102,14 @@ namespace RedButton.Mech.Examples
             {
                 case true:
                     endPoint = hit.point; // if the sphere cast hits something we can set the end point to the hit point.
-                    ShieldScript hitShield = hit.collider.gameObject.GetComponentInParent<ShieldScript>();
+                    ShieldTagger hitShield = hit.collider.gameObject.GetComponent<ShieldTagger>();
+                    if (hitShield != null && hitShield.shield.ShieldOwner)
+                    {
+                        hitShield.shield.DamageShield();
+                        break;
+                    }
                     if(hitShield != null && hitShield != CMC.shield)
                     {
-                        hitShield.DamageShield();
-                        break;
                     }
                     CentralMechComponent otherMech = hit.collider.gameObject.GetComponentInParent<CentralMechComponent>();
                     if(otherMech != null && otherMech != CMC) // saftey in case we hit ourselves.

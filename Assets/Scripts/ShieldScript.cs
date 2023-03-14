@@ -9,18 +9,23 @@ namespace RedButton.Mech
     public class ShieldScript : WeaponCore
     {
         [SerializeField] int shieldCD;
-        [SerializeField] private int shieldHealth;
+        [SerializeField] private int maxShieldHealth;
         [HideInInspector] public int currentShieldHealth;
         [SerializeField] bool shieldReady;
         [SerializeField] private GameObject shieldObject;
+        [SerializeField] private MeshRenderer shieldColour;
+
+        public CentralMechComponent ShieldOwner => CMC;
         
         public bool ShieldActive => shieldObject.activeSelf;
         protected override void Awake()
         {
             base.Awake();
             StartCoroutine(ShieldRecharge(shieldCD));
+            shieldColour = GetComponentInChildren<MeshRenderer>();
             shieldObject.transform.SetParent(null, true);
             UnFire();
+            shieldReady = true;
         }
 
         protected override void Start()
@@ -65,7 +70,8 @@ namespace RedButton.Mech
             if (shieldReady && !shieldObject.activeSelf)
             {
                 shieldObject.SetActive(true);
-                currentShieldHealth += shieldHealth;
+                currentShieldHealth += maxShieldHealth;
+                ShieldColour();
             }
 
         }
@@ -78,6 +84,8 @@ namespace RedButton.Mech
         public void DamageShield()
         {
             currentShieldHealth--;
+
+            ShieldColour();
             if (currentShieldHealth <= 0)
             {
                 shieldObject.SetActive(false);
@@ -97,35 +105,28 @@ namespace RedButton.Mech
         {
             shieldObject.transform.position = transform.position;
             shieldObject.transform.forward = transform.forward;
-            ShieldColour();
         }
 
-        
         private void ShieldColour()
         {
-            MeshRenderer shieldColour = GetComponent<MeshRenderer>();
-            if (shieldHealth > 3)
+            if (currentShieldHealth > 3)
             {
-                shieldColour.material.SetColor("_FrontColor", Color.blue);
-                shieldColour.material.SetColor("_BackColor", Color.blue);
+                shieldColour.material.SetColor("_ObjectColor", Color.blue);
                 //Make barreir blue
             }
-            else if(shieldHealth == 3)
+            else if(currentShieldHealth == 3)
             {
-                shieldColour.material.SetColor("_FrontColor", Color.green);
-                shieldColour.material.SetColor("_BackColor", Color.green);
+                shieldColour.material.SetColor("_ObjectColor", Color.green);
                 //Make barrier green
             }
-            else if(shieldHealth == 2)
+            else if(currentShieldHealth == 2)
             {
-                shieldColour.material.SetColor("_FrontColor", Color.yellow);
-                shieldColour.material.SetColor("_BackColor", Color.yellow);
+                shieldColour.material.SetColor("_ObjectColor", Color.yellow);
                 //Make barrier yellow
             }
-            else if(shieldHealth == 1)
+            else if(currentShieldHealth == 1)
             {
-                shieldColour.material.SetColor("_FrontColor", Color.red);
-                shieldColour.material.SetColor("_BackColor", Color.red);
+                shieldColour.material.SetColor("_ObjectColor", Color.red);
                 //Make barrier red
             }
         }

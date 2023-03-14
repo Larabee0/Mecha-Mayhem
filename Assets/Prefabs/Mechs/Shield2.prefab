@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 6318930157832215459}
   - component: {fileID: 7806030426889608091}
   - component: {fileID: 5498341628646633079}
+  - component: {fileID: 7358109370617461372}
   m_Layer: 6
   m_Name: group12
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,7 +51,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2007202325831458682}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -98,6 +99,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6592248226636378294, guid: 330ec058554486347978baeaaaf5d97c, type: 3}
+--- !u!114 &7358109370617461372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007202325831458682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51f7e9cb8079df24c842c49855595fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 2036404431354133122}
 --- !u!1 &2853907090583780071
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +123,7 @@ GameObject:
   - component: {fileID: 809323941202202535}
   m_Layer: 6
   m_Name: ShieldContainer
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,7 +156,7 @@ GameObject:
   - component: {fileID: 2036404431354133122}
   m_Layer: 6
   m_Name: Shield2
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -180,11 +194,9 @@ MonoBehaviour:
   controlBinding: 0
   controlBehaviour: 2
   projectilePrefab: {fileID: 0}
-  muzzleOriginPoint: {fileID: 0}
-  animationCentre: {fileID: 0}
   shieldCD: 4
-  shieldHealth: 0
+  maxShieldHealth: 3
   currentShieldHealth: 0
-  shieldReady: 0
+  shieldReady: 1
   shieldObject: {fileID: 2853907090583780071}
-  shieldMaterial: {fileID: 2100000, guid: e0b96bfe48cd5de40b3b4c130e81a35d, type: 2}
+  shieldColour: {fileID: 0}

@@ -35,7 +35,7 @@ namespace RedButton.Mech.Examples
         protected override void OnCollisionEnter(Collision collision)
         {
             Destroy(gameObject);
-            ShieldScript hitShield = collision.collider.gameObject.GetComponentInParent<ShieldScript>();
+            ShieldTagger hitShield = collision.collider.gameObject.GetComponent<ShieldTagger>();
             this.hitShield = hitShield != null && hitShield != origin.shield;
             if (!this.hitShield)
             {
@@ -47,7 +47,7 @@ namespace RedButton.Mech.Examples
             }
             else
             {
-                hitShield.DamageShield();
+                hitShield.shield.DamageShield();
             }
         }
     }
