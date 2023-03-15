@@ -1,4 +1,5 @@
 using RedButton.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,14 @@ using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace RedButton.Mech
 {
+    [Serializable]
+    public struct Colourable
+    {
+        public MeshRenderer colourableTarget;
+        public int materialIndex;
+        public bool all;
+    }
+
     /// <summary>
     /// Often listed as CMC this is the main control script for a mech and handles health.
     /// Acts as an interface for movement and weapons
@@ -15,7 +24,7 @@ namespace RedButton.Mech
         public delegate void MechPassThroughDelegeate(CentralMechComponent cmc);
 
         [Header("Items that should recieve the player colour")]
-        [SerializeField] private MeshRenderer[] colourables;
+        [SerializeField] private Colourable[] colourables;
         [SerializeField] protected Transform animationCentre;
         [SerializeField] private Transform[] weaponOriginPoints;
         private int weaponOriginIndex = 0;
@@ -84,7 +93,18 @@ namespace RedButton.Mech
             OnHealthChange += OnHealthChanged;
             for (int i = 0; i < colourables.Length; i++)
             {
-                colourables[i].material.SetColor("_BaseColor", MechAccentColour);
+                if (colourables[i].all)
+                {
+                    for (int m = 0; i < colourables[i].colourableTarget.materials.Length; m++)
+                    {
+                        colourables[i].colourableTarget.materials[m].SetColor("_BaseColor", MechAccentColour);
+                    }
+                }
+                else
+                {
+                    colourables[i].colourableTarget.materials[colourables[i].materialIndex].SetColor("_BaseColor", MechAccentColour);
+                }
+                
             }
         }
 

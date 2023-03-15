@@ -3,7 +3,17 @@ guid: 2c8b1b2d030851045bc0f4514971726f
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mech_Texture
+    second: {fileID: 2100000, guid: f22cb675906275048ad2441eff4bed33, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Player_Colour
+    second: {fileID: 2100000, guid: 791b80f834e2eaf4aa87a15fe1d8ed50, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
