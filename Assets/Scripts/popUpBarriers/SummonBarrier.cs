@@ -86,27 +86,24 @@ public class SummonBarrier : MonoBehaviour
         spaceBarBarriers = new GameObject[] {barrierL1Spacebar, barrierL2Spacebar, barrierISpacebar, barrierXSpacebar };
         
 
-        StartCoroutine("GetMechs");
+        StartCoroutine(GetMechs());
 
     }
     private void SpaceBarBarriers()
     {
         if (spacebarBarriersReady)
         {
-            Debug.Log(spacebarBarriersReady);
+            //Debug.Log(spacebarBarriersReady);
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 spacebarBarriersReady = false;
-                Debug.Log(spacebarBarriersReady);
+                // Debug.Log(spacebarBarriersReady);
                 for (int i = 1; i < numberOfBarriers; i++)
                 {
-                    int timeBetweenBarriers = Random.Range(minTimeBetweenBarriers, maxTimeBetweenBarriers);
-
                     int rotationOfBarrier = Random.Range(0, 3);
                     rotationOfBarrier *= 90;
 
-                    List<Vector3> avoidVectors = new List<Vector3>();
-                    Vector3 spawnBarrierRange = new Vector3(Random.Range(floorSize.min.x + margin, floorSize.max.x - margin), floor.transform.position.y, Random.Range(floorSize.min.z + margin, floorSize.max.z - margin));
+                    Vector3 spawnBarrierRange = new(Random.Range(floorSize.min.x + margin, floorSize.max.x - margin), floor.transform.position.y, Random.Range(floorSize.min.z + margin, floorSize.max.z - margin));
                     GameObject barrierToSpawn = Instantiate(spaceBarBarriers[Random.Range(0, spaceBarBarriers.Length)], spawnBarrierRange - new Vector3(0, barrierHeight, 0), Quaternion.identity);
                     barrierToSpawn.transform.Rotate(0, rotationOfBarrier, 0);
                     StartCoroutine(SpacebarCD());
@@ -127,8 +124,8 @@ public class SummonBarrier : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         mechs = GameObject.FindGameObjectsWithTag("Player");
-        Debug.Log(mechs.Length);
-        StartCoroutine("SpawnBarrier");
+        //Debug.Log(mechs.Length);
+        StartCoroutine(SpawnBarrier());
     }
     
     IEnumerator SpawnBarrier()
@@ -174,7 +171,7 @@ public class SummonBarrier : MonoBehaviour
 
             barrierCoords = new Rect(mech.transform.position.x, mech.transform.position.z, rangePlayer, rangePlayer);
             //Debug.Log(barrierCoords);
-            Vector3 barrierSpawnRange = new Vector3(Random.Range(barrierCoords.xMin, barrierCoords.xMax), floor.transform.position.y, Random.Range(barrierCoords.yMin, barrierCoords.yMax));
+            Vector3 barrierSpawnRange = new(Random.Range(barrierCoords.xMin, barrierCoords.xMax), floor.transform.position.y, Random.Range(barrierCoords.yMin, barrierCoords.yMax));
             //Debug.Log(barrierSpawnRange);
             barrierLimit = new Rect(floor.transform.position.x, floor.transform.position.z, floor.GetComponent<MeshCollider>().bounds.extents.x - margin, floor.GetComponent<MeshCollider>().bounds.extents.z - margin);
             //Debug.Log(barrierLimit);
@@ -203,7 +200,7 @@ public class SummonBarrier : MonoBehaviour
 
         yield return new WaitForSeconds(timeBetweenBarriers);
 
-        StartCoroutine("SpawnBarrier");
+        StartCoroutine(SpawnBarrier());
     }
 }
 //GameObject barrierToSpawn = Instantiate(barriers[barrierIndex], Vector3.zero, Quaternion.identity);
