@@ -164,6 +164,11 @@ namespace RedButton.Mech
             }
         }
 
+        public void Revive()
+        {
+            UpdateHealth(-maxHealth);
+        }
+
         private void Die()
         {
             OnMechDied?.Invoke(this);

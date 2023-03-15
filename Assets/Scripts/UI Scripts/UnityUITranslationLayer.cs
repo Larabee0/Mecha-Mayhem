@@ -9,9 +9,11 @@ namespace RedButton.Core.UI
     {
         [SerializeField] private StartMenuManagerScript startMenuController;
         [SerializeField] private PauseMenuManager pauseMenuController;
+        [SerializeField] private EndScreenManager endScreenController;
         [SerializeField] private Button[] allButtons;
         public StartMenuManagerScript StartMenuUI => startMenuController;
         public PauseMenuManager PauseMenuUI => pauseMenuController;
+        public EndScreenManager EndScreenUI => endScreenController;
 
         private void Awake()
         {
@@ -50,7 +52,7 @@ namespace RedButton.Core.UI
         {
             startMenuController.gameObject.SetActive(false);
             pauseMenuController.gameObject.SetActive(false);
-            gameObject.SetActive(false);
+            endScreenController.gameObject.SetActive(false);
         }
 
         //private void PlayerSelectCallback(Controller playerCount, bool existingCheck)

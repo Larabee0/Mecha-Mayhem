@@ -86,6 +86,7 @@ namespace RedButton.Core
         public MainUIController MainUIController => mainUIController;
         public bool UnityUI => unityUI;
         [SerializeField] private UnityUITranslationLayer uiTranslator;
+        public UnityUITranslationLayer UITranslator => uiTranslator;
 
         [Header("Start Screen Settings")]
         [SerializeField] private bool unityUI = false;

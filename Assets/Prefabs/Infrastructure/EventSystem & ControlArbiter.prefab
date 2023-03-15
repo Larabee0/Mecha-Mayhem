@@ -4069,6 +4069,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMenuController: {fileID: 180565485}
   pauseMenuController: {fileID: 8920366873679235030}
+  endScreenController: {fileID: 3681190140984123216}
   allButtons: []
 --- !u!1 &1026597710
 GameObject:
@@ -12157,9 +12158,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5892766003151935510}
-        m_TargetAssemblyTypeName: RedButton.Core.UI.PauseMenuManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 3681190140984123216}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.EndScreenManager, Assembly-CSharp
+        m_MethodName: NextRound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12685,7 +12686,7 @@ GameObject:
   - component: {fileID: 1385670496851503129}
   - component: {fileID: 3944991099392319268}
   - component: {fileID: 2682542142266665731}
-  - component: {fileID: 5892766003151935510}
+  - component: {fileID: 3681190140984123216}
   m_Layer: 5
   m_Name: VictoryScreen
   m_TagString: Untagged
@@ -12753,7 +12754,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5892766003151935510
+--- !u!114 &3681190140984123216
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12762,10 +12763,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4234525414476787317}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdd0dad62da51694da3c7f5dbe6fb175, type: 3}
+  m_Script: {fileID: 11500000, guid: dabd9d4d8ff57344aaad32b3b8443ee0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  continueButton: {fileID: 6097284832428726315}
+  TitleBar: {fileID: 6303266456160611932}
+  winnerText: {fileID: 7325503405967921772}
+  nextRoundButton: {fileID: 3723210196072042726}
+  quitButton: {fileID: 4715838150232666489}
 --- !u!1 &4374257896268188076
 GameObject:
   m_ObjectHideFlags: 0
@@ -13759,7 +13763,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Exit
+  m_Text: Return to Level Selection
 --- !u!1 &5723312222856743867
 GameObject:
   m_ObjectHideFlags: 0
@@ -14381,9 +14385,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5892766003151935510}
-        m_TargetAssemblyTypeName: RedButton.Core.UI.PauseMenuManager, Assembly-CSharp
-        m_MethodName: ExitButton
+      - m_Target: {fileID: 3681190140984123216}
+        m_TargetAssemblyTypeName: RedButton.Core.UI.EndScreenManager, Assembly-CSharp
+        m_MethodName: ReturnToLevelSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15764,7 +15768,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Continue
+  m_Text: Next Round
 --- !u!1 &8242409910409723108
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 using RedButton.Core;
 using RedButton.Mech;
 using RedButton.Core.UI;
+using static UnityEngine.GraphicsBuffer;
 
 namespace RedButton.GamePlay
 {
@@ -18,12 +19,16 @@ namespace RedButton.GamePlay
         private readonly HashSet<int> usedSpawnPoints = new();
         [SerializeField] private List<CentralMechComponent> activeMechs = new();
         [SerializeField] private Stack<CentralMechComponent> deathOrder = new();
-        
+        [SerializeField] private List<CentralMechComponent> spawnedMechs = new();
         [SerializeField] private bool roundStarted = false;
         public bool RoundStarted => roundStarted;
         public Pluse OnActiveSceneChanged;
 
         [SerializeField] private PowerUpsManager powerUpsManager;
+        [SerializeField] private int roundCount = 3;
+        [SerializeField] private int currentRound = 1;
+        private Dictionary<int, int> playerVictories = new();
+        private string lastRoundWinner;
 
         private void Awake()
         {
@@ -82,6 +87,7 @@ namespace RedButton.GamePlay
                 usedSpawnPoints.Add(spawnPointIndex);
                 activeMechs.Add(Instantiate(mechsToSpawn[i], spawnPoints[spawnPointIndex], Quaternion.identity));
                 activeMechs[^1].OnMechDied += OnMechDeath;
+                spawnedMechs.Add(activeMechs[^1]);
 
                 // To ensure minimal unintended cosnquences, I set the input controller property back to null
                 // after the mech gets Instantiated.
@@ -91,6 +97,11 @@ namespace RedButton.GamePlay
 
         private void StartRound()
         {
+            roundCount = playerCount+1;
+            for (int i = 0; i < playerCount; i++)
+            {
+                playerVictories.Add(i, 0);
+            }
             if (powerUpsManager != null)
             {
                 powerUpsManager.SetUpPowerUps();
@@ -109,7 +120,44 @@ namespace RedButton.GamePlay
                 deathOrder.Push(activeMechs[0]);
                 activeMechs.Clear();
             }
+            playerVictories[(int)deathOrder.Peek().MechInputController.Player] += 1;
+            lastRoundWinner = string.Format("Player {0} ", ((int)deathOrder.Peek().MechInputController.Player)+1);
+            currentRound += 1;
+            bool anyoneCanWin = PossibleForAnyPlayerVictory();
+            // end game if rounds finished
+            if (currentRound > roundCount)
+            {
+                bool tie = NeedTie();
+                if (tie)
+                {
+                    TieBreaker();
+                    return;
+                }
 
+                int winner = 0;
+                int wins = 0;
+
+                for (int i = 0; i < playerCount; i++)
+                {
+                    if(playerVictories[i] > wins)
+                    {
+                        wins = playerVictories[i];
+                        winner = i;
+                    }
+                }
+
+                lastRoundWinner = string.Format("Player {0} ", (winner + 1).ToString());
+                ControlArbiter.Instance.UITranslator.EndScreenUI.OpenEndofGame(lastRoundWinner);
+                return;
+            }
+            List<int> targetPlayers = new();
+
+            while(deathOrder.Count > 0)
+            {
+                targetPlayers.Add((int)deathOrder.Pop().MechInputController.Player);
+            }
+
+            StartRoundWithOptions(string.Format("Round {0} of {1}", currentRound, roundCount), targetPlayers);
             /*
              * Populate a score board in the order defined by the deathOrder stack?
              */
@@ -117,8 +165,70 @@ namespace RedButton.GamePlay
             // display some other ui after some time delay
             // for now lets say this goes back to the level select screen
 
-            ControlArbiter.Instance.MainUIController.EndScreenController.ShowEndScreen();
 
+
+        }
+
+        private IEnumerator RoundIntro(string name)
+        {
+            ControlArbiter.Instance.UITranslator.EndScreenUI.OpenNextRound(name, lastRoundWinner, currentRound - 1);
+            while (!ControlArbiter.Instance.UITranslator.EndScreenUI.startNextRound)
+            {
+                yield return null;
+            }
+
+            roundStarted = true;
+            if (powerUpsManager != null)
+            {
+                powerUpsManager.SetUpPowerUps();
+            }
+            // hide round number
+            for (int i = 0; i < activeMechs.Count; i++)
+            {
+                activeMechs[i].MechInputController.Enable();
+                activeMechs[i].gameObject.SetActive(true);
+            }
+        }
+
+        private void StartRoundWithOptions(string roundName, List<int>targetPlayers)
+        {
+            
+            usedSpawnPoints.Clear();
+            deathOrder.Clear();
+            int spawnPointIndex = Random.Range(0, spawnPoints.Length);
+            int safety = 0;
+            for (int i = 0; i < targetPlayers.Count; i++)
+            {
+                CentralMechComponent target = spawnedMechs[targetPlayers[i]];
+                target.OnMechDied += OnMechDeath;
+                while (usedSpawnPoints.Contains(spawnPointIndex) && safety < 1000)
+                {
+                    spawnPointIndex = Random.Range(0, spawnPoints.Length);
+                    safety++;
+                }
+                usedSpawnPoints.Add(spawnPointIndex);
+                target.transform.position = spawnPoints[spawnPointIndex];
+                target.Revive();
+                activeMechs.Add(target);
+                target.gameObject.SetActive(false);
+            }
+
+            StartCoroutine(RoundIntro(roundName));
+        }
+
+        private bool NeedTie()
+        {
+            return false;
+        }
+
+        private void TieBreaker()
+        {
+
+        }
+
+        private bool PossibleForAnyPlayerVictory()
+        {
+            return true;
         }
 
         private void OnMechDeath(CentralMechComponent cmc)
