@@ -5,7 +5,6 @@ using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
 using System.Linq;
 using UnityEngine.InputSystem.UI;
-using UnityEditor.Sprites;
 
 namespace RedButton.Core
 {
