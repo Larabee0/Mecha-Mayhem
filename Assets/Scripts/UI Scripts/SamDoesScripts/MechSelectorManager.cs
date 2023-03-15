@@ -41,6 +41,9 @@ namespace RedButton.Core.UI
         [SerializeField] private SelectionButtonContainer player3;
         [SerializeField] private SelectionButtonContainer player4;
 
+        [SerializeField] private Color selectorBackgroundColourInactive;
+        [SerializeField] private Color selectorBackgroundColourActive;
+
         public SelectionButtonContainer this[int index] => index switch
         {
             0 => player1,
@@ -83,7 +86,7 @@ namespace RedButton.Core.UI
         public void SelectCallback(int playerIndex)
         {
             SelectionButtonContainer container = this[playerIndex];
-            container.Interactable = false;
+            container.SetInteractable(false, selectorBackgroundColourInactive);
             mechsToSpawn.Add(mechs[mechPrefabIndex].prefab);
 
             mechPrefabIndex = 0;
@@ -100,7 +103,7 @@ namespace RedButton.Core.UI
 
 
             container = this[currentPlayerIndex];
-            container.Interactable = true;
+            container.SetInteractable(true, ControlArbiter.Instance[currentPlayerIndex].playerColour);
 
             ControlArbiter.Instance.GiveInputAuthority(currentPlayerIndex,true);
 
@@ -112,10 +115,10 @@ namespace RedButton.Core.UI
             currentPlayerIndex = 0;
             ControlArbiter.Instance.GiveInputAuthority(0);
             gameObject.SetActive(true);
-            player1.Interactable = true;
-            player2.Interactable = false;
-            player3.Interactable = false;
-            player4.Interactable = false;
+            player1.SetInteractable(true, ControlArbiter.PlayerOneColour);
+            player2.SetInteractable(false, selectorBackgroundColourInactive);
+            player3.SetInteractable(false, selectorBackgroundColourInactive);
+            player4.SetInteractable(false, selectorBackgroundColourInactive);
             player1.previewImage.sprite = mechs[0].previewImage;
             player2.previewImage.sprite = mechs[0].previewImage;
             player3.previewImage.sprite = mechs[0].previewImage;
@@ -169,9 +172,15 @@ namespace RedButton.Core.UI
             public Button selectRight;
             public Button confirmSelection;
             public Image previewImage;
+            public Image backgroundImage;
             public GameObject Container => previewImage.transform.parent.gameObject;
             public string ConfirmText { set => confirmSelection.GetComponentInChildren<Text>().text = value; }
-            public bool Interactable { set { confirmSelection.interactable = selectRight.interactable = selectLeft.interactable = value; } }
+
+            public void SetInteractable(bool value, Color backgroundColour)
+            {
+                confirmSelection.interactable = selectRight.interactable = selectLeft.interactable = value;
+                backgroundImage.color = backgroundColour;
+            }
         }
     }
 }

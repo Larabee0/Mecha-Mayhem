@@ -115,11 +115,13 @@ namespace RedButton.GamePlay
         {
             ControlArbiter.Instance.LockOutAllPlayers();
             roundStarted = false;
-            if (activeMechs.Count > 0)
+            while (activeMechs.Count > 0)
             {
                 deathOrder.Push(activeMechs[0]);
-                activeMechs.Clear();
+                activeMechs.RemoveAt(0);
             }
+            activeMechs.Clear();
+
             playerVictories[(int)deathOrder.Peek().MechInputController.Player] += 1;
             lastRoundWinner = string.Format("Player {0} ", ((int)deathOrder.Peek().MechInputController.Player)+1);
             currentRound += 1;
@@ -152,9 +154,11 @@ namespace RedButton.GamePlay
             }
             List<int> targetPlayers = new();
 
-            while(deathOrder.Count > 0)
+            Debug.LogFormat("Prep Restart Round Time {0}", Time.realtimeSinceStartup);
+            while (deathOrder.Count > 0)
             {
-                targetPlayers.Add((int)deathOrder.Pop().MechInputController.Player);
+                CentralMechComponent mech = deathOrder.Pop();
+                targetPlayers.Add((int)mech.MechInputController.Player);
             }
 
             StartRoundWithOptions(string.Format("Round {0} of {1}", currentRound, roundCount), targetPlayers);
@@ -172,11 +176,13 @@ namespace RedButton.GamePlay
         private IEnumerator RoundIntro(string name)
         {
             ControlArbiter.Instance.UITranslator.EndScreenUI.OpenNextRound(name, lastRoundWinner, currentRound - 1);
+
+            Debug.LogFormat("Prep round UI interrupt Time {0}", Time.realtimeSinceStartup);
             while (!ControlArbiter.Instance.UITranslator.EndScreenUI.startNextRound)
             {
                 yield return null;
             }
-
+            Debug.LogFormat("Starting round Time {0}", Time.realtimeSinceStartup);
             roundStarted = true;
             if (powerUpsManager != null)
             {
@@ -187,6 +193,8 @@ namespace RedButton.GamePlay
             {
                 activeMechs[i].MechInputController.Enable();
                 activeMechs[i].gameObject.SetActive(true);
+
+                activeMechs[i].OnMechDied += OnMechDeath;
             }
         }
 
@@ -200,7 +208,6 @@ namespace RedButton.GamePlay
             for (int i = 0; i < targetPlayers.Count; i++)
             {
                 CentralMechComponent target = spawnedMechs[targetPlayers[i]];
-                target.OnMechDied += OnMechDeath;
                 while (usedSpawnPoints.Contains(spawnPointIndex) && safety < 1000)
                 {
                     spawnPointIndex = Random.Range(0, spawnPoints.Length);
@@ -233,17 +240,25 @@ namespace RedButton.GamePlay
 
         private void OnMechDeath(CentralMechComponent cmc)
         {
-            if (activeMechs.Contains(cmc))
+            if (roundStarted)
             {
-                activeMechs.Remove(cmc);
-                deathOrder.Push(cmc);
-                cmc.OnMechDied -= OnMechDeath;
-            }
 
-            if (roundStarted && activeMechs.Count <= 1)
+                if (activeMechs.Contains(cmc))
+                {
+                    activeMechs.Remove(cmc);
+                    deathOrder.Push(cmc);
+                    cmc.OnMechDied -= OnMechDeath;
+                }
+                if (activeMechs.Count <= 1)
+                {
+                    // end round
+                    Debug.LogFormat("End Time {0}", Time.realtimeSinceStartup);
+                    EndRound();
+                }
+            }
+            else
             {
-                // end round
-                EndRound();
+                Debug.LogFormat(cmc.gameObject,"Unexpected mech death at {0} ", Time.realtimeSinceStartup);
             }
         }
 

@@ -11131,24 +11131,30 @@ MonoBehaviour:
     selectRight: {fileID: 4642778647209777645}
     confirmSelection: {fileID: 409371186040244083}
     previewImage: {fileID: 7480431015990181930}
+    backgroundImage: {fileID: 7690724296217252899}
   player2:
     playerIndex: 0
     selectLeft: {fileID: 2767150294198068823}
     selectRight: {fileID: 5011057844122093433}
     confirmSelection: {fileID: 2845390921874444916}
     previewImage: {fileID: 6508388688699566557}
+    backgroundImage: {fileID: 7671982194909641178}
   player3:
     playerIndex: 0
     selectLeft: {fileID: 8379298551535149018}
     selectRight: {fileID: 4854594537516558000}
     confirmSelection: {fileID: 1608196892935513159}
     previewImage: {fileID: 1775235826824357911}
+    backgroundImage: {fileID: 3508750013494959372}
   player4:
     playerIndex: 0
     selectLeft: {fileID: 7470535924055151704}
     selectRight: {fileID: 7471206810981551645}
     confirmSelection: {fileID: 1955090192469905142}
     previewImage: {fileID: 3424159781156721013}
+    backgroundImage: {fileID: 6379432038679513127}
+  selectorBackgroundColourInactive: {r: 0.5803922, g: 0.98039216, b: 1, a: 0.39215687}
+  selectorBackgroundColourActive: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 0.39215687}
   mechs:
   - name: Single Laser
     description: Mech with single laser weapon
@@ -12770,6 +12776,7 @@ MonoBehaviour:
   winnerText: {fileID: 7325503405967921772}
   nextRoundButton: {fileID: 3723210196072042726}
   quitButton: {fileID: 4715838150232666489}
+  startNextRound: 0
 --- !u!1 &4374257896268188076
 GameObject:
   m_ObjectHideFlags: 0

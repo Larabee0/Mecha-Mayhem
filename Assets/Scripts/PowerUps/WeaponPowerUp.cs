@@ -102,6 +102,14 @@ namespace RedButton.GamePlay
             }
             Destroy(this);
         }
+
+        private void OnDisable()
+        {
+            if (GetComponent<CentralMechComponent>() != null)
+            {
+                RemoveSelf();
+            }
+        }
     }
 
     [Serializable]

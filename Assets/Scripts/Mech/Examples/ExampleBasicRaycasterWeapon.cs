@@ -167,6 +167,10 @@ namespace RedButton.Mech.Examples
             projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(laserStart), transform.InverseTransformPoint(laserEnd) });
             projectileMeshRenderer.enabled = true;
             StopAllCoroutines();
+            if(!enabled || !gameObject.activeInHierarchy)
+            {
+                return;
+            }
             StartCoroutine(Hide()); // start the hide corountine to hide the visual after showTime has elapsed.
         }
 

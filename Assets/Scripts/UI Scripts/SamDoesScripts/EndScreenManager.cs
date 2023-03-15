@@ -19,8 +19,8 @@ namespace RedButton.Core.UI
             ControlArbiter.Instance.GiveInputAuthority(0);
             nextRoundButton.gameObject.SetActive(true);
             startNextRound = false;
-            TitleBar.text = string.Format("Next: {0}",newRoundName);
-            winnerText.text = string.Format("{0} Wins round {1}", lastRoundWinner, lastRound);
+            winnerText.text = string.Format("Next: {0}",newRoundName);
+            TitleBar.text = string.Format("{0} Wins round {1}", lastRoundWinner, lastRound);
             gameObject.SetActive(true);
             EventSystem.current.SetSelectedGameObject(nextRoundButton.gameObject);
         }

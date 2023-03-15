@@ -24,7 +24,7 @@ namespace RedButton.GamePlay
         private void Awake()
         {
             capsuleRenderer = GetComponentInChildren<MeshRenderer>();
-            //capsuleRenderer.enabled = false;
+            capsuleRenderer.enabled = false;
             powerUpCapsule = capsuleRenderer.transform;
             powerUpCore = GetComponent<PowerUpCore>();
             
@@ -39,7 +39,7 @@ namespace RedButton.GamePlay
 
         private void OnTriggerEnter(Collider other)
         {
-            if(countUpTimer > 0)
+            if(countUpTimer > 0 || powerUpCore == null)
             {
                 return;
             }

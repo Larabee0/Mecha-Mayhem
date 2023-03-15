@@ -171,9 +171,12 @@ namespace RedButton.Mech
 
         private void Die()
         {
-            OnMechDied?.Invoke(this);
+            
+            Debug.Log("Died", gameObject);
+            Debug.LogFormat("Death Time {0}", Time.realtimeSinceStartup);
             MechInputController.Disable();
             transform.root.gameObject.SetActive(false);
+            OnMechDied?.Invoke(this);
         }
     }
 }
