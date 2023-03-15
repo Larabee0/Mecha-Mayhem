@@ -604,6 +604,14 @@ MonoBehaviour:
     type: 3}
   barrierX: {fileID: 4904347609391547740, guid: 4b700da9bd2f1c74486d1cc524c31182,
     type: 3}
+  barrierL1Spacebar: {fileID: 3992641913685333273, guid: 81f3f1e21376a7a40b9baeb22818f3a1,
+    type: 3}
+  barrierL2Spacebar: {fileID: 4094973514419791250, guid: 07cc7f5c8b02d3742a9b31689f185931,
+    type: 3}
+  barrierISpacebar: {fileID: 2158491019153756280, guid: 4dd85f1fe5f65ac40b3ea491c0ce3299,
+    type: 3}
+  barrierXSpacebar: {fileID: 4904347609391547740, guid: 037677ace1a81b74d943bec30b638d8e,
+    type: 3}
   barrierHeight: 5
   margin: 2
   marginPlayer: 2
@@ -613,6 +621,7 @@ MonoBehaviour:
   upperBound: 4
   guaranteeBarriers: 0
   numberOfBarriers: 12
+  spacebarCoolDown: 10
 --- !u!1001 &903096736
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -750,6 +759,14 @@ MonoBehaviour:
     type: 3}
   barrierX: {fileID: 4904347609391547740, guid: 4b700da9bd2f1c74486d1cc524c31182,
     type: 3}
+  barrierL1Spacebar: {fileID: 3992641913685333273, guid: 81f3f1e21376a7a40b9baeb22818f3a1,
+    type: 3}
+  barrierL2Spacebar: {fileID: 4094973514419791250, guid: 07cc7f5c8b02d3742a9b31689f185931,
+    type: 3}
+  barrierISpacebar: {fileID: 2158491019153756280, guid: 4dd85f1fe5f65ac40b3ea491c0ce3299,
+    type: 3}
+  barrierXSpacebar: {fileID: 4904347609391547740, guid: 037677ace1a81b74d943bec30b638d8e,
+    type: 3}
   barrierHeight: 2
   margin: 2
   marginPlayer: 2
@@ -759,6 +776,7 @@ MonoBehaviour:
   upperBound: 4
   guaranteeBarriers: 0
   numberOfBarriers: 12
+  spacebarCoolDown: 10
 --- !u!4 &947540756
 Transform:
   m_ObjectHideFlags: 0
