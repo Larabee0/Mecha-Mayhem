@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace RedButton.Core.UI
 {
@@ -43,7 +44,7 @@ namespace RedButton.Core.UI
         [SerializeField] Sprite willSprite;
 
         [Header("Mech Selector")]
-        [SerializeField] private MechSelectorManager mechSelectorManager;
+        public MechSelectorManager mechSelectorManager;
         
         private UnityUITranslationLayer.ControllerAssignHelper PlayerOneAssign;
         private UnityUITranslationLayer.ControllerAssignHelper PlayerTwoAssign;
@@ -320,11 +321,16 @@ namespace RedButton.Core.UI
             EventSystem.current.SetSelectedGameObject(returnBtn);
         }
 
-        public void CloseAssignment()
+        public void CloseAssignmentInternal()
         {
             PlayerAssignPanel.SetActive(false);
             playerNumPanel.SetActive(true);
             EventSystem.current.SetSelectedGameObject(playerNumPanelBtn);
+        }
+
+        public void CloseAssignment()
+        {
+            ControlArbiter.Instance.GoBackToPlayerCountPickScreen(new());
         }
         #endregion
         #endregion
@@ -342,7 +348,6 @@ namespace RedButton.Core.UI
         public void OpenLvlSelect()
         {
             mechSelectorManager.gameObject.SetActive(false);
-            ControlArbiter.Instance.GoForwardFromMechSelector();
             lvlSelectPanel.SetActive(true);
             PlayerAssignPanel.SetActive(false);
             EventSystem.current.SetSelectedGameObject(lvlSelectPanelBtn);
@@ -359,11 +364,12 @@ namespace RedButton.Core.UI
         // this needs to go back to the controller assignment screen, which does not exist
         public void CloseLvlSelect()
         {
-            ControlArbiter.Instance.GoBackToControllerAssignment(new UnityEngine.InputSystem.InputAction.CallbackContext());
+            ControlArbiter.Instance.GoBackToMechSelector(new());
         }
 
         public void CLoseLvlSelectInternal()
         {
+            bgPanel.GetComponent<Image>().sprite = bgSprite;
             lvlSelectPanel.SetActive(false);
         }
         #endregion

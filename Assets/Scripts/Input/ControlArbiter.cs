@@ -368,14 +368,14 @@ namespace RedButton.Core
 
         #endregion
 
-        public void GiveInputAuthority(int playerIndex)
+        public void GiveInputAuthority(int playerIndex, bool keepPlayerOneUI = false)
         {
             PlayerInput player = this[playerIndex];
-            LockOutAllPlayers();
-            player.EnableUIonly();
-            uiTranslator.SetUIHoverTint(player.playerColour);
-            startScreenUIActionAsset.devices = player.Devices;
-            startScreenActionMap.devices = player.Devices;
+            OverrideUIAssetDevices(player);
+            if (keepPlayerOneUI)
+            {
+                PlayerOne.EnableUIonly();
+            }
         }
 
         /// <summary>

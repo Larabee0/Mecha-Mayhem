@@ -102,13 +102,14 @@ namespace RedButton.Core.UI
             container = this[currentPlayerIndex];
             container.Interactable = true;
 
-            ControlArbiter.Instance.GiveInputAuthority(currentPlayerIndex);
+            ControlArbiter.Instance.GiveInputAuthority(currentPlayerIndex,true);
 
             EventSystem.current.SetSelectedGameObject(container.selectRight.gameObject);
         }
 
         public void OpenSelector()
         {
+            currentPlayerIndex = 0;
             ControlArbiter.Instance.GiveInputAuthority(0);
             gameObject.SetActive(true);
             player1.Interactable = true;
@@ -156,6 +157,7 @@ namespace RedButton.Core.UI
         public void ReturnCallback()
         {
             gameObject.SetActive(false);
+            ControlArbiter.Instance.GiveInputAuthority(0);
             ControlArbiter.Instance.GoBackToControllerAssignment(new());
         }
 
