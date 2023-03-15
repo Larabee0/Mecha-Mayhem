@@ -1090,8 +1090,8 @@ MonoBehaviour:
     type: 3}
   playerCount: 0
   editorMechs:
-  - {fileID: 52958292, guid: 63a7186cd238a2a49b2165a6366e4cf9, type: 3}
-  - {fileID: 52958292, guid: d21c1abb9336a3947ac91a7b92794cf8, type: 3}
+  - {fileID: 906662351260344358, guid: 66b3b1fe511df3b45b91a47d77f54f91, type: 3}
+  - {fileID: 906662351260344358, guid: 2912a3eb51dff1245b2cf054671a9368, type: 3}
   - {fileID: 52958292, guid: 63a7186cd238a2a49b2165a6366e4cf9, type: 3}
   - {fileID: 52958292, guid: d21c1abb9336a3947ac91a7b92794cf8, type: 3}
   spawnPoints:
@@ -1137,6 +1137,7 @@ MonoBehaviour:
   powerUps:
   - {fileID: 1615739709745365508, guid: 61be1f31b9746304dbb3e6d1dba6a480, type: 3}
   - {fileID: 8067780814741631621, guid: ba89c2c1056414b4a8f6a4ceb34fa102, type: 3}
+  - {fileID: 196855379025778168, guid: ebea5939f3c5de74ab2d61187204541c, type: 3}
   powerUpPrefab: {fileID: 8433596072126875969, guid: 7ba43e6126d724043a1ad8b0c1204f2f,
     type: 3}
   powerUpInstances: []

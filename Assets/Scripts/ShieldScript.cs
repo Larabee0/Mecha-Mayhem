@@ -16,6 +16,7 @@ namespace RedButton.Mech
         [SerializeField] private MeshRenderer shieldColour;
 
         public CentralMechComponent ShieldOwner => CMC;
+        public int MaxShieldHealth => maxShieldHealth;
         
         public bool ShieldActive => shieldObject.activeSelf;
         protected override void Awake()
@@ -62,7 +63,8 @@ namespace RedButton.Mech
         private void UnFire()
         {
             shieldObject.SetActive(false);
-            currentShieldHealth = 0;
+            currentShieldHealth -= 3;
+            currentShieldHealth = currentShieldHealth < 0 ? 0 : currentShieldHealth;
         }
 
         public override void Fire()
@@ -79,6 +81,15 @@ namespace RedButton.Mech
         {
             yield return new WaitForSeconds(time);
             shieldReady = true;
+        }
+
+        public void RechargeNow()
+        {
+            if (!shieldReady)
+            {
+                StopAllCoroutines();
+                shieldReady = true;
+            }
         }
 
         public void DamageShield()
@@ -107,28 +118,17 @@ namespace RedButton.Mech
             shieldObject.transform.forward = transform.forward;
         }
 
-        private void ShieldColour()
+        public void ShieldColour()
         {
-            if (currentShieldHealth > 3)
+            Color shieldColour = currentShieldHealth switch
             {
-                shieldColour.material.SetColor("_ObjectColor", Color.blue);
-                //Make barreir blue
-            }
-            else if(currentShieldHealth == 3)
-            {
-                shieldColour.material.SetColor("_ObjectColor", Color.green);
-                //Make barrier green
-            }
-            else if(currentShieldHealth == 2)
-            {
-                shieldColour.material.SetColor("_ObjectColor", Color.yellow);
-                //Make barrier yellow
-            }
-            else if(currentShieldHealth == 1)
-            {
-                shieldColour.material.SetColor("_ObjectColor", Color.red);
-                //Make barrier red
-            }
+                > 3 => Color.blue,
+                3 => Color.green,
+                2 => Color.yellow,
+                1 => Color.red,
+                _ => Color.green,
+            };
+            this.shieldColour.material.SetColor("_ObjectColor", shieldColour);
         }
     }
 }

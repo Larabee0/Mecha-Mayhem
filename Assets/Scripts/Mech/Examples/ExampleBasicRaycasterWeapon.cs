@@ -23,9 +23,13 @@ namespace RedButton.Mech.Examples
         private Vector3 laserEnd;
 
         [Header("Raycast Weapon settings")]
-        [SerializeField][Range(0f, 1f)] float fireIntervalMin = 0.01f;
-        [SerializeField][Range(0f, 1f)] float fireIntervalMax = 0.05f;
-        [SerializeField][Range(5f, 200f)] float raycastRange = 10f;
+        [SerializeField] private float laserBrightness=5;
+        [SerializeField] private bool takeMechAccentColour = false;
+        [SerializeField, Range(0f, 1f)] float fireIntervalMin = 0.01f;
+        [SerializeField, Range(0f, 1f)] float fireIntervalMax = 0.05f;
+        [SerializeField, Range(5f, 200f)] float raycastRange = 10f;
+        [Tooltip("Multiplies the showTime by this value to get decayStartTime.\n The effect starts after the showTime becomes less than or equal to the decayStartTime.\nLowering this causes the laser to stay at full length for longer, but also makes the apparent speed when it decays faster.")]
+        [SerializeField, Range(0f, 1f)] float laserEffectDecayDelayFraction = 1;
         [SerializeField] private MeshFilter projectileMeshFilter;
         [SerializeField] private MeshRenderer projectileMeshRenderer;
 
@@ -42,6 +46,23 @@ namespace RedButton.Mech.Examples
             projectileMesh.SetVertices(new Vector3[] {Vector3.zero, Vector3.forward });
             projectileMesh.SetIndices(new int[] { 0, 1 }, MeshTopology.Lines, 0);
             projectileMeshRenderer.enabled = false;
+            if (takeMechAccentColour)
+            {
+                projectileMeshRenderer.material.SetColor("_BaseColor", CMC.MechAccentColour);
+                projectileMeshRenderer.material.SetColor("_EmissiveColor", CMC.MechAccentColour * laserBrightness);
+            }
+        }
+
+        private void OnValidate()
+        {
+            if (Application.isPlaying)
+            {
+                if(CMC != null)
+                {
+                    projectileMeshRenderer.material.SetColor("_BaseColor", CMC.MechAccentColour);
+                    projectileMeshRenderer.material.SetColor("_EmissiveColor", CMC.MechAccentColour * laserBrightness);
+                }
+            }
         }
 
         /// <summary>
@@ -150,11 +171,11 @@ namespace RedButton.Mech.Examples
         /// <returns></returns>
         private IEnumerator Hide()
         {
-            float startTime = showTime;
+            float decayStartTime = showTime * laserEffectDecayDelayFraction;
             while(showTime > 0)
             {
                 showTime -= Time.deltaTime;
-                Vector3 currentStart = Vector3.Lerp(laserStart, laserEnd, Mathf.InverseLerp(startTime, 0, showTime));
+                Vector3 currentStart = Vector3.Lerp(laserStart, laserEnd, Mathf.InverseLerp(decayStartTime, 0, showTime));
                 projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(currentStart), transform.InverseTransformPoint(laserEnd) });
                 yield return null;
             }

@@ -13,6 +13,7 @@ namespace RedButton.Mech
     public abstract class WeaponCore : MonoBehaviour
     {
         protected CentralMechComponent CMC;
+        public CentralMechComponent Owner => CMC;
         protected Transform targetObject; // gotten by MovementCore this is what the weapon will try and look at, aiming it.
         
         // these properties are both overrideable
@@ -20,6 +21,7 @@ namespace RedButton.Mech
         protected virtual Vector3 TargetForward => targetObject.forward;
 
         [HideInInspector] public bool Grouped; // if the weapon is part of a group this is set to true by the group.
+        protected bool UnboundFromControls = true;
 
         [Header("Base Weapon Settings")]
 
@@ -30,7 +32,7 @@ namespace RedButton.Mech
 
         [SerializeField] protected ProjectileCore projectilePrefab; // optional projectileCore prefab slot
 
-        protected Transform muzzleOriginPoint; // point at which projectiles are spawned from or the ray cast is cast from.
+        public Transform muzzleOriginPoint; // point at which projectiles are spawned from or the ray cast is cast from.
         //[SerializeField] protected Transform animationCentre; // centre point of the visual portion of the weapon. this will be made to look at the targetObject
 
         protected virtual void Awake()
@@ -43,7 +45,11 @@ namespace RedButton.Mech
                 enabled = false;
                 return;
             }
-            if (!Grouped)
+        }
+
+        protected virtual void OnEnable()
+        {
+            if (!Grouped && UnboundFromControls)
             {
                 BindtoControls();
             }
@@ -52,12 +58,18 @@ namespace RedButton.Mech
         protected virtual void Start()
         {
             targetObject = CMC.MechMovementCore.TargetPoint;
-            muzzleOriginPoint = CMC.GetNextWeaponOrigin();
+            if(muzzleOriginPoint == null)
+            {
+                muzzleOriginPoint = CMC.GetNextWeaponOrigin();
+            }
         }
 
-        protected virtual void OnDestroy()
+        private void OnDisable()
         {
-            UnBindControls();
+            if (!UnboundFromControls)
+            {
+                UnBindControls();
+            }
         }
 
         /// <summary>
@@ -87,6 +99,7 @@ namespace RedButton.Mech
                 default:
                     return;
             }
+            UnboundFromControls = false;
         }
 
         protected virtual void UnBindControls()
@@ -112,6 +125,7 @@ namespace RedButton.Mech
                 default:
                     return;
             }
+            UnboundFromControls = true;
         }
 
         /// <summary>
