@@ -20,7 +20,12 @@ namespace RedButton.Core
         // input actions asset for this player.
         private DualControllerInput controlMap;
         public DualControllerInput ControlMap => controlMap;
-
+        [SerializeField]private float controllerSensititiivty = 1f;
+        public float ControllerSense
+        {
+            get => controllerSensititiivty;
+            set => controllerSensititiivty = Mathf.Clamp(value, 0.5f, 2);
+        }
         private bool setWiimotePointer;
         private bool aimAtRightStick = false;
         /// <summary>

@@ -72,7 +72,7 @@ namespace RedButton.Mech
             {
                 float aimInput = axis.sqrMagnitude;
                 targetDirection = aimInput > 0 ? new Vector3(axis.x, 0f, axis.y) : targetPointParent.forward;
-                dir = Vector3.RotateTowards(targetPointParent.forward, targetDirection, aimInput * aimSpeed * Time.deltaTime, 0.0f);
+                dir = Vector3.RotateTowards(targetPointParent.forward, targetDirection, aimInput * aimSpeed * CMC.MechInputController.ControllerSense * Time.deltaTime, 0.0f);
             }
             targetPointParent.forward = targetPointParentForward = dir;
         }
