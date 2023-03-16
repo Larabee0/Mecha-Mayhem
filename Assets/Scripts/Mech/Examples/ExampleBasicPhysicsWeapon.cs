@@ -85,5 +85,11 @@ namespace RedButton.Mech.Examples
             yield return new WaitForSeconds(Random.Range(fireIntervalMin, fireIntervalMax));
             coolDownProcess = null;
         }
+
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+            coolDownProcess = null;
+        }
     }
 }
