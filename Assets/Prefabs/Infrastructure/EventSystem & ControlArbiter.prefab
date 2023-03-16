@@ -10452,10 +10452,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInputControllerPrefab: {fileID: 8843814175504300494, guid: 824c085b0df1b6249be1b195701e3709,
     type: 3}
-  playerOneColour: {r: 0.9960785, g: 0, b: 0.9960785, a: 1}
-  playerTwoColour: {r: 0, g: 0.8666667, b: 1, a: 1}
-  playerThreeColour: {r: 0.09803922, g: 1, b: 0, a: 1}
-  playerFourColour: {r: 1, g: 0.4862745, b: 0, a: 1}
+  playerOneColour: {r: 0, g: 1, b: 0, a: 1}
+  playerTwoColour: {r: 1, g: 0, b: 1, a: 1}
+  playerThreeColour: {r: 1, g: 1, b: 0, a: 1}
+  playerFourColour: {r: 1, g: 0, b: 0.1296277, a: 1}
   mainUIController: {fileID: 0}
   uiTranslator: {fileID: 1005414256}
   unityUI: 1

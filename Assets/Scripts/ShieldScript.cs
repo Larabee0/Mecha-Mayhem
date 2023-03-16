@@ -45,6 +45,7 @@ namespace RedButton.Mech
 
             buttonEventContainer.OnButtonPressed += Fire;
             buttonEventContainer.OnButtonReleased += UnFire;
+            UnboundFromControls = false;
         }
         
         protected override void UnBindControls()
@@ -58,6 +59,7 @@ namespace RedButton.Mech
 
             buttonEventContainer.OnButtonPressed -= Fire;
             buttonEventContainer.OnButtonReleased -= UnFire;
+            UnboundFromControls = true;
         }
 
         private void UnFire()

@@ -19,7 +19,7 @@ namespace RedButton.GamePlay
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.name == "TestMechVelocityChangeMovement(Clone)")
+            if (collision.gameObject.tag == "Player")
             {
                 Mech.CentralMechComponent mech = collision.gameObject.GetComponentInParent<Mech.CentralMechComponent>();
                 mech.UpdateHealth(damage);

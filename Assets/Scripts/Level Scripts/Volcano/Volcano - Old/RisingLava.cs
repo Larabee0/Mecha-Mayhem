@@ -9,7 +9,7 @@ namespace RedButton.GamePlay
         [Header("Lava Charecteristics: \n")]
         [SerializeField] private int EruptionInterval = 60;
         [SerializeField] private int Duration = 10;
-        [SerializeField] public int damage = 50;
+        [SerializeField] public int damage = 110;
 
         public Vector3 LavaSpeed;
         public float timer = 0f;
@@ -59,7 +59,7 @@ namespace RedButton.GamePlay
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.name == "TestMechVelocityChangeMovement(Clone)")
+            if (collision.gameObject.tag == "Player")
             {
                 Mech.CentralMechComponent mech = collision.gameObject.GetComponentInParent<Mech.CentralMechComponent>();
                 mech.UpdateHealth(damage);

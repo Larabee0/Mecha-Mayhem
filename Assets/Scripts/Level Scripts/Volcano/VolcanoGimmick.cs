@@ -25,19 +25,19 @@ namespace RedButton.GamePlay
         [SerializeField] private GameObject HazardZone;
 
         [Header("Debugging")]
-        public float time = 0f;
+        public float timer = 0f;
         public Vector3 TargetPoint;
 
         void Start()
         {
             spawnrate = spawnrate / 1000;
-            time = Time.time;
+            timer = Time.time;
         }
 
 
         private void Update()
         {
-            if (Time.time >= time + EruptionInterval)
+            if (Time.time >= timer + EruptionInterval)
             {
                 Erupt();
             }
@@ -45,7 +45,7 @@ namespace RedButton.GamePlay
         }
         public void Erupt()
         {
-            if (Time.time < time + Duration + EruptionInterval)
+            if (Time.time < timer + Duration + EruptionInterval)
             {
                 if (Random.Range(0f, 1f) < spawnrate)
                 {
@@ -55,7 +55,7 @@ namespace RedButton.GamePlay
             }
             else
             {
-                time = Time.time;
+                timer = Time.time;
             }
             
         }
