@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 namespace RedButton.Mech.Examples
 {
@@ -14,10 +15,10 @@ namespace RedButton.Mech.Examples
     /// </summary>
     public class ExampleBasicRaycasterWeapon : WeaponCore
     {
-        private Mesh projectileMesh;
+        protected Mesh projectileMesh;
 
         private float fireInterval = 0f;
-        private float showTime = 0f;
+        protected float showTime = 0f;
 
         private Vector3 laserStart;
         private Vector3 laserEnd;
@@ -28,11 +29,11 @@ namespace RedButton.Mech.Examples
         [SerializeField, Range(0f, 1f)] float fireIntervalMin = 0.01f;
         [SerializeField, Range(0f, 1f)] float fireIntervalMax = 0.05f;
         [SerializeField, Range(5f, 200f)] float raycastRange = 10f;
-        [SerializeField, Range(0.001f, 1f)] float laserDiameter = 0.005f;
+        [SerializeField, Range(0.001f, 1f)] protected float laserDiameter = 0.005f;
         [Tooltip("Multiplies the showTime by this value to get decayStartTime.\n The effect starts after the showTime becomes less than or equal to the decayStartTime.\nLowering this causes the laser to stay at full length for longer, but also makes the apparent speed when it decays faster.")]
         [SerializeField, Range(0f, 1f)] float laserEffectDecayDelayFraction = 1;
         [SerializeField] private MeshFilter projectileMeshFilter;
-        [SerializeField] private MeshRenderer projectileMeshRenderer;
+        [SerializeField] protected MeshRenderer projectileMeshRenderer;
 
         /// <summary>
         /// overriding start to create the mesh to modify at runtime.
@@ -113,7 +114,7 @@ namespace RedButton.Mech.Examples
         /// This uses a sphere cast to fire a ray from the muzzleOriginPoint in the direction of a TargetPoint.
         /// If the cast hits a mech it will find the Mech's CMC and update its health.
         /// </summary>
-        private void BasicRayCaster()
+        protected virtual void BasicRayCaster()
         {
             // safety measure.
             if(muzzleOriginPoint == null || targetObject == null)
@@ -130,20 +131,7 @@ namespace RedButton.Mech.Examples
             {
                 case true:
                     endPoint = hit.point; // if the sphere cast hits something we can set the end point to the hit point.
-                    ShieldTagger hitShield = hit.collider.gameObject.GetComponent<ShieldTagger>();
-                    if (hitShield != null && hitShield.shield.ShieldOwner)
-                    {
-                        hitShield.shield.DamageShield();
-                        break;
-                    }
-                    if(hitShield != null && hitShield != CMC.shield)
-                    {
-                    }
-                    CentralMechComponent otherMech = hit.collider.gameObject.GetComponentInParent<CentralMechComponent>();
-                    if(otherMech != null && otherMech != CMC) // saftey in case we hit ourselves.
-                    {
-                        otherMech.UpdateHealth(damage);
-                    }
+                    HandleHit(hit);
                     break;
                 case false:
                     // if nothing was hit we can calculate the end point as a point infront of the 
@@ -155,17 +143,34 @@ namespace RedButton.Mech.Examples
             Show(ray.origin, endPoint);
         }
 
+        protected void HandleHit(RaycastHit hit)
+        {
+            ShieldTagger hitShield = hit.collider.gameObject.GetComponent<ShieldTagger>();
+            if (hitShield != null && hitShield.shield.ShieldOwner)
+            {
+                hitShield.shield.DamageShield();
+                return;
+            }
+            if (hitShield != null && hitShield != CMC.shield)
+            {
+            }
+            CentralMechComponent otherMech = hit.collider.gameObject.GetComponentInParent<CentralMechComponent>();
+            if (otherMech != null && otherMech != CMC) // saftey in case we hit ourselves.
+            {
+                otherMech.UpdateHealth(damage);
+            }
+        }
+
         /// <summary>
         /// given a start and end point (world coordinates)
         /// we can draw a line between these two points in a mesh.
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
-        private void Show(Vector3 start, Vector3 end)
+        protected void Show(Vector3 start, Vector3 end)
         {
             laserStart = start; laserEnd = end; // needed to keep the mesh updated in the coroutine.
-
-            projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(laserStart), transform.InverseTransformPoint(laserEnd) });
+            CorrectVertexTransform();
             projectileMeshRenderer.enabled = true;
             StopAllCoroutines();
             if(!enabled || !gameObject.activeInHierarchy)
@@ -174,13 +179,17 @@ namespace RedButton.Mech.Examples
             }
             StartCoroutine(Hide()); // start the hide corountine to hide the visual after showTime has elapsed.
         }
+        protected virtual void CorrectVertexTransform()
+        {
+            projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(laserStart), transform.InverseTransformPoint(laserEnd) });
+        }
 
         /// <summary>
         /// Hides the laser after showTime duration, also keeps the laser visuals up to date for this duration
         /// This prevents the laser getting swung around by the weapon as it turns or the mech moves.
         /// </summary>
         /// <returns></returns>
-        private IEnumerator Hide()
+        protected virtual IEnumerator Hide()
         {
             float decayStartTime = showTime * laserEffectDecayDelayFraction;
             while(showTime > 0)
