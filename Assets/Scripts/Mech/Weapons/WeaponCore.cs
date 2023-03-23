@@ -64,10 +64,11 @@ namespace RedButton.Mech
             }
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             if (!UnboundFromControls)
             {
+                Debug.LogFormat(gameObject, "Unbinding from controls! {0}", gameObject.name);
                 UnBindControls();
             }
         }
