@@ -61,7 +61,7 @@ namespace RedButton.Mech.Examples
             projectileMeshRenderer.enabled = false;
         }
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             if (Application.isPlaying)
             {

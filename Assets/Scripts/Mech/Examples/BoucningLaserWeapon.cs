@@ -12,9 +12,23 @@ namespace RedButton.Mech.Examples
         protected override void Start()
         {
             base.Start();
+            ResetLaser();
+        }
 
-            vertices = new Vector3[bounces*2];
-            int[] indicies = new int[bounces*2]; 
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+            if(Application.isPlaying )
+            {
+                ResetLaser();
+            }
+            
+        }
+
+        private void ResetLaser()
+        {
+            vertices = new Vector3[bounces * 2];
+            int[] indicies = new int[bounces * 2];
 
             for (int i = 0; i < vertices.Length; i++)
             {
