@@ -138,36 +138,7 @@ public class SummonBarrier : MonoBehaviour
         int rotationOfBarrier = Random.Range(0, 3);
         rotationOfBarrier *= 90;
 
-        //for (int i = 1; i < numberOfBarriers; i++)
-        //{
-        //    //List<Vector3> avoidVectors = new List<Vector3>();
-        //    Vector3 spawnBarrierRange = new Vector3(Random.Range(floorSize.min.x + margin, floorSize.max.x - margin), floor.transform.position.y, Random.Range(floorSize.min.z + margin, floorSize.max.z - margin));
-        //    GameObject barrierToSpawn = Instantiate(barriers[Random.Range(0, barriers.Length)], spawnBarrierRange - new Vector3(0, barrierHeight, 0), Quaternion.identity);
-        //    barrierToSpawn.transform.Rotate(0, rotationOfBarrier, 0);
-        //    //if (avoidVectors != null)
-        //    //{
-        //    //    foreach (Vector3 avoidVector in avoidVectors)
-        //    //    {
-        //    //        Vector3 newRect = avoidVector - new Vector3(rangePlayer, 0, rangePlayer);
-        //    //        barrierLimit = new Rect(newRect.x, newRect.z, rangePlayer * 2, rangePlayer * 2);
-        //    //        if (barrierLimit.Contains(spawnBarrierRange))
-        //    //        {
-        //    //            break;
-        //    //        }
-        //    //        else
-        //    //        {
-        //    //            GameObject barrierToSpawn = Instantiate(barriers[Random.Range(0, barriers.Length)], spawnBarrierRange - new Vector3(0, barrierHeight, 0), Quaternion.identity);
-        //    //            barrierToSpawn.transform.Rotate(0, rotationOfBarrier, 0);
-        //    //        }
-        //    //    }
-        //    //}
-        //    //else
-        //    //{
-        //    //    GameObject barrierToSpawn = Instantiate(barriers[Random.Range(0, barriers.Length)], spawnBarrierRange - new Vector3(0, barrierHeight, 0), Quaternion.identity);
-        //    //    barrierToSpawn.transform.Rotate(0, rotationOfBarrier, 0);
-        //    //}
-        //    //avoidVectors.Add(spawnBarrierRange);
-        //}
+        
 
         foreach (GameObject mech in mechs)
         {
@@ -208,3 +179,10 @@ public class SummonBarrier : MonoBehaviour
 }
 //GameObject barrierToSpawn = Instantiate(barriers[barrierIndex], Vector3.zero, Quaternion.identity);
 //barrierToSpawn.transform.Rotate(0, rotationOfBarrier, 0);
+
+
+//Physics.SphereCast(barrierSpawnRange, 1.5f, new Vector3(1, 0, 0), out RaycastHit hitInfo, 8f);
+//Physics.SphereCast(barrierSpawnRange, 1.5f, new Vector3(-1, 0, 0), out RaycastHit hitInfo2, 8f);
+//Physics.SphereCast(barrierSpawnRange, 1.5f, new Vector3(0, 0, 1), out RaycastHit hitInfo3, 8f);
+//Physics.SphereCast(barrierSpawnRange, 1.5f, new Vector3(0, 0, 1), out RaycastHit hitInfo4, 8f);
+//if (hitInfo.collider.CompareTag("Player") || hitInfo.collider.CompareTag("Barrier") || hitInfo2.collider.CompareTag("Player") || hitInfo2.collider.CompareTag("Barrier") || hitInfo3.collider.CompareTag("Player") || hitInfo3.collider.CompareTag("Barrier") || hitInfo4.collider.CompareTag("Player") || hitInfo4.collider.CompareTag("Barrier"))
