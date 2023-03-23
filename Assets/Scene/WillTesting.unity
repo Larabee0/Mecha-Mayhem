@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.3369, g: 325.0498, b: 430.21924, a: 1}
+  m_IndirectSpecularColor: {r: 261.9007, g: 324.45554, b: 429.43463, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1100,8 +1100,11 @@ MonoBehaviour:
   - {x: -10.42, y: 0.58, z: -1.85}
   - {x: -5.48, y: 0.58, z: -6.51}
   activeMechs: []
+  spawnedMechs: []
   roundStarted: 0
   powerUpsManager: {fileID: 0}
+  roundCount: 3
+  currentRound: 1
 --- !u!4 &1704852938
 Transform:
   m_ObjectHideFlags: 0

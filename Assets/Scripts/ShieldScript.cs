@@ -130,7 +130,8 @@ namespace RedButton.Mech
                 1 => Color.red,
                 _ => Color.green,
             };
-            this.shieldColour.material.SetColor("_ShieldColour", shieldColour);
+            this.shieldColour.material.SetColor("_FrontColour", shieldColour);
+            this.shieldColour.material.SetColor("_BackColour", shieldColour);
         }
     }
 }
