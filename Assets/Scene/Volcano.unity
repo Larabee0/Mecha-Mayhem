@@ -8317,7 +8317,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 35592b0b3199a424781901cb5ff5e520,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 35592b0b3199a424781901cb5ff5e520,
         type: 3}
@@ -12491,7 +12491,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c56e9d310d0463b4d903348534657498,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c56e9d310d0463b4d903348534657498,
         type: 3}
@@ -12576,7 +12576,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c56e9d310d0463b4d903348534657498,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c56e9d310d0463b4d903348534657498, type: 3}
@@ -16242,7 +16242,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1593858578}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &887492661
 BoxCollider:
@@ -20038,7 +20038,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1593858578}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1174985708
 MeshCollider:
@@ -22083,6 +22083,106 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1333253585}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1342399588
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1593858578}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9eb7012fea765ea4b8db26e0c9d7fea4, type: 2}
+    - target: {fileID: 919132149155446097, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+        type: 3}
+      propertyPath: m_Name
+      value: VolcanoUpdated 0_5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1, type: 3}
+--- !u!4 &1342399589 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 45d2f4c5f32c09d4cbf10e7cf20004b1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1342399588}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1349811061
 GameObject:
   m_ObjectHideFlags: 0
@@ -26642,6 +26742,7 @@ Transform:
   m_LocalScale: {x: 181.7704, y: 181.7704, z: 181.77039}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1342399589}
   - {fileID: 638680721}
   - {fileID: 383569023}
   - {fileID: 1174985707}
@@ -32087,7 +32188,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1593858578}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1938261311
 BoxCollider:
