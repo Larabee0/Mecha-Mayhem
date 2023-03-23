@@ -28,6 +28,7 @@ namespace RedButton.Mech.Examples
         [SerializeField, Range(0f, 1f)] float fireIntervalMin = 0.01f;
         [SerializeField, Range(0f, 1f)] float fireIntervalMax = 0.05f;
         [SerializeField, Range(5f, 200f)] float raycastRange = 10f;
+        [SerializeField, Range(0.001f, 1f)] float laserDiameter = 0.005f;
         [Tooltip("Multiplies the showTime by this value to get decayStartTime.\n The effect starts after the showTime becomes less than or equal to the decayStartTime.\nLowering this causes the laser to stay at full length for longer, but also makes the apparent speed when it decays faster.")]
         [SerializeField, Range(0f, 1f)] float laserEffectDecayDelayFraction = 1;
         [SerializeField] private MeshFilter projectileMeshFilter;
@@ -125,7 +126,7 @@ namespace RedButton.Mech.Examples
             Ray ray = new(muzzleOriginPoint.position,aimDirection);
 
             Vector3 endPoint; // end point must be calulated weather the spherecast hits something or not.
-            switch (Physics.SphereCast(ray, 0.005f, out RaycastHit hit, raycastRange))
+            switch (Physics.SphereCast(ray, laserDiameter, out RaycastHit hit, raycastRange))
             {
                 case true:
                     endPoint = hit.point; // if the sphere cast hits something we can set the end point to the hit point.
