@@ -10419,14 +10419,6 @@ MonoBehaviour:
   selectorBackgroundColourInactive: {r: 0.5803922, g: 0.98039216, b: 1, a: 0.39215687}
   selectorBackgroundColourActive: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 0.39215687}
   mechs:
-  - name: Single Laser
-    description: Mech with single laser weapon
-    previewImage: {fileID: 21300000, guid: 0c7018b151e205641bfdb785059446ae, type: 3}
-    prefab: {fileID: 906662351260344358, guid: 28feec886106a3943b7ff848d4a973c8, type: 3}
-  - name: Single Particle
-    description: Mech with single particle weapon
-    previewImage: {fileID: 21300000, guid: f34312c754aad0d439786b9a32ccd6e3, type: 3}
-    prefab: {fileID: 906662351260344358, guid: 0aefea5c34d9734489a58424266e343c, type: 3}
   - name: Dual Laser
     description: Mech with twin laser weapons
     previewImage: {fileID: 21300000, guid: 30a47b33148916c4489d753f55afafe3, type: 3}
@@ -10435,14 +10427,6 @@ MonoBehaviour:
     description: Mech with twin particle weapons
     previewImage: {fileID: 21300000, guid: f87c72444beecc04ba6a9e706552e5cf, type: 3}
     prefab: {fileID: 906662351260344358, guid: 2912a3eb51dff1245b2cf054671a9368, type: 3}
-  - name: Dual Laser Mini Guns
-    description: Mech with twin laser mini guns
-    previewImage: {fileID: 21300000, guid: a0d8c886b9e5453428d8d8448340c3f6, type: 3}
-    prefab: {fileID: 906662351260344358, guid: 10865189010a0fa4eb400ff40c70b232, type: 3}
-  - name: Dual Shotguns
-    description: Mech with twin shotguns
-    previewImage: {fileID: 21300000, guid: 1b8c4d995783b504192d9bc10881d117, type: 3}
-    prefab: {fileID: 906662351260344358, guid: af6e9a408b3c88a4cbd41ce5f56b0f42, type: 3}
   thisDoesNothingPaddingForMechDiscriptors: 0
 --- !u!1 &1087977061991338022
 GameObject:
