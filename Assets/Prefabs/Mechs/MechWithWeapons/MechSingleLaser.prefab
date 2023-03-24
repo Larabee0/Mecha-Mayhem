@@ -81,87 +81,77 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 906662351246193778}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &7760518802353172886
+--- !u!1001 &2757536440739155493
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 3227145162079782903}
     m_Modifications:
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1595397117847090190, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 1595397117847090190, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4171442246696159499, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 4171442246696159499, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: m_Name
-      value: SingleLaserWeapon
+      value: BoucingLaserWeapon
       objectReference: {fileID: 0}
-    - target: {fileID: 6085504414900922656, guid: b104c8d1298e2f54ebf2e10e52455034,
+    - target: {fileID: 4345963111826611010, guid: f0416194ddac1a049964ddc2d911fd26,
         type: 3}
       propertyPath: muzzleOriginPoint
       value: 
       objectReference: {fileID: 906662350362147781}
-    - target: {fileID: 6085504414900922656, guid: b104c8d1298e2f54ebf2e10e52455034,
-        type: 3}
-      propertyPath: takeMechAccentColour
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6085504414900922656, guid: b104c8d1298e2f54ebf2e10e52455034,
-        type: 3}
-      propertyPath: laserEffectDecayDelayFraction
-      value: 0.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b104c8d1298e2f54ebf2e10e52455034, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: f0416194ddac1a049964ddc2d911fd26, type: 3}

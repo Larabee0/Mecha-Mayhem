@@ -10,7 +10,8 @@ namespace RedButton.Mech
     {
         [SerializeField] int shieldCD;
         [SerializeField] private int maxShieldHealth;
-        [HideInInspector] public int currentShieldHealth;
+        private int currentShieldHealth;
+        public int healthOffset;
         [SerializeField] bool shieldReady;
         [SerializeField] private GameObject shieldObject;
         [SerializeField] private MeshRenderer shieldColour;
@@ -32,6 +33,7 @@ namespace RedButton.Mech
         protected override void Start()
         {
             targetObject = CMC.MechMovementCore.TargetPoint;
+            currentShieldHealth = maxShieldHealth;
         }
 
         protected override void BindtoControls()
@@ -65,8 +67,6 @@ namespace RedButton.Mech
         private void UnFire()
         {
             shieldObject.SetActive(false);
-            currentShieldHealth -= 3;
-            currentShieldHealth = currentShieldHealth < 0 ? 0 : currentShieldHealth;
         }
 
         public override void Fire()
@@ -74,7 +74,6 @@ namespace RedButton.Mech
             if (shieldReady && !shieldObject.activeSelf)
             {
                 shieldObject.SetActive(true);
-                currentShieldHealth += maxShieldHealth;
                 ShieldColour();
             }
 
@@ -83,6 +82,7 @@ namespace RedButton.Mech
         {
             yield return new WaitForSeconds(time);
             shieldReady = true;
+            currentShieldHealth = maxShieldHealth;
         }
 
         public void RechargeNow()
@@ -92,6 +92,8 @@ namespace RedButton.Mech
                 StopAllCoroutines();
                 shieldReady = true;
             }
+            currentShieldHealth = maxShieldHealth + healthOffset;
+            ShieldColour();
         }
 
         public void DamageShield()
@@ -106,8 +108,6 @@ namespace RedButton.Mech
                 StartCoroutine(ShieldRecharge(shieldCD * 2));
             }
         }
-
-        
 
         public override void GroupFire()
         {
@@ -130,7 +130,8 @@ namespace RedButton.Mech
                 1 => Color.red,
                 _ => Color.green,
             };
-            this.shieldColour.material.SetColor("_ShieldColour", shieldColour);
+            this.shieldColour.material.SetColor("_FrontColour", shieldColour);
+            this.shieldColour.material.SetColor("_BackColour", shieldColour);
         }
     }
 }

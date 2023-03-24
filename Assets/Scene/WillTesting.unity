@@ -1100,8 +1100,11 @@ MonoBehaviour:
   - {x: -10.42, y: 0.58, z: -1.85}
   - {x: -5.48, y: 0.58, z: -6.51}
   activeMechs: []
+  spawnedMechs: []
   roundStarted: 0
   powerUpsManager: {fileID: 0}
+  roundCount: 3
+  currentRound: 1
 --- !u!4 &1704852938
 Transform:
   m_ObjectHideFlags: 0

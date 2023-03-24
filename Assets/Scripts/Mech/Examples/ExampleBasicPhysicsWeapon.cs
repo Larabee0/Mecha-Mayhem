@@ -86,8 +86,9 @@ namespace RedButton.Mech.Examples
             coolDownProcess = null;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             StopAllCoroutines();
             coolDownProcess = null;
         }
