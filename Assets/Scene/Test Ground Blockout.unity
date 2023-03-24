@@ -616,8 +616,8 @@ MonoBehaviour:
   margin: 2
   marginPlayer: 2
   rangePlayer: 5
-  minTimeBetweenBarriers: 3
-  maxTimeBetweenBarriers: 5
+  minTimeBetweenBarriers: 6
+  maxTimeBetweenBarriers: 10
   upperBound: 4
   guaranteeBarriers: 0
   numberOfBarriers: 12

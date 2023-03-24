@@ -96,6 +96,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -3395448115596816149, guid: aa33d99224041b54994bff446bb40aa4,
         type: 3}
+      propertyPath: fireIntervalMax
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -3395448115596816149, guid: aa33d99224041b54994bff446bb40aa4,
+        type: 3}
+      propertyPath: fireIntervalMin
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -3395448115596816149, guid: aa33d99224041b54994bff446bb40aa4,
+        type: 3}
       propertyPath: muzzleOriginPoint
       value: 
       objectReference: {fileID: 906662350362147781}
@@ -168,6 +178,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3227145162079782903}
     m_Modifications:
+    - target: {fileID: -3395448115596816149, guid: aa33d99224041b54994bff446bb40aa4,
+        type: 3}
+      propertyPath: fireIntervalMax
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -3395448115596816149, guid: aa33d99224041b54994bff446bb40aa4,
+        type: 3}
+      propertyPath: fireIntervalMin
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: -3395448115596816149, guid: aa33d99224041b54994bff446bb40aa4,
         type: 3}
       propertyPath: muzzleOriginPoint

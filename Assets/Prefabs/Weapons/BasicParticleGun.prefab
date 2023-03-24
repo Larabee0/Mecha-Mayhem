@@ -47,10 +47,10 @@ MonoBehaviour:
   Grouped: 0
   damage: 5
   controlBinding: 1
-  controlBehaviour: 0
+  controlBehaviour: 2
   projectilePrefab: {fileID: -2796544168625011109, guid: edb99362c75d23d49837c2a3865eea27,
     type: 3}
-  animationCentre: {fileID: 0}
-  shootForce: 20
-  fireIntervalMin: 0.75
-  fireIntervalMax: 1
+  muzzleOriginPoint: {fileID: 0}
+  shootForce: 40
+  fireIntervalMin: 0.5
+  fireIntervalMax: 0.5

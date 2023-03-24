@@ -156,6 +156,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6085504414900922656, guid: b104c8d1298e2f54ebf2e10e52455034,
         type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6085504414900922656, guid: b104c8d1298e2f54ebf2e10e52455034,
+        type: 3}
       propertyPath: fireIntervalMax
       value: 0.6
       objectReference: {fileID: 0}
@@ -242,6 +247,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SingleLaserWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 6085504414900922656, guid: b104c8d1298e2f54ebf2e10e52455034,
+        type: 3}
+      propertyPath: damage
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6085504414900922656, guid: b104c8d1298e2f54ebf2e10e52455034,
         type: 3}
