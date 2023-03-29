@@ -1,3 +1,4 @@
+using RedButton.Mech;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -123,7 +124,13 @@ public class SummonBarrier : MonoBehaviour
     IEnumerator GetMechs()
     {
         yield return new WaitForEndOfFrame();
-        mechs = GameObject.FindGameObjectsWithTag("Player");
+
+        CentralMechComponent[] mechComponents = FindObjectsOfType<CentralMechComponent>(true);
+        mechs = new GameObject[mechComponents.Length];
+        for (int i = 0; i < mechComponents.Length; i++)
+        {
+            mechs[i] = mechComponents[i].transform.root.gameObject;
+        }
         //Debug.Log(mechs.Length);
         StartCoroutine(SpawnBarrier());
     }

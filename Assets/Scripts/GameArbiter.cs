@@ -185,7 +185,7 @@ namespace RedButton.GamePlay
             roundStarted = true;
             if (powerUpsManager != null)
             {
-                //powerUpsManager.SetUpPowerUps();
+                powerUpsManager.SetUpPowerUps();
             }
             // hide round number
             for (int i = 0; i < activeMechs.Count; i++)
