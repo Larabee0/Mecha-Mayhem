@@ -65,6 +65,7 @@ MonoBehaviour:
   mechInTrigger: 0
   powerUpActive: 0
   spinSpeed: 1
+  brightness: 10000
 --- !u!114 &1615739709745365508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d304bd2b3216c1e4399ba8896bcaab94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limit: 3
+  limit: 4
   powerUpColour: {r: 0.042452812, g: 1, b: 0.39516968, a: 1}
   healAmount: 50
 --- !u!1 &1061957101399959709
@@ -141,7 +142,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: 41ccbc7b8bb22ad4a8241d74476e6f4e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

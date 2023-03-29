@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace RedButton.GamePlay
 {
     public class MapPowerUp : MonoBehaviour
@@ -12,7 +13,7 @@ namespace RedButton.GamePlay
         [SerializeField] private bool mechInTrigger;
         [SerializeField] private bool powerUpActive;
         [SerializeField] private float spinSpeed = 1;
-
+        [SerializeField] private float brightness = 1f;
         private float SpinAngle => Time.deltaTime * UnityEngine.Random.value * spinSpeed;
 
         float powerUpTimeOut;
@@ -35,7 +36,13 @@ namespace RedButton.GamePlay
             powerUpCapsule.Rotate(SpinAngle, SpinAngle, SpinAngle, Space.Self);
         }
 
-        
+        private void OnValidate()
+        {
+            if(powerUpCore != null)
+            {
+                capsuleRenderer.material.SetColor("_EmissiveColor", powerUpCore.powerUpColour * brightness);
+            }
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -103,7 +110,8 @@ namespace RedButton.GamePlay
                 this.powerUpCore.Copy(powerUpCore);
                 manager.activePowerUps.Add(this);
                 manager.inactivePowerUps.Remove(this);
-                capsuleRenderer.material.color = powerUpCore.powerUpColour;
+                this.powerUpCore.powerUpColour = capsuleRenderer.material.color = powerUpCore.powerUpColour;
+                capsuleRenderer.material.SetColor("_EmissiveColor", powerUpCore.powerUpColour * brightness);
                 capsuleRenderer.enabled = true;
 
             }
