@@ -22,7 +22,15 @@ namespace RedButton.Core.UI
             winnerText.text = string.Format("Next: {0}",newRoundName);
             TitleBar.text = string.Format("{0} Wins round {1}", lastRoundWinner, lastRound);
             gameObject.SetActive(true);
+            nextRoundButton.GetComponentInChildren<Text>().text = "Next Round";
             EventSystem.current.SetSelectedGameObject(nextRoundButton.gameObject);
+        }
+
+        public void OverrideText(string winnerText, string titleBarText)
+        {
+            this.winnerText.text = winnerText;
+            TitleBar.text = titleBarText;
+            nextRoundButton.GetComponentInChildren<Text>().text = "Start";
         }
 
         public void OpenEndofGame(string gameWinner)

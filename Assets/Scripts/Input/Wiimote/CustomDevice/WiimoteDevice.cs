@@ -391,7 +391,7 @@ namespace RedButton.Core.WiimoteSupport
         /// This simply reads through all the data currently in the queue until the quite is empty.
         /// </summary>
         /// <param name="remote">Target WiimoteAPI.Wiimote to update the state of</param>
-        private static void UpdateWiimote(Wiimote remote)
+        private static void UpdateWiimoteSafe(Wiimote remote)
         {
             int ret;
             int safety = 10000;
@@ -407,7 +407,7 @@ namespace RedButton.Core.WiimoteSupport
         }
 
 
-        private static void UpdateWiimoteUnSafe(Wiimote remote)
+        private static void UpdateWiimote(Wiimote remote)
         {
             int ret;
             do
