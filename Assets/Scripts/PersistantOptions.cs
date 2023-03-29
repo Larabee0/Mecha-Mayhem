@@ -75,5 +75,7 @@ namespace RedButton.Core
         public float player4Sens;
 
         public float gimmickDelay;
+
+        public int roundCount;
     }
 }
