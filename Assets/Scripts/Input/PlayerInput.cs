@@ -151,6 +151,7 @@ namespace RedButton.Core
 
                 controlMap.MechControls.Fire2.started -= OnFireTwoStart;
                 controlMap.MechControls.Fire2.canceled -= OnFireTwoStop;
+                controlMap.UI.PauseGame.performed -= PauseTesterCallback;
                 controlMap.Dispose();
             }
         }
@@ -173,6 +174,13 @@ namespace RedButton.Core
 
             controlMap.MechControls.Fire2.started += OnFireTwoStart;
             controlMap.MechControls.Fire2.canceled += OnFireTwoStop;
+
+            controlMap.UI.PauseGame.performed += PauseTesterCallback;
+        }
+
+        private void PauseTesterCallback(InputAction.CallbackContext obj)
+        {
+            Debug.LogFormat("Recived Pause input from {0}", DeviceName);
         }
 
         /// <summary>

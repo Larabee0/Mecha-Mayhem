@@ -51,9 +51,17 @@ MonoBehaviour:
   controlBinding: 1
   controlBehaviour: 2
   projectilePrefab: {fileID: 0}
+  muzzleOriginPoint: {fileID: 0}
+  IgnoreCollisionsLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  laserBrightness: 5
+  takeMechAccentColour: 0
   fireIntervalMin: 0.5
   fireIntervalMax: 1
   raycastRange: 1000
+  laserDiameter: 0.005
+  laserEffectDecayDelayFraction: 1
   projectileMeshFilter: {fileID: 2743818641197059235}
   projectileMeshRenderer: {fileID: 6446192624237038570}
 --- !u!33 &2743818641197059235
@@ -157,9 +165,17 @@ MonoBehaviour:
   controlBinding: 1
   controlBehaviour: 2
   projectilePrefab: {fileID: 0}
+  muzzleOriginPoint: {fileID: 0}
+  IgnoreCollisionsLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  laserBrightness: 5
+  takeMechAccentColour: 0
   fireIntervalMin: 0.5
   fireIntervalMax: 1
   raycastRange: 1000
+  laserDiameter: 0.005
+  laserEffectDecayDelayFraction: 1
   projectileMeshFilter: {fileID: 4578143311772776515}
   projectileMeshRenderer: {fileID: 1180207523894428683}
 --- !u!33 &4578143311772776515
@@ -263,9 +279,17 @@ MonoBehaviour:
   controlBinding: 1
   controlBehaviour: 2
   projectilePrefab: {fileID: 0}
+  muzzleOriginPoint: {fileID: 0}
+  IgnoreCollisionsLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  laserBrightness: 5
+  takeMechAccentColour: 0
   fireIntervalMin: 0.5
   fireIntervalMax: 1
   raycastRange: 1000
+  laserDiameter: 0.005
+  laserEffectDecayDelayFraction: 1
   projectileMeshFilter: {fileID: 3399665027170485675}
   projectileMeshRenderer: {fileID: 4494801099214963836}
 --- !u!33 &3399665027170485675
