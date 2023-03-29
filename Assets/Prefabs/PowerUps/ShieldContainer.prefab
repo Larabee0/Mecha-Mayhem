@@ -78,9 +78,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limit: 3
-  powerUpColour: {r: 0, g: 0.50980395, b: 0.7490196, a: 1}
+  powerUpColour: {r: 0, g: 0, b: 1, a: 1}
   shieldExtraHealth: 3
-  RechargeShieldNowIfDischarged: 0
 --- !u!1 &1061957101399959709
 GameObject:
   m_ObjectHideFlags: 0

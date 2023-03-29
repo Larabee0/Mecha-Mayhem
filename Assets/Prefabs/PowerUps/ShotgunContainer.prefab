@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limit: 3
-  powerUpColour: {r: 0.043137252, g: 0.18471302, b: 1, a: 1}
+  powerUpColour: {r: 0.46981373, g: 0.043137252, b: 1, a: 1}
   weaponTime: 10
   stockGroups: []
   addedWeapons: []

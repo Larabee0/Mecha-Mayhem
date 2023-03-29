@@ -10564,6 +10564,10 @@ MonoBehaviour:
     description: Mech with twin particle weapons
     previewImage: {fileID: 21300000, guid: f87c72444beecc04ba6a9e706552e5cf, type: 3}
     prefab: {fileID: 906662351260344358, guid: 2912a3eb51dff1245b2cf054671a9368, type: 3}
+  - name: Mini Gun
+    description: Mech with twin Laser Mini Guns
+    previewImage: {fileID: 21300000, guid: a0d8c886b9e5453428d8d8448340c3f6, type: 3}
+    prefab: {fileID: 906662351260344358, guid: 10865189010a0fa4eb400ff40c70b232, type: 3}
   thisDoesNothingPaddingForMechDiscriptors: 0
 --- !u!1 &1087977061991338022
 GameObject:

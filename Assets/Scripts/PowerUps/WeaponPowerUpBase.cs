@@ -77,6 +77,10 @@ namespace RedButton.GamePlay
             {
                 stockWeapons[i].enabled = true;
             }
+            for (int i = 0; i < stockGroups.Length; i++)
+            {
+                stockGroups[i].enabled = true;
+            }
             for (int i = 0; i < addedWeapons.Count; i++)
             {
                 Destroy(addedWeapons[i]);

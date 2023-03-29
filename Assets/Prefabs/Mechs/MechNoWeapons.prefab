@@ -732,9 +732,9 @@ MonoBehaviour:
   animationCentre: {fileID: 2331743068668870359}
   weaponOriginPoints:
   - {fileID: 1303482295}
+  - {fileID: 3697173272330369737}
   - {fileID: 3445693703506713475}
   - {fileID: 3426486512325237415}
-  - {fileID: 3697173272330369737}
   - {fileID: 1632750025206437018}
   - {fileID: 7151345162832649487}
   shield: {fileID: 0}
