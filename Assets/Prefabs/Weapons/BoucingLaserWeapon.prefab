@@ -52,6 +52,9 @@ MonoBehaviour:
   controlBehaviour: 2
   projectilePrefab: {fileID: 0}
   muzzleOriginPoint: {fileID: 0}
+  IgnoreCollisionsLayers:
+    serializedVersion: 2
+    m_Bits: 128
   laserBrightness: 140
   takeMechAccentColour: 0
   fireIntervalMin: 0.5

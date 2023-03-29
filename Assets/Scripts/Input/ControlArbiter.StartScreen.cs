@@ -15,6 +15,7 @@ namespace RedButton.Core
         Binding,
         MainMenu,
         OptionsMenu,
+        SenstivityScreen,
         Credits,
         SetPlayerCount,
         ControllerAssignment,
@@ -296,6 +297,27 @@ namespace RedButton.Core
             }
         }
 
+        public void GoForwardToSenstitivty()
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToOptionsMain;
+            }
+        }
+
+        public void GoBackToOptionsMain(InputAction.CallbackContext obj)
+        {
+            if (PlayerOne != null)
+            {
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToOptionsMain;
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMainMenu;
+            }
+
+            uiTranslator.StartMenuUI.optionsManager.CloseSensitivty();
+        }
+
+
         public void GoBackToMainMenu(InputAction.CallbackContext obj)
         {
             if (PlayerOne != null)
@@ -461,7 +483,7 @@ namespace RedButton.Core
         {
             if (PlayerOne != null)
             {
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToControllerAssignment;
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMechSelector;
             }
             uiTranslator.HideAll();
             mainUIController.UIShown = true;
@@ -471,7 +493,7 @@ namespace RedButton.Core
         {
             if (PlayerOne != null)
             {
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToControllerAssignment;
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMechSelector;
             }
             mainUIController.UIShown = false;
             uiTranslator.ShowStartSreen();

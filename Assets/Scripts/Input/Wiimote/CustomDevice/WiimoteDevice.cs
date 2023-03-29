@@ -288,6 +288,7 @@ namespace RedButton.Core.WiimoteSupport
                     state.WithButtons(WiimoteButton.B, false);
 
                     state.WithButtons(WiimoteButton.Plus, false);
+                    state.WithButtons(WiimoteButton.Home, false);
                     state.WithButtons(WiimoteButton.Minus, false);
 
                     state.WithButtons(WiimoteButton.One, false);
@@ -304,6 +305,7 @@ namespace RedButton.Core.WiimoteSupport
                     state.WithButtons(WiimoteButton.B, data.b);
 
                     state.WithButtons(WiimoteButton.Plus, data.plus);
+                    state.WithButtons(WiimoteButton.Home, data.home);
                     state.WithButtons(WiimoteButton.Minus, data.minus);
 
                     state.WithButtons(WiimoteButton.One, data.one);
@@ -389,6 +391,22 @@ namespace RedButton.Core.WiimoteSupport
         /// This simply reads through all the data currently in the queue until the quite is empty.
         /// </summary>
         /// <param name="remote">Target WiimoteAPI.Wiimote to update the state of</param>
+        private static void UpdateWiimoteSafe(Wiimote remote)
+        {
+            int ret;
+            int safety = 10000;
+            do
+            {
+                ret = remote.ReadWiimoteData();
+                if(safety < 0)
+                {
+                    //break;
+                }
+                safety--;
+            } while (ret > 0);
+        }
+
+
         private static void UpdateWiimote(Wiimote remote)
         {
             int ret;

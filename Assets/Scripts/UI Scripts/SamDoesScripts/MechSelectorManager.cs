@@ -40,9 +40,9 @@ namespace RedButton.Core.UI
         [SerializeField] private SelectionButtonContainer player2;
         [SerializeField] private SelectionButtonContainer player3;
         [SerializeField] private SelectionButtonContainer player4;
-
-        [SerializeField] private Color selectorBackgroundColourInactive;
-        [SerializeField] private Color selectorBackgroundColourActive;
+        [SerializeField, Range(0, 1)] private float selectorBackgroundInactiveTransparency = 0.5f;
+        [SerializeField] private Color selectorBackgroundColourActiveModifier;
+        [SerializeField, Range(0, 1)] private float selectorColourModifierWeight = 0.5f;
 
         public SelectionButtonContainer this[int index] => index switch
         {
@@ -86,7 +86,7 @@ namespace RedButton.Core.UI
         public void SelectCallback(int playerIndex)
         {
             SelectionButtonContainer container = this[playerIndex];
-            container.SetInteractable(false, selectorBackgroundColourInactive);
+            container.SetInteractable(false, TransColour(ControlArbiter.Instance[currentPlayerIndex].playerColour));
             mechsToSpawn.Add(mechs[mechPrefabIndex].prefab);
 
             mechPrefabIndex = 0;
@@ -103,11 +103,22 @@ namespace RedButton.Core.UI
 
 
             container = this[currentPlayerIndex];
-            container.SetInteractable(true, ControlArbiter.Instance[currentPlayerIndex].playerColour);
+            container.SetInteractable(true, ModColour(ControlArbiter.Instance[currentPlayerIndex].playerColour));
 
             ControlArbiter.Instance.GiveInputAuthority(currentPlayerIndex,true);
 
             EventSystem.current.SetSelectedGameObject(container.selectRight.gameObject);
+        }
+
+        public Color TransColour(Color colour)
+        {
+            colour.a = selectorBackgroundInactiveTransparency;
+            return colour;
+        }
+
+        public Color ModColour(Color colour)
+        {
+            return colour;
         }
 
         public void OpenSelector()
@@ -115,10 +126,10 @@ namespace RedButton.Core.UI
             currentPlayerIndex = 0;
             ControlArbiter.Instance.GiveInputAuthority(0);
             gameObject.SetActive(true);
-            player1.SetInteractable(true, ControlArbiter.PlayerOneColour);
-            player2.SetInteractable(false, selectorBackgroundColourInactive);
-            player3.SetInteractable(false, selectorBackgroundColourInactive);
-            player4.SetInteractable(false, selectorBackgroundColourInactive);
+            player1.SetInteractable(true, ModColour(ControlArbiter.PlayerOneColour));
+            player2.SetInteractable(false, TransColour(ControlArbiter.PlayerTwoColour));
+            player3.SetInteractable(false, TransColour(ControlArbiter.PlayerThreeColour));
+            player4.SetInteractable(false, TransColour(ControlArbiter.PlayerFourColour));
             player1.previewImage.sprite = mechs[0].previewImage;
             player2.previewImage.sprite = mechs[0].previewImage;
             player3.previewImage.sprite = mechs[0].previewImage;

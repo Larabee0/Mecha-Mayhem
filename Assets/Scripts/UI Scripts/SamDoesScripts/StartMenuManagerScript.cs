@@ -13,7 +13,6 @@ namespace RedButton.Core.UI
         [SerializeField] GameObject bgPanel;
         [SerializeField] GameObject bindPanel;
         [SerializeField] GameObject btnPanel;
-        [SerializeField] GameObject optionsPanel;
         [SerializeField] GameObject creditsPanel;
         [SerializeField] GameObject willCreditsPanel;
         [SerializeField] GameObject playerNumPanel;
@@ -45,7 +44,17 @@ namespace RedButton.Core.UI
 
         [Header("Mech Selector")]
         public MechSelectorManager mechSelectorManager;
-        
+
+        [Header("Options Panel")]
+        public OptionsManager optionsManager;
+
+        [Header("Lev Selector")]
+        [SerializeField] private Slider roundCount;
+        [SerializeField] private Text roundCountText;
+
+        private int RoundCount { set => roundCountText.text = string.Format("Number of Rounds: {0}", value); }
+
+
         private UnityUITranslationLayer.ControllerAssignHelper PlayerOneAssign;
         private UnityUITranslationLayer.ControllerAssignHelper PlayerTwoAssign;
         private UnityUITranslationLayer.ControllerAssignHelper PlayerThreeAssign;
@@ -71,7 +80,7 @@ namespace RedButton.Core.UI
             bindPanel.SetActive(false);
             btnPanel.SetActive(true);
             playerNumPanel.SetActive(false);
-            optionsPanel.SetActive(false);
+            optionsManager.Close();
             creditsPanel.SetActive(false);
             willCreditsPanel.SetActive(false);
             PlayerAssignPanel.SetActive(false);
@@ -87,14 +96,13 @@ namespace RedButton.Core.UI
         {
             ControlArbiter.Instance.startScreenState = StartScreenState.OptionsMenu;
             btnPanel.SetActive(false);
-            optionsPanel.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(optionsPanelBtn);
+            optionsManager.Open();
             ControlArbiter.Instance.GoForwardFromMainMenu();
         }
         public void CloseOptions()
         {
+            ControlArbiter.Instance.startScreenState = StartScreenState.MainMenu;
             btnPanel.SetActive(true);
-            optionsPanel.SetActive(false);
             EventSystem.current.SetSelectedGameObject(btnPanelBtn);
         }
 
@@ -108,6 +116,7 @@ namespace RedButton.Core.UI
         }
         public void CloseCredits()
         {
+            ControlArbiter.Instance.startScreenState = StartScreenState.MainMenu;
             btnPanel.SetActive(true);
             creditsPanel.SetActive(false);
             EventSystem.current.SetSelectedGameObject(btnPanelBtn);
@@ -147,10 +156,10 @@ namespace RedButton.Core.UI
             EventSystem.current.SetSelectedGameObject(playerNumPanelBtn);
             ControlArbiter.Instance.GoForwardFromMainMenu();
 
-            PlayerOneAssign.SetShown(false);
-            PlayerTwoAssign.SetShown(false);
-            PlayerThreeAssign.SetShown(false);
-            PlayerFourAssign.SetShown(false);
+            PlayerOneAssign.SetShown(false, Color.grey);
+            PlayerTwoAssign.SetShown(false, Color.grey);
+            PlayerThreeAssign.SetShown(false, Color.grey);
+            PlayerFourAssign.SetShown(false, Color.grey);
         }
 
         public void ClosePlayerSelect()
@@ -177,10 +186,10 @@ namespace RedButton.Core.UI
                 return;
             }
 
-            PlayerOneAssign.SetShown(true);
-            PlayerTwoAssign.SetShown(false);
-            PlayerThreeAssign.SetShown(false);
-            PlayerFourAssign.SetShown(false);
+            PlayerOneAssign.SetShown(true,ControlArbiter.PlayerOneColour);
+            PlayerTwoAssign.SetShown(false, ControlArbiter.PlayerTwoColour);
+            PlayerThreeAssign.SetShown(false, ControlArbiter.PlayerThreeColour);
+            PlayerFourAssign.SetShown(false, ControlArbiter.PlayerFourColour);
             UIAssignPlayerOne();
 
             Queue<UnityUITranslationLayer.ControllerAssignHelper> players = new();
@@ -193,21 +202,21 @@ namespace RedButton.Core.UI
             {
                 case Controller.Two:
                     players.Enqueue(PlayerTwoAssign);
-                    PlayerTwoAssign.SetShown(true);
+                    PlayerTwoAssign.SetShown(true, ControlArbiter.PlayerTwoColour);
                     break;
                 case Controller.Three:
                     players.Enqueue(PlayerTwoAssign);
                     players.Enqueue(PlayerThreeAssign);
-                    PlayerTwoAssign.SetShown(true);
-                    PlayerThreeAssign.SetShown(true);
+                    PlayerTwoAssign.SetShown(true, ControlArbiter.PlayerTwoColour);
+                    PlayerThreeAssign.SetShown(true, ControlArbiter.PlayerThreeColour);
                     break;
                 case Controller.Four:
                     players.Enqueue(PlayerTwoAssign);
                     players.Enqueue(PlayerThreeAssign);
                     players.Enqueue(PlayerFourAssign);
-                    PlayerTwoAssign.SetShown(true);
-                    PlayerThreeAssign.SetShown(true);
-                    PlayerFourAssign.SetShown(true);
+                    PlayerTwoAssign.SetShown(true, ControlArbiter.PlayerTwoColour);
+                    PlayerThreeAssign.SetShown(true, ControlArbiter.PlayerThreeColour);
+                    PlayerFourAssign.SetShown(true, ControlArbiter.PlayerFourColour);
                     break;
             }
 
@@ -223,10 +232,10 @@ namespace RedButton.Core.UI
 
         public bool TryLoadAssignmentScreenWithCurrent()
         {
-            PlayerOneAssign.SetShown(false);
-            PlayerTwoAssign.SetShown(false);
-            PlayerThreeAssign.SetShown(false);
-            PlayerFourAssign.SetShown(false);
+            PlayerOneAssign.SetShown(false, Color.grey);
+            PlayerTwoAssign.SetShown(false, Color.grey);
+            PlayerThreeAssign.SetShown(false, Color.grey);
+            PlayerFourAssign.SetShown(false, Color.grey);
 
             bool allExpectPresent = ControlArbiter.playerMode switch
             {
@@ -289,10 +298,9 @@ namespace RedButton.Core.UI
             return false;
         }
 
-
         public void UIAssignPlayer(PlayerInput playerInput, UnityUITranslationLayer.ControllerAssignHelper controllerAssignHelper)
         {
-            controllerAssignHelper.SetShown(true);
+            controllerAssignHelper.SetShown(true, playerInput.playerColour);
             controllerAssignHelper.Set(playerInput);
         }
 
@@ -347,18 +355,32 @@ namespace RedButton.Core.UI
         #region Level selector
         public void OpenLvlSelect()
         {
+            roundCount.value = PersistantOptions.instance.userSettings.roundCount;
+            RoundCount = (int)roundCount.value;
             mechSelectorManager.gameObject.SetActive(false);
             lvlSelectPanel.SetActive(true);
             PlayerAssignPanel.SetActive(false);
             EventSystem.current.SetSelectedGameObject(lvlSelectPanelBtn);
         }
 
+        public void OnRoundCountChange()
+        {
+            RoundCount = PersistantOptions.instance.userSettings.roundCount = (int)roundCount.value;
+        }
+
+        public void RandomLevel()
+        {
+            LvlBtnClick(Random.Range(1, 4));
+        }
+
         public void LvlBtnClick(int lvl)
         {
             Debug.Log("Selected level is " + lvl);
+            PersistantOptions.instance.userSettings.roundCount = (int)roundCount.value;
 
             ControlArbiter.Instance.ControlArbiterToGameArbiterHandoff();
             GameSceneManager.Instance.LoadScene(lvl);
+            roundCount.value = PersistantOptions.instance.userSettings.roundCount;
         }
 
         // this needs to go back to the controller assignment screen, which does not exist

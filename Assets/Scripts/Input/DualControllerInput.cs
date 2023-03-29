@@ -871,7 +871,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                     ""path"": ""<WiimoteDevice>/homeButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""PauseGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

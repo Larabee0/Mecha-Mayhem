@@ -151,6 +151,7 @@ namespace RedButton.Core
 
             if (UnityUI)
             {
+                uiTranslator.StartMenuUI.optionsManager.LoadFromSettings();
                 mainUIController.UIShown = false;
             }
             WiimoteUISetup();
