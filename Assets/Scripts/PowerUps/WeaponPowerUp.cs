@@ -16,8 +16,8 @@ namespace RedButton.GamePlay
 
         private readonly Dictionary<Type,GameObject> weaponMap = new();
 
-        [SerializeField] private List<GameObject> addedWeapons=new();
         [SerializeField] private WeaponGroup[] stockGroups;
+        [SerializeField] private List<GameObject> addedWeapons = new();
         [SerializeField] private List<WeaponCore> stockWeapons;
 
         public override void Copy(PowerUpCore source)
@@ -35,7 +35,7 @@ namespace RedButton.GamePlay
 
         public override void AddTo(CentralMechComponent target)
         {
-            if(target.gameObject.GetComponent<WeaponCore>() == null)
+            if(target.gameObject.GetComponent<WeaponPowerUp>() == null)
             {
                 WeaponPowerUp mechInstance = target.gameObject.AddComponent<WeaponPowerUp>();
                 mechInstance.Copy(this);

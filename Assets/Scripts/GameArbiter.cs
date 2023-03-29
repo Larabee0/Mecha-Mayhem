@@ -57,7 +57,14 @@ namespace RedButton.GamePlay
             }
             SpawnMechs();
             ControlArbiter.Instance.MainUIController.SetPlayers(activeMechs);
-            StartRound();
+            PrepGame();
+
+            List<int> targetPlayers = new();
+
+            activeMechs.ForEach(mech => targetPlayers.Add((int)mech.MechInputController.Player));
+            activeMechs.Clear();
+            StartRoundWithOptions("", targetPlayers);
+            ControlArbiter.Instance.UITranslator.EndScreenUI.OverrideText(string.Format("Round {0} of {1}", currentRound, roundCount), "");
         }
 
         private void SpawnMechs()
@@ -77,16 +84,8 @@ namespace RedButton.GamePlay
                 // wprk around so the has an assigned input controller when it is instantiated.
                 // This is to allow awake methods in the newly spawned mech work as expected.
                 mechsToSpawn[i].AssignInputController(ControlArbiter.Instance[i]);
-                int spawnPointIndex = Random.Range(0,spawnPoints.Length);
-                int safety = 0;
-                while (usedSpawnPoints.Contains(spawnPointIndex) && safety < 1000)
-                {
-                    spawnPointIndex = Random.Range(0, spawnPoints.Length);
-                    safety++;
-                }
-                usedSpawnPoints.Add(spawnPointIndex);
-                activeMechs.Add(Instantiate(mechsToSpawn[i], spawnPoints[spawnPointIndex], Quaternion.identity));
-                activeMechs[^1].OnMechDied += OnMechDeath;
+                activeMechs.Add(Instantiate(mechsToSpawn[i], Vector3.zero, Quaternion.identity));
+                // activeMechs[^1].OnMechDied += OnMechDeath;
                 spawnedMechs.Add(activeMechs[^1]);
 
                 // To ensure minimal unintended cosnquences, I set the input controller property back to null
@@ -95,20 +94,20 @@ namespace RedButton.GamePlay
             }
         }
 
-        private void StartRound()
+        private void PrepGame()
         {
-            roundCount = playerCount+1;
+            roundCount = PersistantOptions.instance.userSettings.roundCount;
             for (int i = 0; i < playerCount; i++)
             {
                 playerVictories.Add(i, 0);
             }
-            if (powerUpsManager != null)
-            {
-                powerUpsManager.SetUpPowerUps();
-            }
+
             deathOrder.Clear();
             ControlArbiter.Instance.ValidateControllersAndPlayers();
-            roundStarted= true;
+
+            activeMechs.ForEach(mech => { mech.MechInputController.Disable();
+                mech.transform.root.gameObject.SetActive(false);
+            });
         }
 
         private void EndRound()

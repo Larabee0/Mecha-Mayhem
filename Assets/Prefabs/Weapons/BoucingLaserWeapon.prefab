@@ -61,7 +61,7 @@ MonoBehaviour:
   laserEffectDecayDelayFraction: 1
   projectileMeshFilter: {fileID: 122887087210918203}
   projectileMeshRenderer: {fileID: 8887235670899677644}
-  bounces: 4
+  bounces: 3
   vertices: []
 --- !u!33 &122887087210918203
 MeshFilter:
