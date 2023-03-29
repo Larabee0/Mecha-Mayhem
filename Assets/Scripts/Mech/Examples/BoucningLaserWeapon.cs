@@ -53,7 +53,7 @@ namespace RedButton.Mech.Examples
             Ray initialRay = new(muzzleOriginPoint.position, aimDirection);
             for (int i = 0, v = 0; i < bounces; i++, v+=2)
             {
-                if (Physics.SphereCast(initialRay, laserDiameter, out RaycastHit hitInfo))
+                if (Physics.SphereCast(initialRay, laserDiameter, out RaycastHit hitInfo, raycastRange, ~IgnoreCollisionsLayers))
                 {
                     HandleHit(hitInfo);
                     vertices[v] = initialRay.origin;

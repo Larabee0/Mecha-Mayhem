@@ -461,7 +461,7 @@ namespace RedButton.Core
         {
             if (PlayerOne != null)
             {
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToControllerAssignment;
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMechSelector;
             }
             uiTranslator.HideAll();
             mainUIController.UIShown = true;
@@ -471,7 +471,7 @@ namespace RedButton.Core
         {
             if (PlayerOne != null)
             {
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToControllerAssignment;
+                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMechSelector;
             }
             mainUIController.UIShown = false;
             uiTranslator.ShowStartSreen();

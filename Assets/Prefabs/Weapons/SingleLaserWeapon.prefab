@@ -52,10 +52,15 @@ MonoBehaviour:
   controlBehaviour: 2
   projectilePrefab: {fileID: 0}
   muzzleOriginPoint: {fileID: 0}
+  IgnoreCollisionsLayers:
+    serializedVersion: 2
+    m_Bits: 128
   laserBrightness: 300
+  takeMechAccentColour: 0
   fireIntervalMin: 0.5
   fireIntervalMax: 1
   raycastRange: 1000
+  laserDiameter: 0.005
   laserEffectDecayDelayFraction: 1
   projectileMeshFilter: {fileID: 122887087210918203}
   projectileMeshRenderer: {fileID: 8887235670899677644}
