@@ -18,19 +18,12 @@ namespace RedButton.Core
         public delegate void SettingsChanged();
         public SettingsChanged OnUserSettingsChanged;
 
-        [SerializeField] private GameObject RelayNetworkManager;
-        [SerializeField] private GameObject PTPNetworkManager;
-
         private void Awake()
         {
-            PrepareScene();
             userSettingsPath = Path.Combine(Application.persistentDataPath, "userSettings.xml");
             instance = this;
             userSettings = new UserSettingsSaveData();
-        }
 
-        private void Start()
-        {
             if (File.Exists(userSettingsPath))
             {
                 XmlSerializer reader = new(typeof(UserSettingsSaveData));
@@ -53,29 +46,17 @@ namespace RedButton.Core
             writer.Serialize(file, userSettings);
             file.Close();
         }
-
-        private void PrepareScene()
-        {
-            if (UseLocal)
-            {
-                Instantiate(PTPNetworkManager);
-            }
-            else
-            {
-                Instantiate(RelayNetworkManager);
-            }
-        }
     }
 
     public class UserSettingsSaveData
     {
-        public float player1Sens;
-        public float player2Sens;
-        public float player3Sens;
-        public float player4Sens;
+        public float player1Sens = 1;
+        public float player2Sens = 1;
+        public float player3Sens = 1;
+        public float player4Sens = 1;
 
-        public float gimmickDelay;
+        public int gimmickDelay = 30;
 
-        public int roundCount;
+        public int roundCount = 3;
     }
 }
