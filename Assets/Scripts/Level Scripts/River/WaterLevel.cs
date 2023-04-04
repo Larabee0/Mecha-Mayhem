@@ -10,7 +10,7 @@ namespace RedButton.GamePlay
         public float timer = 0f;
         private Vector3 RiverFinalWidth;
         private Vector3 OriginalWidth;
-        private float speed = 2;
+        private float speed = 0.7f;
         // Use this for initialization
         void Start()
         {
