@@ -13,7 +13,7 @@ namespace RedButton.GamePlay
         [SerializeField] private List<MapPowerUp> powerUpInstances;
         [SerializeField] private Dictionary<Type, int> onMapPowerUps = new();
         [SerializeField] private int globalCountOffset;
-        private int maxPowerUps;
+        [SerializeField] private int maxPowerUps;
         [SerializeField] private int powerUpActivateWaveSize;
         [SerializeField] private float powerUpStartOfRoundDelay = 5f;
         public readonly HashSet<MapPowerUp> activePowerUps = new();
@@ -23,7 +23,10 @@ namespace RedButton.GamePlay
         public float maxPowerUpTime;
         private void Awake()
         {
-            maxPowerUps = spawnPoints.Length;
+            if(maxPowerUps <= 0)
+            {
+                maxPowerUps = spawnPoints.Length;
+            }
         }
 
         public void SetUpPowerUps()

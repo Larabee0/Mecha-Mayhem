@@ -1653,7 +1653,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: River (Under Construction)
+  m_Text: River (Flooded)
 --- !u!1 &474564462
 GameObject:
   m_ObjectHideFlags: 0
@@ -7540,7 +7540,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Debug Level (City Later)
+  m_Text: Debug Level
 --- !u!1 &1981277140
 GameObject:
   m_ObjectHideFlags: 0

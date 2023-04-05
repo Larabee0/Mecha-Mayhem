@@ -107,7 +107,7 @@ namespace RedButton.Core.UI
 
             ControlArbiter.Instance.GiveInputAuthority(currentPlayerIndex,true);
 
-            EventSystem.current.SetSelectedGameObject(container.selectRight.gameObject);
+            EventSystem.current.SetSelectedGameObject(container.confirmSelection.gameObject);
         }
 
         public Color TransColour(Color colour)
@@ -165,7 +165,7 @@ namespace RedButton.Core.UI
             mechsToSpawn.Clear();
             GameArbiter.mechsToSpawn = null;
 
-            EventSystem.current.SetSelectedGameObject(player1.selectRight.gameObject);
+            EventSystem.current.SetSelectedGameObject(player1.confirmSelection.gameObject);
         }
 
         public void ReturnCallback()

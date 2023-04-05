@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.3369, g: 325.0498, b: 430.21924, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -650,7 +650,7 @@ MonoBehaviour:
     description: Volcano level
     preview: {fileID: 2800000, guid: bb72be1386bdec14eb356053b8eac460, type: 3}
   loadingScreenImages:
-  - {fileID: 2800000, guid: cbb82e8b31951de42a4b62f68e885ec5, type: 3}
+  - {fileID: 2800000, guid: 291faab785fe8004b92b20dd4e6c9960, type: 3}
 --- !u!114 &1524482640
 MonoBehaviour:
   m_ObjectHideFlags: 0
