@@ -1090,7 +1090,7 @@ MonoBehaviour:
     type: 3}
   playerCount: 0
   editorMechs:
-  - {fileID: 906662351260344358, guid: 66b3b1fe511df3b45b91a47d77f54f91, type: 3}
+  - {fileID: 906662351260344358, guid: 28feec886106a3943b7ff848d4a973c8, type: 3}
   - {fileID: 906662351260344358, guid: 2912a3eb51dff1245b2cf054671a9368, type: 3}
   - {fileID: 52958292, guid: 63a7186cd238a2a49b2165a6366e4cf9, type: 3}
   - {fileID: 52958292, guid: d21c1abb9336a3947ac91a7b92794cf8, type: 3}
@@ -1146,6 +1146,7 @@ MonoBehaviour:
     type: 3}
   powerUpInstances: []
   globalCountOffset: 0
+  maxPowerUps: 0
   powerUpActivateWaveSize: 4
   powerUpStartOfRoundDelay: 5
   minPowerUpTime: 3
