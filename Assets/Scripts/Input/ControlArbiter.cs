@@ -319,6 +319,7 @@ namespace RedButton.Core
                 playerMode = (Controller)i;
             }
             uiTranslator.HideAll();
+            startScreenActionMap = new();
             mainUIController.UIShown = true;
             ValidateControllersAndPlayers();
         }
