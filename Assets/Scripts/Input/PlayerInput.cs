@@ -127,18 +127,24 @@ namespace RedButton.Core
             }
             EnableWiimotePointer();
             CreateNewControlMap(devices);
-
+            PersistantOptions.instance.OnUserSettingsChangedData += UpdateSensitivity;
+            UpdateSensitivity();
             player = playerNum;
             devicePath = devices[0].path;
             DeviceConnected = true;
         }
 
+        private void UpdateSensitivity()
+        {
+            ControllerSense = PersistantOptions.instance.userSettings.GetPlayerSense(player);
+        }
 
         private void DisposeOfCurrentControlMap()
         {
             StopAllCoroutines();
             if (controlMap != null)
             {
+                PersistantOptions.instance.OnUserSettingsChangedData -= UpdateSensitivity;
                 // if we had a control map, un subscribe from it Un-Subscribe to the various stick and button inputs.
                 // then dispose of it.
                 controlMap.MechControls.LeftStick.started -= StartLeftStickActivity;
