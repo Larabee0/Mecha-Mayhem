@@ -1,12 +1,16 @@
+using RedButton.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace RedButton.GamePlay
 {
     public class PowerUpsManager : MonoBehaviour
     {
+        [SerializeField] private GameArbiter gameArbiter;
         [SerializeField] private Vector3[] spawnPoints = new Vector3[4];
         [SerializeField] private PowerUpCore[] powerUps;
         [SerializeField] private MapPowerUp powerUpPrefab;
@@ -14,33 +18,49 @@ namespace RedButton.GamePlay
         [SerializeField] private Dictionary<Type, int> onMapPowerUps = new();
         [SerializeField] private int globalCountOffset;
         [SerializeField] private int maxPowerUps;
+        [SerializeField] private bool autoCalculateMaxPowerUps;
+        [SerializeField] private int autoCalMultiplier = 3;
         [SerializeField] private int powerUpActivateWaveSize;
         [SerializeField] private float powerUpStartOfRoundDelay = 5f;
+        [SerializeField] private float powerUpUpdateRate = 5f;
+        [SerializeField] private float favourDamagedMechWeight = 0.6f;
+        public float powerUpTimeOut = 30f;
+
         public readonly HashSet<MapPowerUp> activePowerUps = new();
         public readonly HashSet<MapPowerUp> inactivePowerUps = new();
         
         public float minPowerUpTime;
         public float maxPowerUpTime;
+
         private void Awake()
         {
-            if(maxPowerUps <= 0)
+            if(gameArbiter == null)
             {
-                maxPowerUps = spawnPoints.Length;
+                gameArbiter = GetComponent<GameArbiter>();
+            }
+
+            if(maxPowerUps == 0 || autoCalculateMaxPowerUps)
+            {
+                maxPowerUps = gameArbiter.PlayerCount * autoCalMultiplier;
             }
         }
 
-        public void SetUpPowerUps()
+        public void StopAndClear()
         {
-            if (powerUpInstances.Count!= 0)
+            if (powerUpInstances.Count != 0)
             {
                 StopAllCoroutines();
-                powerUpInstances.ForEach(powerUpInstance => Destroy(powerUpInstance.gameObject));
+                powerUpInstances.ForEach(powerUpInstance => Destroy(powerUpInstance.gameObject,UnityEngine.Random.value));
                 powerUpInstances.Clear();
                 onMapPowerUps.Clear();
                 inactivePowerUps.Clear();
                 activePowerUps.Clear();
             }
+        }
 
+        public void SetUpPowerUps()
+        {
+            StopAndClear();
             for (int i = 0; i < spawnPoints.Length; i++)
             {
                 powerUpInstances.Add(Instantiate(powerUpPrefab, spawnPoints[i], Quaternion.identity, transform));
@@ -53,40 +73,43 @@ namespace RedButton.GamePlay
             }
             inactivePowerUps.UnionWith(powerUpInstances);
 
-            InitilisePowerUps();
+            StartCoroutine(PowerUpUpdator());
         }
 
-        public void InitilisePowerUps()
+        private IEnumerator PowerUpUpdator()
         {
-            StartCoroutine(Initializer());
-        }
-
-        private IEnumerator Initializer()
-        {
-            yield return new WaitForSeconds(powerUpStartOfRoundDelay);
-            List<MapPowerUp> inactive = new(inactivePowerUps);
-            while (activePowerUps.Count < maxPowerUps) {
-                for (int i = 0; i < powerUpActivateWaveSize; i++)
+            while (true)
+            {
+                if (activePowerUps.Count < maxPowerUps && inactivePowerUps.Count != 0)
                 {
-                    if (inactive.Count == 0)
+                    MapPowerUp[] inactivePowerUps = this.inactivePowerUps.ToArray();
+                    MapPowerUp closestPoint;
+                    if (UnityEngine.Random.value < favourDamagedMechWeight && gameArbiter.GetLowestHealthMechPosition(out Vector3 targetPos))
                     {
-                        break;
+                        closestPoint = inactivePowerUps[0];
+                        float dst = math.distancesq(targetPos, closestPoint.transform.position);
+                        for (int i = 1; i < inactivePowerUps.Length; i++)
+                        {
+                            float dst2 = math.distancesq(targetPos, inactivePowerUps[i].transform.position);
+                            if (dst2 < dst)
+                            {
+                                dst = dst2;
+                                closestPoint = inactivePowerUps[i];
+                            }
+                        }
                     }
-                    MapPowerUp powerUp = inactive[UnityEngine.Random.Range(0, inactive.Count)];
-                    while (activePowerUps.Contains(powerUp))
+                    else
                     {
-                        powerUp = inactive[UnityEngine.Random.Range(0, inactive.Count)];
+                        closestPoint = inactivePowerUps[UnityEngine.Random.Range(0, inactivePowerUps.Length)];
                     }
-                    inactive.Remove(powerUp);
-                    powerUp.ForceRespawn();
-                }
-                yield return null;
-            }
-        }
 
-        public float GetRespawnTime()
-        {
-            return UnityEngine.Random.Range(minPowerUpTime, maxPowerUpTime);
+                    if ( closestPoint != null && !closestPoint.mechInTrigger)
+                    {
+                        closestPoint.SetPowerUp(GetPowerUp());
+                    }
+                }
+                yield return new WaitForSeconds(powerUpUpdateRate);
+            }
         }
 
         public PowerUpCore GetPowerUp()

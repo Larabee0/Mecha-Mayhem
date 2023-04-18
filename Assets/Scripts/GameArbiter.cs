@@ -14,6 +14,7 @@ namespace RedButton.GamePlay
 
         [SerializeField] private ControlArbiter controlArbiterPrefab;
         [SerializeField] private int playerCount;
+        public int PlayerCount => playerCount;
         [SerializeField] private CentralMechComponent[] editorMechs;
         [SerializeField] private Vector3[] spawnPoints = new Vector3[4];
         private readonly HashSet<int> usedSpawnPoints = new();
@@ -112,6 +113,10 @@ namespace RedButton.GamePlay
 
         private void EndRound()
         {
+            if(powerUpsManager != null)
+            {
+                powerUpsManager.StopAndClear();
+            }
             ControlArbiter.Instance.LockOutAllPlayers();
             roundStarted = false;
             while (activeMechs.Count > 0)
@@ -264,6 +269,26 @@ namespace RedButton.GamePlay
         private void OnDestroy()
         {
             ControlArbiter.Instance.OnPauseMenuQuit -= EndRound;
+        }
+
+        public bool GetLowestHealthMechPosition(out Vector3 pos)
+        {
+            pos = Vector3.zero;
+            CentralMechComponent lowestedHealthMech = null;
+            for (int i = 0; i < activeMechs.Count; i++)
+            {
+                if (lowestedHealthMech == null || activeMechs[i].Health< lowestedHealthMech.Health)
+                {
+                    lowestedHealthMech = activeMechs[i];
+                }
+            }
+
+            if(lowestedHealthMech != null && lowestedHealthMech.Health < lowestedHealthMech.MaxHealth/2)
+            {
+                pos = lowestedHealthMech.transform.position;
+                return true;
+            }
+            return false;
         }
     }
 }
