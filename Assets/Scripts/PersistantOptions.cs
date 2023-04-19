@@ -16,7 +16,7 @@ namespace RedButton.Core
         private string userSettingsPath;
 
         public delegate void SettingsChanged();
-        public SettingsChanged OnUserSettingsChanged;
+        public SettingsChanged OnUserSettingsChangedData;
 
         private void Awake()
         {
@@ -58,5 +58,14 @@ namespace RedButton.Core
         public int gimmickDelay = 30;
 
         public int roundCount = 3;
+
+        public float GetPlayerSense(Controller playerNum) => playerNum switch
+        {
+            Controller.One => player1Sens,
+            Controller.Two => player2Sens,
+            Controller.Three => player3Sens,
+            Controller.Four => player4Sens,
+            _ => 1,
+        };
     }
 }

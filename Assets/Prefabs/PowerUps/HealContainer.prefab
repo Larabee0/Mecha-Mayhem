@@ -78,9 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d304bd2b3216c1e4399ba8896bcaab94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limit: 4
+  limit: 1
   powerUpColour: {r: 0.042452812, g: 1, b: 0.39516968, a: 1}
-  healAmount: 50
+  healAmount: 10
 --- !u!1 &1061957101399959709
 GameObject:
   m_ObjectHideFlags: 0

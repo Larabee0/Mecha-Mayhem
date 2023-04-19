@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b692f5195a07948913d210eeda75cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limit: 4
+  limit: 3
   powerUpColour: {r: 0, g: 0, b: 1, a: 1}
   shieldExtraHealth: 3
 --- !u!1 &1061957101399959709

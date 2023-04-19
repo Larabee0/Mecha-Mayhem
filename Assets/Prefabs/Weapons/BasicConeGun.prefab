@@ -45,12 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Grouped: 0
-  damage: 5
+  damage: 15
   controlBinding: 1
-  controlBehaviour: 0
+  controlBehaviour: 2
   projectilePrefab: {fileID: -7607631024499583572, guid: da1ad5b71d4157f4bbcdc376b3b2d698,
     type: 3}
-  animationCentre: {fileID: 0}
+  muzzleOriginPoint: {fileID: 0}
   shootForce: 20
   fireIntervalMin: 0.75
   fireIntervalMax: 1

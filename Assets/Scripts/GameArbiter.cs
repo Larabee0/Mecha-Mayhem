@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using RedButton.Core;
 using RedButton.Mech;
-using RedButton.Core.UI;
-using static UnityEngine.GraphicsBuffer;
 
 namespace RedButton.GamePlay
 {
@@ -27,7 +25,7 @@ namespace RedButton.GamePlay
         [SerializeField] private PowerUpsManager powerUpsManager;
         [SerializeField] private int roundCount = 3;
         [SerializeField] private int currentRound = 1;
-        private Dictionary<int, int> playerVictories = new();
+        private readonly Dictionary<int, int> playerVictories = new();
         private string lastRoundWinner;
 
         private void Awake()

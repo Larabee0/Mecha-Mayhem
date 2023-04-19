@@ -60,7 +60,7 @@ namespace RedButton.Core.UI
             settings.player4Sens = p4SenstivitySlider.value / 100;
 
             settings.gimmickDelay = (int)gimmickDelaySlider.value;
-            PersistantOptions.instance.OnUserSettingsChanged?.Invoke();
+            PersistantOptions.instance.OnUserSettingsChangedData?.Invoke();
         }
 
         public void Open()

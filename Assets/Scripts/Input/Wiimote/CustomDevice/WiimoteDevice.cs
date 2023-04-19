@@ -190,9 +190,13 @@ namespace RedButton.Core.WiimoteSupport
                 // here we create the wiimote's state (buttons, ir position, nunchuck stick position, etc)
                 // The order of operations here doesn't matter, the state is created with the IR and Nunchuck Stick position,
                 // simply because they are the only vector2 values in the state.
+                float2 newPos = UpdateIR(wiimote);
+
+                Vector2 oldPos = irPosition.ReadValue();
+
                 var state = new WiimoteState()
                 {
-                    position = UpdateIR(wiimote),
+                    position = newPos.Equals(float2.zero) ? oldPos : newPos,
                     nunchuckStick = UpdateNunchuckStick(wiimote)
                 };
                 //  After we check set the state of all buttons (nunchuck buttons too)

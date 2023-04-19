@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e5ef6e5ffc29b45bc0d1e6498c071d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limit: 3
+  limit: 2
   powerUpColour: {r: 0.46981373, g: 0.043137252, b: 1, a: 1}
   weaponTime: 10
   stockGroups: []
