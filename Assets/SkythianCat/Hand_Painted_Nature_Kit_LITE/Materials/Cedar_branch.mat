@@ -75,7 +75,7 @@ Material:
     - _BaseLight: 0.064
     - _Blend: 0.386
     - _BumpScale: 1
-    - _Cutoff: 0.25
+    - _Cutoff: 0.838
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Glossiness: 0
