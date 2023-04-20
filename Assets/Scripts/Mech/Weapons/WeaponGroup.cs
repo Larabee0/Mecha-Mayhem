@@ -39,6 +39,7 @@ namespace RedButton.Mech
 
         private void OnEnable()
         {
+            fireInterval = 0f;
             if(UnboundFromControls)
             {
                 BindtoControls();
@@ -47,6 +48,7 @@ namespace RedButton.Mech
 
         private void OnDisable()
         {
+            StopAllCoroutines();
             if (!UnboundFromControls)
             {
                 UnBindControls();
@@ -107,15 +109,23 @@ namespace RedButton.Mech
 
         private void Fire()
         {
-            fireInterval -= Time.deltaTime;
             switch(fireInterval)
             {
                 case <= 0f:
-                    fireInterval = Random.Range(groupFireIntervalMin, groupFireIntervalMax);
+                    StartCoroutine(CoolDown());
                     weaponsInGroup[currentWeaponIndex].GroupFire();
                     currentWeaponIndex = (currentWeaponIndex + 1) % weaponsInGroup.Length;
                     break;
             }
         }
+
+
+        protected IEnumerator CoolDown()
+        {
+            fireInterval = Random.Range(groupFireIntervalMin, groupFireIntervalMax);
+            yield return new WaitForSeconds(fireInterval);
+            fireInterval = 0f;
+        }
+
     }
 }
