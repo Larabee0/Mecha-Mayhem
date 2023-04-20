@@ -14,20 +14,26 @@ namespace RedButton.Mech.Examples
     /// </summary>
     public class ExampleBasicRaycasterWeapon : WeaponCore
     {
-        private Mesh projectileMesh;
+        protected Mesh projectileMesh;
 
         private float fireInterval = 0f;
-        private float showTime = 0f;
+        protected float showTime = 0f;
 
         private Vector3 laserStart;
         private Vector3 laserEnd;
 
         [Header("Raycast Weapon settings")]
-        [SerializeField][Range(0f, 1f)] float fireIntervalMin = 0.01f;
-        [SerializeField][Range(0f, 1f)] float fireIntervalMax = 0.05f;
-        [SerializeField][Range(5f, 200f)] float raycastRange = 10f;
+        [SerializeField] protected LayerMask IgnoreCollisionsLayers;
+        [SerializeField] private float laserBrightness=5;
+        [SerializeField] private bool takeMechAccentColour = false;
+        [SerializeField, Range(0f, 1f)] float fireIntervalMin = 0.01f;
+        [SerializeField, Range(0f, 1f)] float fireIntervalMax = 0.05f;
+        [SerializeField, Range(5f, 200f)] protected float raycastRange = 10f;
+        [SerializeField, Range(0.001f, 1f)] protected float laserDiameter = 0.005f;
+        [Tooltip("Multiplies the showTime by this value to get decayStartTime.\n The effect starts after the showTime becomes less than or equal to the decayStartTime.\nLowering this causes the laser to stay at full length for longer, but also makes the apparent speed when it decays faster.")]
+        [SerializeField, Range(0f, 1f)] float laserEffectDecayDelayFraction = 1;
         [SerializeField] private MeshFilter projectileMeshFilter;
-        [SerializeField] private MeshRenderer projectileMeshRenderer;
+        [SerializeField] protected MeshRenderer projectileMeshRenderer;
 
         /// <summary>
         /// overriding start to create the mesh to modify at runtime.
@@ -42,6 +48,29 @@ namespace RedButton.Mech.Examples
             projectileMesh.SetVertices(new Vector3[] {Vector3.zero, Vector3.forward });
             projectileMesh.SetIndices(new int[] { 0, 1 }, MeshTopology.Lines, 0);
             projectileMeshRenderer.enabled = false;
+            if (takeMechAccentColour)
+            {
+                projectileMeshRenderer.material.SetColor("_BaseColor", CMC.MechAccentColour);
+                projectileMeshRenderer.material.SetColor("_EmissiveColor", CMC.MechAccentColour * laserBrightness);
+            }
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            projectileMeshRenderer.enabled = false;
+        }
+
+        protected virtual void OnValidate()
+        {
+            if (Application.isPlaying)
+            {
+                if(CMC != null)
+                {
+                    projectileMeshRenderer.material.SetColor("_BaseColor", CMC.MechAccentColour);
+                    projectileMeshRenderer.material.SetColor("_EmissiveColor", CMC.MechAccentColour * laserBrightness);
+                }
+            }
         }
 
         /// <summary>
@@ -52,14 +81,17 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void Fire()
         {
-            fireInterval -= Time.deltaTime;
-            switch (fireInterval)
+            if (!CMC.ShieldActive)
             {
-                case <= 0f:
-                    fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
-                    showTime = fireInterval / 2f; // showTime is half the time of the new fireInterval to ensure the laser visual is hidden before it fires again.
-                    BasicRayCaster();
-                    break;
+                fireInterval -= Time.deltaTime;
+                switch (fireInterval)
+                {
+                    case <= 0f:
+                        fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
+                        showTime = fireInterval / 2f; // showTime is half the time of the new fireInterval to ensure the laser visual is hidden before it fires again.
+                        BasicRayCaster();
+                        break;
+                }
             }
         }
 
@@ -68,10 +100,13 @@ namespace RedButton.Mech.Examples
         /// </summary>
         public override void GroupFire()
         {
-            // we still set showTime so the laser is shown for a reasonable time. 
-            // this is less important than in Fire() as the same weapon will not fire twice in a row.
-            showTime = Random.Range(fireIntervalMin, fireIntervalMax) / 2f;
-            BasicRayCaster();
+            if (!CMC.ShieldActive)
+            {
+                // we still set showTime so the laser is shown for a reasonable time. 
+                // this is less important than in Fire() as the same weapon will not fire twice in a row.
+                showTime = Random.Range(fireIntervalMin, fireIntervalMax) / 2f;
+                BasicRayCaster();
+            }
         }
 
         /// <summary>
@@ -79,7 +114,7 @@ namespace RedButton.Mech.Examples
         /// This uses a sphere cast to fire a ray from the muzzleOriginPoint in the direction of a TargetPoint.
         /// If the cast hits a mech it will find the Mech's CMC and update its health.
         /// </summary>
-        private void BasicRayCaster()
+        protected virtual void BasicRayCaster()
         {
             // safety measure.
             if(muzzleOriginPoint == null || targetObject == null)
@@ -92,15 +127,11 @@ namespace RedButton.Mech.Examples
             Ray ray = new(muzzleOriginPoint.position,aimDirection);
 
             Vector3 endPoint; // end point must be calulated weather the spherecast hits something or not.
-            switch (Physics.SphereCast(ray, 0.005f, out RaycastHit hit, raycastRange))
+            switch (Physics.SphereCast(ray, laserDiameter, out RaycastHit hit, raycastRange,~IgnoreCollisionsLayers))
             {
                 case true:
                     endPoint = hit.point; // if the sphere cast hits something we can set the end point to the hit point.
-                    CentralMechComponent otherMech = hit.collider.gameObject.GetComponentInParent<CentralMechComponent>();
-                    if(otherMech != null && otherMech != CMC) // saftey in case we hit ourselves.
-                    {
-                        otherMech.UpdateHealth(damage);
-                    }
+                    HandleHit(hit);
                     break;
                 case false:
                     // if nothing was hit we can calculate the end point as a point infront of the 
@@ -112,20 +143,45 @@ namespace RedButton.Mech.Examples
             Show(ray.origin, endPoint);
         }
 
+        protected void HandleHit(RaycastHit hit)
+        {
+            ShieldTagger hitShield = hit.collider.gameObject.GetComponent<ShieldTagger>();
+            if (hitShield != null && hitShield.shield.ShieldOwner)
+            {
+                hitShield.shield.DamageShield();
+                return;
+            }
+            if (hitShield != null && hitShield != CMC.shield)
+            {
+            }
+            CentralMechComponent otherMech = hit.collider.gameObject.GetComponentInParent<CentralMechComponent>();
+            if (otherMech != null && otherMech != CMC) // saftey in case we hit ourselves.
+            {
+                otherMech.UpdateHealth(damage);
+            }
+        }
+
         /// <summary>
         /// given a start and end point (world coordinates)
         /// we can draw a line between these two points in a mesh.
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
-        private void Show(Vector3 start, Vector3 end)
+        protected void Show(Vector3 start, Vector3 end)
         {
             laserStart = start; laserEnd = end; // needed to keep the mesh updated in the coroutine.
-
-            projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(laserStart), transform.InverseTransformPoint(laserEnd) });
+            CorrectVertexTransform();
             projectileMeshRenderer.enabled = true;
             StopAllCoroutines();
+            if(!enabled || !gameObject.activeInHierarchy)
+            {
+                return;
+            }
             StartCoroutine(Hide()); // start the hide corountine to hide the visual after showTime has elapsed.
+        }
+        protected virtual void CorrectVertexTransform()
+        {
+            projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(laserStart), transform.InverseTransformPoint(laserEnd) });
         }
 
         /// <summary>
@@ -133,12 +189,14 @@ namespace RedButton.Mech.Examples
         /// This prevents the laser getting swung around by the weapon as it turns or the mech moves.
         /// </summary>
         /// <returns></returns>
-        private IEnumerator Hide()
+        protected virtual IEnumerator Hide()
         {
+            float decayStartTime = showTime * laserEffectDecayDelayFraction;
             while(showTime > 0)
             {
                 showTime -= Time.deltaTime;
-                projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(laserStart), transform.InverseTransformPoint(laserEnd) });
+                Vector3 currentStart = Vector3.Lerp(laserStart, laserEnd, Mathf.InverseLerp(decayStartTime, 0, showTime));
+                projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(currentStart), transform.InverseTransformPoint(laserEnd) });
                 yield return null;
             }
             projectileMeshRenderer.enabled = false;

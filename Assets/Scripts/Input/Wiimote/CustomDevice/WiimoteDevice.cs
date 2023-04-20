@@ -190,9 +190,13 @@ namespace RedButton.Core.WiimoteSupport
                 // here we create the wiimote's state (buttons, ir position, nunchuck stick position, etc)
                 // The order of operations here doesn't matter, the state is created with the IR and Nunchuck Stick position,
                 // simply because they are the only vector2 values in the state.
+                float2 newPos = UpdateIR(wiimote);
+
+                Vector2 oldPos = irPosition.ReadValue();
+
                 var state = new WiimoteState()
                 {
-                    position = UpdateIR(wiimote),
+                    position = newPos.Equals(float2.zero) ? oldPos : newPos,
                     nunchuckStick = UpdateNunchuckStick(wiimote)
                 };
                 //  After we check set the state of all buttons (nunchuck buttons too)
@@ -288,6 +292,7 @@ namespace RedButton.Core.WiimoteSupport
                     state.WithButtons(WiimoteButton.B, false);
 
                     state.WithButtons(WiimoteButton.Plus, false);
+                    state.WithButtons(WiimoteButton.Home, false);
                     state.WithButtons(WiimoteButton.Minus, false);
 
                     state.WithButtons(WiimoteButton.One, false);
@@ -304,6 +309,7 @@ namespace RedButton.Core.WiimoteSupport
                     state.WithButtons(WiimoteButton.B, data.b);
 
                     state.WithButtons(WiimoteButton.Plus, data.plus);
+                    state.WithButtons(WiimoteButton.Home, data.home);
                     state.WithButtons(WiimoteButton.Minus, data.minus);
 
                     state.WithButtons(WiimoteButton.One, data.one);
@@ -389,6 +395,22 @@ namespace RedButton.Core.WiimoteSupport
         /// This simply reads through all the data currently in the queue until the quite is empty.
         /// </summary>
         /// <param name="remote">Target WiimoteAPI.Wiimote to update the state of</param>
+        private static void UpdateWiimoteSafe(Wiimote remote)
+        {
+            int ret;
+            int safety = 10000;
+            do
+            {
+                ret = remote.ReadWiimoteData();
+                if(safety < 0)
+                {
+                    //break;
+                }
+                safety--;
+            } while (ret > 0);
+        }
+
+
         private static void UpdateWiimote(Wiimote remote)
         {
             int ret;

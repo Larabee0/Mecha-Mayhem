@@ -1,10 +1,20 @@
 using RedButton.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace RedButton.Mech
 {
+    [Serializable]
+    public struct Colourable
+    {
+        public MeshRenderer colourableTarget;
+        public int materialIndex;
+        public bool all;
+    }
+
     /// <summary>
     /// Often listed as CMC this is the main control script for a mech and handles health.
     /// Acts as an interface for movement and weapons
@@ -14,9 +24,13 @@ namespace RedButton.Mech
         public delegate void MechPassThroughDelegeate(CentralMechComponent cmc);
 
         [Header("Items that should recieve the player colour")]
-        [SerializeField] private MeshRenderer[] colourables;
+        [SerializeField] private Colourable[] colourables;
+        [SerializeField] protected Transform animationCentre;
+        [SerializeField] private Transform[] weaponOriginPoints;
+        private int weaponOriginIndex = 0;
 
         [Header("Health")]
+        public ShieldScript shield;
         [SerializeField] private Texture2D healthBackgroundDeath;
         public Texture2D HealthBackgroundDeath => healthBackgroundDeath;
         [SerializeField] private int minHealth = 0;
@@ -40,6 +54,7 @@ namespace RedButton.Mech
         public MovementCore MechMovementCore => movementCore;
         public Collider[] MechColliders => mechColliders;
         public Color MechAccentColour => inputController.playerColour;
+        public bool ShieldActive => shield != null && shield.ShieldActive;
 
         private void Awake()
         {
@@ -53,6 +68,14 @@ namespace RedButton.Mech
 
             mechColliders = GetComponentsInChildren<Collider>();
             weapons = GetComponentsInChildren<WeaponCore>();
+
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                if (weapons[i] is ShieldScript shield)
+                {
+                    this.shield = shield;
+                }
+            }
 
             if(movementCore == null)
             {
@@ -70,12 +93,26 @@ namespace RedButton.Mech
             OnHealthChange += OnHealthChanged;
             for (int i = 0; i < colourables.Length; i++)
             {
-                colourables[i].material.SetColor("_BaseColor", MechAccentColour);
+                if (colourables[i].all)
+                {
+                    for (int m = 0; i < colourables[i].colourableTarget.materials.Length; m++)
+                    {
+                        colourables[i].colourableTarget.materials[m].SetColor("_BaseColor", MechAccentColour);
+                    }
+                }
+                else
+                {
+                    colourables[i].colourableTarget.materials[colourables[i].materialIndex].SetColor("_BaseColor", MechAccentColour);
+                }
+                
             }
         }
 
         private void Update()
         {
+            Vector3 lookTarget = MechMovementCore.TargetPoint.position;
+            lookTarget.y = animationCentre.position.y;
+            animationCentre.LookAt(lookTarget);
 #if UNITY_EDITOR
             if (debugging)
             {
@@ -89,6 +126,18 @@ namespace RedButton.Mech
                 }
             }
 #endif
+        }
+
+        public Transform GetNextWeaponOrigin()
+        {
+            Transform origin = weaponOriginPoints[weaponOriginIndex];
+            weaponOriginIndex = (weaponOriginIndex + 1) % weaponOriginPoints.Length;
+            return origin;
+        }
+
+        public void ResetWeaponOriginIndex()
+        {
+            weaponOriginIndex = 0;
         }
 
         public void AssignInputController(PlayerInput inputController)
@@ -115,11 +164,19 @@ namespace RedButton.Mech
             }
         }
 
+        public void Revive()
+        {
+            UpdateHealth(-maxHealth);
+        }
+
         private void Die()
         {
-            OnMechDied?.Invoke(this);
+            
+            Debug.Log("Died", gameObject);
+            Debug.LogFormat("Death Time {0}", Time.realtimeSinceStartup);
             MechInputController.Disable();
             transform.root.gameObject.SetActive(false);
+            OnMechDied?.Invoke(this);
         }
     }
 }

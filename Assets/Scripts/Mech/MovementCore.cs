@@ -12,7 +12,7 @@ namespace RedButton.Mech
     {
         [Header("Base Movement Settings")]
         [SerializeField] protected CentralMechComponent CMC;
-        [SerializeField, Range(1f, 20f)] private float aimSpeed = 5;
+        [SerializeField] private float aimSpeed = 5;
         [SerializeField] protected Transform targetPointParent;
         [SerializeField] protected Transform targetPoint;
         [SerializeField] private float targetPointDistance = 5f;
@@ -72,7 +72,7 @@ namespace RedButton.Mech
             {
                 float aimInput = axis.sqrMagnitude;
                 targetDirection = aimInput > 0 ? new Vector3(axis.x, 0f, axis.y) : targetPointParent.forward;
-                dir = Vector3.RotateTowards(targetPointParent.forward, targetDirection, aimInput * aimSpeed * Time.deltaTime, 0.0f);
+                dir = Vector3.RotateTowards(targetPointParent.forward, targetDirection, aimInput * aimSpeed * CMC.MechInputController.ControllerSense * Time.deltaTime, 0.0f);
             }
             targetPointParent.forward = targetPointParentForward = dir;
         }

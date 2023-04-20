@@ -12,6 +12,7 @@ namespace RedButton.Mech
         [SerializeField] private CentralMechComponent CMC;
         [SerializeField] private ControlBinding binding;
         [SerializeField] private ControlBehaviour behaviour;
+        private bool UnboundFromControls = true;
         [SerializeField] private WeaponCore[] weaponsInGroup;
 
         [SerializeField][Range(0f, 1f)] float groupFireIntervalMin = 0.01f;
@@ -34,6 +35,22 @@ namespace RedButton.Mech
             }
 
             BindtoControls();
+        }
+
+        private void OnEnable()
+        {
+            if(UnboundFromControls)
+            {
+                BindtoControls();
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (!UnboundFromControls)
+            {
+                UnBindControls();
+            }
         }
 
         private void BindtoControls()
@@ -59,6 +76,33 @@ namespace RedButton.Mech
                 default:
                     return;
             }
+            UnboundFromControls = false;
+        }
+
+        protected virtual void UnBindControls()
+        {
+            ButtonEventContainer buttonEventContainer = binding switch
+            {
+                ControlBinding.Fire1 => CMC.MechInputController.fireOneButton,
+                ControlBinding.Fire2 => CMC.MechInputController.fireTwoButton,
+                _ => null,
+            };
+
+            switch (behaviour)
+            {
+                case ControlBehaviour.OnPress when buttonEventContainer != null:
+                    buttonEventContainer.OnButtonPressed -= Fire;
+                    break;
+                case ControlBehaviour.OnRelease when buttonEventContainer != null:
+                    buttonEventContainer.OnButtonReleased -= Fire;
+                    break;
+                case ControlBehaviour.OnHeld when buttonEventContainer != null:
+                    buttonEventContainer.OnButtonHeld -= Fire;
+                    break;
+                default:
+                    return;
+            }
+            UnboundFromControls = true;
         }
 
         private void Fire()

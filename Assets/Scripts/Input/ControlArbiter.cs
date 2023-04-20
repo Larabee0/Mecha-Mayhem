@@ -85,6 +85,7 @@ namespace RedButton.Core
         public MainUIController MainUIController => mainUIController;
         public bool UnityUI => unityUI;
         [SerializeField] private UnityUITranslationLayer uiTranslator;
+        public UnityUITranslationLayer UITranslator => uiTranslator;
 
         [Header("Start Screen Settings")]
         [SerializeField] private bool unityUI = false;
@@ -150,6 +151,7 @@ namespace RedButton.Core
 
             if (UnityUI)
             {
+                uiTranslator.StartMenuUI.optionsManager.LoadFromSettings();
                 mainUIController.UIShown = false;
             }
             WiimoteUISetup();
@@ -316,6 +318,9 @@ namespace RedButton.Core
                 this[i] = InstantiatePlayer(GetPlayerColour(i), ProcessDevice(devices[i]), (Controller)i);
                 playerMode = (Controller)i;
             }
+            uiTranslator.HideAll();
+            startScreenActionMap = new();
+            mainUIController.UIShown = true;
             ValidateControllersAndPlayers();
         }
         #endregion
@@ -364,6 +369,16 @@ namespace RedButton.Core
         }
 
         #endregion
+
+        public void GiveInputAuthority(int playerIndex, bool keepPlayerOneUI = false)
+        {
+            PlayerInput player = this[playerIndex];
+            OverrideUIAssetDevices(player);
+            if (keepPlayerOneUI)
+            {
+                PlayerOne.EnableUIonly();
+            }
+        }
 
         /// <summary>
         /// index based way of getting player colours

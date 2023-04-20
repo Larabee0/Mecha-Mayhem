@@ -11,7 +11,7 @@ namespace RedButton.GamePlay
 
         private void Awake()
         {
-            GameObject Caldera = GameObject.Find("Caldera");
+            GameObject Caldera = GameObject.Find("TargetPlane");
             damage = Caldera.GetComponent<VolcanoGimmick>().damage;
             Destroy(gameObject, 3f);
         }
@@ -19,7 +19,7 @@ namespace RedButton.GamePlay
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.name == "TestMechVelocityChangeMovement(Clone)")
+            if (collision.gameObject.tag == "Player")
             {
                 Mech.CentralMechComponent mech = collision.gameObject.GetComponentInParent<Mech.CentralMechComponent>();
                 mech.UpdateHealth(damage);

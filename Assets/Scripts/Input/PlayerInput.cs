@@ -20,7 +20,12 @@ namespace RedButton.Core
         // input actions asset for this player.
         private DualControllerInput controlMap;
         public DualControllerInput ControlMap => controlMap;
-
+        [SerializeField]private float controllerSensititiivty = 1f;
+        public float ControllerSense
+        {
+            get => controllerSensititiivty;
+            set => controllerSensititiivty = Mathf.Clamp(value, 0.5f, 2);
+        }
         private bool setWiimotePointer;
         private bool aimAtRightStick = false;
         /// <summary>
@@ -122,18 +127,24 @@ namespace RedButton.Core
             }
             EnableWiimotePointer();
             CreateNewControlMap(devices);
-
+            PersistantOptions.instance.OnUserSettingsChangedData += UpdateSensitivity;
+            UpdateSensitivity();
             player = playerNum;
             devicePath = devices[0].path;
             DeviceConnected = true;
         }
 
+        private void UpdateSensitivity()
+        {
+            ControllerSense = PersistantOptions.instance.userSettings.GetPlayerSense(player);
+        }
 
         private void DisposeOfCurrentControlMap()
         {
             StopAllCoroutines();
             if (controlMap != null)
             {
+                PersistantOptions.instance.OnUserSettingsChangedData -= UpdateSensitivity;
                 // if we had a control map, un subscribe from it Un-Subscribe to the various stick and button inputs.
                 // then dispose of it.
                 controlMap.MechControls.LeftStick.started -= StartLeftStickActivity;
@@ -146,6 +157,7 @@ namespace RedButton.Core
 
                 controlMap.MechControls.Fire2.started -= OnFireTwoStart;
                 controlMap.MechControls.Fire2.canceled -= OnFireTwoStop;
+                controlMap.UI.PauseGame.performed -= PauseTesterCallback;
                 controlMap.Dispose();
             }
         }
@@ -168,6 +180,13 @@ namespace RedButton.Core
 
             controlMap.MechControls.Fire2.started += OnFireTwoStart;
             controlMap.MechControls.Fire2.canceled += OnFireTwoStop;
+
+            controlMap.UI.PauseGame.performed += PauseTesterCallback;
+        }
+
+        private void PauseTesterCallback(InputAction.CallbackContext obj)
+        {
+            Debug.LogFormat("Recived Pause input from {0}", DeviceName);
         }
 
         /// <summary>

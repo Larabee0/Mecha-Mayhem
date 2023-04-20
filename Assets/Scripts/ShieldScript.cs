@@ -2,21 +2,40 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.PlayerLoop;
 
 namespace RedButton.Mech
 {
     public class ShieldScript : WeaponCore
     {
         [SerializeField] int shieldCD;
-        int shieldHealth;
+        [SerializeField] private int maxShieldHealth;
+        private int currentShieldHealth;
+        public int healthOffset;
         [SerializeField] bool shieldReady;
-        [SerializeField] private GameObject shield;
+        [SerializeField] private GameObject shieldObject;
+        [SerializeField] private MeshRenderer shieldColour;
+
+        public CentralMechComponent ShieldOwner => CMC;
+        public int MaxShieldHealth => maxShieldHealth;
+        
+        public bool ShieldActive => shieldObject.activeSelf;
         protected override void Awake()
         {
             base.Awake();
-            StartCoroutine(ShieldRecharge());
+            StartCoroutine(ShieldRecharge(shieldCD));
+            shieldColour = GetComponentInChildren<MeshRenderer>();
+            shieldObject.transform.SetParent(null, true);
+            UnFire();
+            shieldReady = true;
         }
+
+        protected override void Start()
+        {
+            targetObject = CMC.MechMovementCore.TargetPoint;
+            currentShieldHealth = maxShieldHealth;
+        }
+
         protected override void BindtoControls()
         {
             ButtonEventContainer buttonEventContainer = controlBinding switch
@@ -28,8 +47,9 @@ namespace RedButton.Mech
 
             buttonEventContainer.OnButtonPressed += Fire;
             buttonEventContainer.OnButtonReleased += UnFire;
+            UnboundFromControls = false;
         }
-
+        
         protected override void UnBindControls()
         {
             ButtonEventContainer buttonEventContainer = controlBinding switch
@@ -41,50 +61,51 @@ namespace RedButton.Mech
 
             buttonEventContainer.OnButtonPressed -= Fire;
             buttonEventContainer.OnButtonReleased -= UnFire;
+            UnboundFromControls = true;
         }
 
         private void UnFire()
         {
-            Debug.Log("unfier");
-            shield.SetActive(false);
-            shieldReady = false;
-            StartCoroutine(ShieldRecharge());
-
+            shieldObject.SetActive(false);
         }
 
         public override void Fire()
         {
-            if (shieldReady)
+            if (shieldReady && !shieldObject.activeSelf)
             {
-                shield.SetActive(true);
-                Debug.Log("fier");
-                shieldHealth = 3;
+                shieldObject.SetActive(true);
+                ShieldColour();
             }
 
         }
-        IEnumerator ShieldRecharge()
+        IEnumerator ShieldRecharge(float time)
         {
-            yield return new WaitForSeconds(shieldCD);
+            yield return new WaitForSeconds(time);
             shieldReady = true;
+            currentShieldHealth = maxShieldHealth;
         }
 
-        IEnumerator ShieldDestroyed()
+        public void RechargeNow()
         {
-            yield return new WaitForSeconds(shieldCD * 2);
-            shieldReady = true;
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (collision.gameObject.CompareTag("Projectile"))
+            if (!shieldReady)
             {
-                shieldHealth--;
-                if (shieldHealth <= 0)
-                {
-                    shield.SetActive(false);
-                    shieldReady = false;
-                    StartCoroutine(ShieldDestroyed());
-                }
+                StopAllCoroutines();
+                shieldReady = true;
+            }
+            currentShieldHealth = maxShieldHealth + healthOffset;
+            ShieldColour();
+        }
+
+        public void DamageShield()
+        {
+            currentShieldHealth--;
+
+            ShieldColour();
+            if (currentShieldHealth <= 0)
+            {
+                shieldObject.SetActive(false);
+                shieldReady = false;
+                StartCoroutine(ShieldRecharge(shieldCD * 2));
             }
         }
 
@@ -95,7 +116,22 @@ namespace RedButton.Mech
 
         protected override void Update()
         {
-           
+            shieldObject.transform.position = transform.position;
+            shieldObject.transform.forward = transform.forward;
+        }
+
+        public void ShieldColour()
+        {
+            Color shieldColour = currentShieldHealth switch
+            {
+                > 3 => Color.blue,
+                3 => Color.green,
+                2 => Color.yellow,
+                1 => Color.red,
+                _ => Color.green,
+            };
+            this.shieldColour.material.SetColor("_FrontColour", shieldColour);
+            this.shieldColour.material.SetColor("_BackColour", shieldColour);
         }
     }
 }

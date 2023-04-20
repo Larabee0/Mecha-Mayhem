@@ -13,6 +13,7 @@ namespace RedButton.Mech
     public abstract class WeaponCore : MonoBehaviour
     {
         protected CentralMechComponent CMC;
+        public CentralMechComponent Owner => CMC;
         protected Transform targetObject; // gotten by MovementCore this is what the weapon will try and look at, aiming it.
         
         // these properties are both overrideable
@@ -20,6 +21,7 @@ namespace RedButton.Mech
         protected virtual Vector3 TargetForward => targetObject.forward;
 
         [HideInInspector] public bool Grouped; // if the weapon is part of a group this is set to true by the group.
+        protected bool UnboundFromControls = true;
 
         [Header("Base Weapon Settings")]
 
@@ -30,22 +32,24 @@ namespace RedButton.Mech
 
         [SerializeField] protected ProjectileCore projectilePrefab; // optional projectileCore prefab slot
 
-        [SerializeField] protected Transform muzzleOriginPoint; // point at which projectiles are spawned from or the ray cast is cast from.
-        [SerializeField] protected Transform animationCentre; // centre point of the visual portion of the weapon. this will be made to look at the targetObject
-
+        public Transform muzzleOriginPoint; // point at which projectiles are spawned from or the ray cast is cast from.
+        //[SerializeField] protected Transform animationCentre; // centre point of the visual portion of the weapon. this will be made to look at the targetObject
 
         protected virtual void Awake()
         {
             CMC = GetComponentInParent<CentralMechComponent>();
-
+            
             if (CMC == null)
             {
                 Debug.LogErrorFormat("Weapon attached to {0}, was unable to find the CMC! of its mech", gameObject.name);
                 enabled = false;
                 return;
             }
+        }
 
-            if (!Grouped)
+        protected virtual void OnEnable()
+        {
+            if (!Grouped && UnboundFromControls)
             {
                 BindtoControls();
             }
@@ -54,11 +58,19 @@ namespace RedButton.Mech
         protected virtual void Start()
         {
             targetObject = CMC.MechMovementCore.TargetPoint;
+            if(muzzleOriginPoint == null)
+            {
+                muzzleOriginPoint = CMC.GetNextWeaponOrigin();
+            }
         }
 
-        protected virtual void OnDestroy()
+        protected virtual void OnDisable()
         {
-            UnBindControls();
+            if (!UnboundFromControls)
+            {
+                Debug.LogFormat(gameObject, "Unbinding from controls! {0}", gameObject.name);
+                UnBindControls();
+            }
         }
 
         /// <summary>
@@ -88,6 +100,7 @@ namespace RedButton.Mech
                 default:
                     return;
             }
+            UnboundFromControls = false;
         }
 
         protected virtual void UnBindControls()
@@ -113,17 +126,13 @@ namespace RedButton.Mech
                 default:
                     return;
             }
+            UnboundFromControls = true;
         }
 
         /// <summary>
         /// rotates center of the animation point to look at the target point (aiming the weapon)
         /// </summary>
-        protected virtual void Update()
-        {
-            Vector3 lookTarget = TargetPos;
-            lookTarget.y = animationCentre.position.y;
-            animationCentre.LookAt(lookTarget);
-        }
+        protected virtual void Update() { }
 
         /// <summary>
         /// Fire must be implemeneted. This is where a weapon should work out when it should fire.

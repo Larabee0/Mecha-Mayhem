@@ -68,6 +68,10 @@ public class HealthBarsUI
             HealthBarLabel = healthBarLabelText + ": Dead";
             HealthBarBackground = targetMech.HealthBackgroundDeath;
         }
+        else
+        {
+            HealthBarLabel = healthBarLabelText;
+        }
     }
 
 }

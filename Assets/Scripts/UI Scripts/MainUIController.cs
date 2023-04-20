@@ -93,6 +93,11 @@ namespace RedButton.Core.UI
             }
         }
 
+        public void SetPlayer(int playerIndex,CentralMechComponent player)
+        {
+            healthBarsUI[playerIndex].SetPlayer(player);
+        }
+
         #endregion
 
         #region Controller Connect/Disconnect
