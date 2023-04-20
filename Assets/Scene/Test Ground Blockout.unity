@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.3369, g: 325.0498, b: 430.21924, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1090,6 +1090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c36daf29ac9ee04493c14accb01cece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameArbiter: {fileID: 0}
   spawnPoints:
   - {x: -17.28, y: 7.9874787, z: -3.18}
   - {x: 17.28, y: 7.9874787, z: -3.18}
@@ -1115,8 +1116,14 @@ MonoBehaviour:
   powerUpInstances: []
   globalCountOffset: 0
   maxPowerUps: 6
+  autoCalculateMaxPowerUps: 0
+  autoCalMultiplier: 3
   powerUpActivateWaveSize: 4
   powerUpStartOfRoundDelay: 5
+  powerUpUpdateRate: 5
+  favourDamagedMechWeight: 0.6
+  favourMostAvaliablePowerUpWeight: 0.3
+  powerUpTimeOut: 30
   minPowerUpTime: 3
   maxPowerUpTime: 6
 --- !u!1 &1707008024

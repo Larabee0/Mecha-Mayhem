@@ -32,8 +32,11 @@ namespace RedButton.GamePlay
 
         private void OnDisable()
         {
-            shieldTarget.OnShieldDamaged -= OnTargetShieldDamaged;
-            Destroy(this);
+            if(shieldTarget != null)
+            {
+                shieldTarget.OnShieldDamaged -= OnTargetShieldDamaged;
+                Destroy(this);
+            }
         }
     }
 }
