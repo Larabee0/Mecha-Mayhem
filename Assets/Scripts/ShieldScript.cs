@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
+using UnityEngine.UI;
 
 namespace RedButton.Mech
 {
@@ -15,10 +15,11 @@ namespace RedButton.Mech
         [SerializeField] bool shieldReady;
         [SerializeField] private GameObject shieldObject;
         [SerializeField] private MeshRenderer shieldColour;
-
+        [SerializeField] private Image shieldRechargeIcon;
         public CentralMechComponent ShieldOwner => CMC;
         public int MaxShieldHealth => maxShieldHealth;
-        
+        private bool overrideToWhite;
+
         public bool ShieldActive => shieldObject.activeSelf;
         protected override void Awake()
         {
@@ -80,9 +81,58 @@ namespace RedButton.Mech
         }
         IEnumerator ShieldRecharge(float time)
         {
-            yield return new WaitForSeconds(time);
+            shieldRechargeIcon.fillAmount = 0f;
+            int lastState = 0;
+            for (float t = 0; t < time; t+=Time.deltaTime)
+            {
+                float progress = Mathf.InverseLerp(0, time, t);
+                int state;
+                switch (progress)
+                {
+                    case < 0.4f:
+                        state = 0;
+                        shieldRechargeIcon.color = Color.Lerp(Color.white, Color.red, Mathf.InverseLerp(0, 0.4f, progress));
+                        break;
+                    case < 0.7f:
+                        state = 1;
+                        shieldRechargeIcon.color = Color.Lerp(Color.red, Color.yellow, Mathf.InverseLerp(0.4f, 0.7f, progress));
+                        break;
+                    default:
+                        state = 2;
+                        shieldRechargeIcon.color = Color.Lerp(Color.yellow, Color.green, Mathf.InverseLerp(0.7f, 1f, progress));
+                        break;
+                }
+                if (lastState != state)
+                {
+                    StartCoroutine(FlashIcon());
+                    // flash
+                }
+                if (overrideToWhite)
+                {
+                    shieldRechargeIcon.color = Color.white;
+                }
+                lastState = state;
+                shieldRechargeIcon.fillAmount = progress;
+                yield return null;
+            }
+            StartCoroutine(FlashIcon());
             shieldReady = true;
             currentShieldHealth = maxShieldHealth;
+        }
+
+        private IEnumerator FlashIcon()
+        {
+            shieldRechargeIcon.color = Color.white;
+            overrideToWhite = true;
+            shieldRechargeIcon.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.1f);
+            shieldRechargeIcon.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+            shieldRechargeIcon.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.1f);
+            shieldRechargeIcon.gameObject.SetActive(true);
+            overrideToWhite = false;
+            ShieldColour();
         }
 
         public void RechargeNow()
@@ -118,6 +168,7 @@ namespace RedButton.Mech
         {
             shieldObject.transform.position = transform.position;
             shieldObject.transform.forward = transform.forward;
+            shieldRechargeIcon.transform.LookAt(Camera.main.transform.position, -Vector3.up);
         }
 
         public void ShieldColour()
@@ -130,6 +181,11 @@ namespace RedButton.Mech
                 1 => Color.red,
                 _ => Color.green,
             };
+
+            float weight = Mathf.InverseLerp(0, MaxShieldHealth, currentShieldHealth);
+            shieldRechargeIcon.color = shieldColour;
+            shieldRechargeIcon.fillAmount = weight;
+
             this.shieldColour.material.SetColor("_FrontColour", shieldColour);
             this.shieldColour.material.SetColor("_BackColour", shieldColour);
         }
