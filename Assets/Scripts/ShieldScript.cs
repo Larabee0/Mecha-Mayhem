@@ -176,12 +176,9 @@ namespace RedButton.Mech
 
         protected override void OnDisable()
         {
-            if(shieldObject != null)
-            {
-                base.OnDisable();
-                healthOffset = 0;
-                RechargeNow();
-            }
+            base.OnDisable();
+            healthOffset = 0;
+            RechargeNow();
         }
 
         public void ShieldColour()
