@@ -10,14 +10,10 @@ namespace RedButton.GamePlay
     {
         [SerializeField] private PowerUpCore powerUpCore;
         [HideInInspector] public PowerUpsManager manager;
-        [SerializeField] private bool mechInTrigger;
-        [SerializeField] private bool powerUpActive;
+        public bool mechInTrigger;
         [SerializeField] private float spinSpeed = 1;
         [SerializeField] private float brightness = 1f;
         private float SpinAngle => Time.deltaTime * UnityEngine.Random.value * spinSpeed;
-
-        float powerUpTimeOut;
-        float countUpTimer;
 
         MeshRenderer capsuleRenderer;
         Transform powerUpCapsule;
@@ -46,7 +42,7 @@ namespace RedButton.GamePlay
 
         private void OnTriggerEnter(Collider other)
         {
-            if(countUpTimer > 0 || powerUpCore == null)
+            if(powerUpCore == null)
             {
                 return;
             }
@@ -55,7 +51,7 @@ namespace RedButton.GamePlay
             if(mech != null)
             {
                 powerUpCore.AddTo(mech);
-                ForceRespawn();
+                ConsumePowerUp();
             }
 
         }
@@ -67,15 +63,10 @@ namespace RedButton.GamePlay
 
         private void OnTriggerExit(Collider other)
         {
-            if (countUpTimer > 0)
-            {
-                countUpTimer = 0;
-                powerUpTimeOut = manager.GetRespawnTime();
-            }
             mechInTrigger = false;
         }
 
-        public void ForceRespawn()
+        public void ConsumePowerUp()
         {
             capsuleRenderer.enabled = false;
             if(powerUpCore != null)
@@ -85,25 +76,10 @@ namespace RedButton.GamePlay
                 manager.ReleasePowerUp(powerUpCore.GetType());
                 Destroy(powerUpCore);
             }
-            StartCoroutine(ReSpawner());
         }
 
-        private IEnumerator ReSpawner()
+        public void SetPowerUp(PowerUpCore powerUpCore)
         {
-            powerUpTimeOut = manager.GetRespawnTime();
-            countUpTimer = 0;
-            while(countUpTimer < powerUpTimeOut)
-            {
-                while (mechInTrigger)
-                {
-                    yield return null;
-                }
-                countUpTimer += Time.deltaTime;
-                yield return null;
-            }
-
-            countUpTimer = 0;
-            PowerUpCore powerUpCore = manager.GetPowerUp();
             if (powerUpCore != null)
             {
                 this.powerUpCore = (PowerUpCore)gameObject.AddComponent(powerUpCore.GetType());
@@ -113,14 +89,19 @@ namespace RedButton.GamePlay
                 this.powerUpCore.powerUpColour = capsuleRenderer.material.color = powerUpCore.powerUpColour;
                 capsuleRenderer.material.SetColor("_EmissiveColor", powerUpCore.powerUpColour * brightness);
                 capsuleRenderer.enabled = true;
-
+                StartCoroutine(PowerUpTimeOut());
             }
             else
             {
                 manager.activePowerUps.Remove(this);
                 manager.inactivePowerUps.Add(this);
             }
-            
+        }
+
+        private IEnumerator PowerUpTimeOut()
+        {
+            yield return new WaitForSeconds(manager.powerUpTimeOut);
+            ConsumePowerUp();
         }
     }
 }

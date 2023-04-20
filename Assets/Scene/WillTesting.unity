@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.3369, g: 325.0498, b: 430.21924, a: 1}
+  m_IndirectSpecularColor: {r: 261.9007, g: 324.45554, b: 429.43463, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1090,7 +1090,7 @@ MonoBehaviour:
     type: 3}
   playerCount: 0
   editorMechs:
-  - {fileID: 906662351260344358, guid: 66b3b1fe511df3b45b91a47d77f54f91, type: 3}
+  - {fileID: 906662351260344358, guid: 28feec886106a3943b7ff848d4a973c8, type: 3}
   - {fileID: 906662351260344358, guid: 2912a3eb51dff1245b2cf054671a9368, type: 3}
   - {fileID: 52958292, guid: 63a7186cd238a2a49b2165a6366e4cf9, type: 3}
   - {fileID: 52958292, guid: d21c1abb9336a3947ac91a7b92794cf8, type: 3}
@@ -1132,6 +1132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c36daf29ac9ee04493c14accb01cece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameArbiter: {fileID: 0}
   spawnPoints:
   - {x: -0.23, y: 0.6874782, z: -2.170795}
   - {x: -7.22, y: 0.6874782, z: -4.84}
@@ -1146,8 +1147,15 @@ MonoBehaviour:
     type: 3}
   powerUpInstances: []
   globalCountOffset: 0
+  maxPowerUps: 2
+  autoCalculateMaxPowerUps: 0
+  autoCalMultiplier: 3
   powerUpActivateWaveSize: 4
   powerUpStartOfRoundDelay: 5
+  powerUpUpdateRate: 5
+  favourDamagedMechWeight: 0.5
+  favourMostAvaliablePowerUpWeight: 0.3
+  powerUpTimeOut: 30
   minPowerUpTime: 3
   maxPowerUpTime: 6
 --- !u!1 &1898385684
