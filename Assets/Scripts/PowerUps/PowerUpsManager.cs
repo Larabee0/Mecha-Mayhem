@@ -24,6 +24,7 @@ namespace RedButton.GamePlay
         [SerializeField] private float powerUpStartOfRoundDelay = 5f;
         [SerializeField] private float powerUpUpdateRate = 5f;
         [SerializeField] private float favourDamagedMechWeight = 0.6f;
+        [SerializeField] private float favourMostAvaliablePowerUpWeight = 0.6f;
         public float powerUpTimeOut = 30f;
 
         public readonly HashSet<MapPowerUp> activePowerUps = new();
@@ -118,13 +119,32 @@ namespace RedButton.GamePlay
             PowerUpCore lowestType = null;
             int count = int.MaxValue;
             Type type = null;
-            for (int i = 0; i < types.Count; i++)
+
+            if (UnityEngine.Random.value < favourMostAvaliablePowerUpWeight)
             {
-                if (onMapPowerUps[types[i]] <= count && onMapPowerUps[types[i]] < powerUps[i].limit + globalCountOffset)
+                for (int i = 0; i < types.Count; i++)
                 {
-                    type = types[i];
-                    lowestType = powerUps[i];
-                    count = onMapPowerUps[types[i]];
+                    if (onMapPowerUps[types[i]] <= count && onMapPowerUps[types[i]] < powerUps[i].limit + globalCountOffset)
+                    {
+                        type = types[i];
+                        lowestType = powerUps[i];
+                        count = onMapPowerUps[types[i]];
+                    }
+                }
+            }
+            else
+            {
+                int safety = 0;
+                while(lowestType == null && safety < powerUps.Length * 10)
+                {
+                    int index = UnityEngine.Random.Range(0, types.Count);
+                    PowerUpCore powerUp = powerUps[index];
+                    if(onMapPowerUps[types[index]]< powerUp.limit + globalCountOffset)
+                    {
+                        type = types[index];
+                        lowestType = powerUp;
+                    }
+                    safety++;
                 }
             }
             if(lowestType != null)
