@@ -15,9 +15,10 @@ namespace RedButton.Mech
         [SerializeField] bool shieldReady;
         [SerializeField] private GameObject shieldObject;
         [SerializeField] private MeshRenderer shieldColour;
-
+        public Pluse OnShieldDamaged;
         public CentralMechComponent ShieldOwner => CMC;
         public int MaxShieldHealth => maxShieldHealth;
+        public int CurrentShieldHealth => currentShieldHealth;
         
         public bool ShieldActive => shieldObject.activeSelf;
         protected override void Awake()
@@ -99,8 +100,8 @@ namespace RedButton.Mech
         public void DamageShield()
         {
             currentShieldHealth--;
-
             ShieldColour();
+            OnShieldDamaged?.Invoke();
             if (currentShieldHealth <= 0)
             {
                 shieldObject.SetActive(false);
@@ -118,6 +119,13 @@ namespace RedButton.Mech
         {
             shieldObject.transform.position = transform.position;
             shieldObject.transform.forward = transform.forward;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            healthOffset = 0;
+            RechargeNow();
         }
 
         public void ShieldColour()
