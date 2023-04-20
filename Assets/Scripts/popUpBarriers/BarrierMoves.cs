@@ -13,26 +13,10 @@ public class BarrierMoves : MonoBehaviour
 
     [SerializeField] float animWaitTime;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-        StartCoroutine(Move());
-    }
-    private void Update()
+    
+    IEnumerator MoveDown()
     {
         
-    }
-    IEnumerator Move()
-    {
-        yield return new WaitForSeconds(animWaitTime);
-        for (float i = 0; i < barrierHeight; i += 0.1f)
-        {
-            gameObject.transform.position = gameObject.transform.position + new Vector3(0, 0.1f, 0);
-            yield return new WaitForSeconds(0.01f);
-
-        }
-        yield return new WaitForSeconds(timeUp);
         for (float i = barrierHeight; i > 0; i -= 0.1f)
         {
             gameObject.transform.position = gameObject.transform.position - new Vector3(0, 0.1f, 0);
