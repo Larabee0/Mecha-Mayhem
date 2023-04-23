@@ -493,6 +493,15 @@ MonoBehaviour:
   maxHealth: 100
   health: 100
   debugging: 0
+  flashColour: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  flashTime: 0.25
+  stats:
+    roundsWon: 0
+    powerUpsConsumed: 0
+    hitsMade: 0
+    damageToOtherMechs: 0
+    hitsTaken: 0
+    damageRecieved: 0
   inputController: {fileID: 0}
   movementCore: {fileID: 0}
   weapons: []

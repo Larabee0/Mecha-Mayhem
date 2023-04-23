@@ -15,7 +15,7 @@ namespace RedButton.GamePlay
         }
         public virtual void AddTo(CentralMechComponent target)
         {
-
+            target.stats.powerUpsConsumed++;
         }
     }
 }

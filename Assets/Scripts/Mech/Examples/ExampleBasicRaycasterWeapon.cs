@@ -156,17 +156,16 @@ namespace RedButton.Mech.Examples
         protected void HandleHit(RaycastHit hit)
         {
             ShieldTagger hitShield = hit.collider.gameObject.GetComponent<ShieldTagger>();
-            if (hitShield != null && hitShield.shield.ShieldOwner)
+            if (hitShield != null && hitShield != CMC.shield)
             {
                 hitShield.shield.DamageShield();
                 return;
             }
-            if (hitShield != null && hitShield != CMC.shield)
-            {
-            }
             CentralMechComponent otherMech = hit.collider.gameObject.GetComponentInParent<CentralMechComponent>();
             if (otherMech != null && otherMech != CMC) // saftey in case we hit ourselves.
             {
+                CMC.stats.hitsMade++;
+                CMC.stats.damageToOtherMechs += damage;
                 otherMech.UpdateHealth(damage);
             }
         }

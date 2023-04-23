@@ -37,9 +37,14 @@ namespace RedButton.Mech
         [SerializeField] private int maxHealth = 100;
         [SerializeField] private int health = 100;
         [SerializeField, Tooltip("Use T to increase health, Y to decrease")] private bool debugging = false;
+        [SerializeField] private Color flashColour = Color.yellow;
+        [SerializeField] private float flashTime = 1.0f;
         public float MinHealth => minHealth;
         public float MaxHealth => maxHealth;
         public float Health => health;
+
+        [Header("Player Stats")]
+        public MechResults stats=new();
 
         public FloatPassThrough OnHealthChange;
         public MechPassThroughDelegeate OnMechDied;
@@ -91,20 +96,25 @@ namespace RedButton.Mech
         private void Start()
         {
             OnHealthChange += OnHealthChanged;
+            SetMechColour(MechAccentColour);
+        }
+
+        private void SetMechColour(Color colour)
+        {
             for (int i = 0; i < colourables.Length; i++)
             {
                 if (colourables[i].all)
                 {
                     for (int m = 0; i < colourables[i].colourableTarget.materials.Length; m++)
                     {
-                        colourables[i].colourableTarget.materials[m].SetColor("_BaseColor", MechAccentColour);
+                        colourables[i].colourableTarget.materials[m].SetColor("_BaseColor", colour);
                     }
                 }
                 else
                 {
-                    colourables[i].colourableTarget.materials[colourables[i].materialIndex].SetColor("_BaseColor", MechAccentColour);
+                    colourables[i].colourableTarget.materials[colourables[i].materialIndex].SetColor("_BaseColor", colour);
                 }
-                
+
             }
         }
 
@@ -145,6 +155,13 @@ namespace RedButton.Mech
             this.inputController = inputController;
         }
 
+        private IEnumerator Flashmech()
+        {
+            SetMechColour(flashColour);
+            yield return new WaitForSeconds(flashTime);
+            SetMechColour(MechAccentColour);
+        }
+
         public void UpdateHealth(int damage)
         {
             if (damage != 0)
@@ -153,10 +170,17 @@ namespace RedButton.Mech
                 health = Mathf.Clamp(health, minHealth, maxHealth);
                 OnHealthChange?.Invoke(health);
             }
+            if(damage > 0)
+            {
+                stats.damageRecieved += damage;
+                stats.hitsTaken++;
+            }
         }
 
         private void OnHealthChanged(float newValue)
         {
+            MechInputController.RumbleMotor(flashTime, 0.25f, RumbleMotor.Both);
+            StartCoroutine(Flashmech());
             if (newValue <= 0)
             {
                 // we died

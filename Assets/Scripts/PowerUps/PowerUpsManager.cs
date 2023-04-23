@@ -79,6 +79,7 @@ namespace RedButton.GamePlay
 
         private IEnumerator PowerUpUpdator()
         {
+            yield return new WaitForSeconds(powerUpStartOfRoundDelay);
             while (true)
             {
                 if (activePowerUps.Count < maxPowerUps && inactivePowerUps.Count != 0)

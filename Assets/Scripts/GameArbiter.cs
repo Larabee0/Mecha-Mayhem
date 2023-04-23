@@ -111,7 +111,7 @@ namespace RedButton.GamePlay
 
         private void EndRound()
         {
-            if(powerUpsManager != null)
+            if (powerUpsManager != null)
             {
                 powerUpsManager.StopAndClear();
             }
@@ -125,16 +125,17 @@ namespace RedButton.GamePlay
             activeMechs.Clear();
 
             playerVictories[(int)deathOrder.Peek().MechInputController.Player] += 1;
-            lastRoundWinner = string.Format("Player {0} ", ((int)deathOrder.Peek().MechInputController.Player)+1);
+            deathOrder.Peek().stats.roundsWon += 1;
+            lastRoundWinner = string.Format("Player {0} ", ((int)deathOrder.Peek().MechInputController.Player) + 1);
             currentRound += 1;
-            bool anyoneCanWin = PossibleForAnyPlayerVictory();
+
+
             // end game if rounds finished
             if (currentRound > roundCount)
             {
-                bool tie = NeedTie();
-                if (tie)
+                if (TieBreakerRound())
                 {
-                    TieBreaker();
+                    PrepareNextRound(string.Format("Tie Breaker Round!"));
                     return;
                 }
 
@@ -143,7 +144,7 @@ namespace RedButton.GamePlay
 
                 for (int i = 0; i < playerCount; i++)
                 {
-                    if(playerVictories[i] > wins)
+                    if (playerVictories[i] > wins)
                     {
                         wins = playerVictories[i];
                         winner = i;
@@ -154,6 +155,12 @@ namespace RedButton.GamePlay
                 ControlArbiter.Instance.UITranslator.EndScreenUI.OpenEndofGame(lastRoundWinner);
                 return;
             }
+
+            PrepareNextRound(string.Format("Round {0} of {1}", currentRound, roundCount));
+        }
+
+        private void PrepareNextRound(string roundName)
+        {
             List<int> targetPlayers = new();
 
             Debug.LogFormat("Prep Restart Round Time {0}", Time.realtimeSinceStartup);
@@ -163,16 +170,7 @@ namespace RedButton.GamePlay
                 targetPlayers.Add((int)mech.MechInputController.Player);
             }
 
-            StartRoundWithOptions(string.Format("Round {0} of {1}", currentRound, roundCount), targetPlayers);
-            /*
-             * Populate a score board in the order defined by the deathOrder stack?
-             */
-
-            // display some other ui after some time delay
-            // for now lets say this goes back to the level select screen
-
-
-
+            StartRoundWithOptions(roundName, targetPlayers);
         }
 
         private IEnumerator RoundIntro(string name)
@@ -225,19 +223,49 @@ namespace RedButton.GamePlay
             StartCoroutine(RoundIntro(roundName));
         }
 
-        private bool NeedTie()
+        private bool TieBreakerRound()
         {
-            return false;
-        }
+            int mostWins = 0;
+            int matches = 0;
 
-        private void TieBreaker()
-        {
+            for (int i = 0; i < playerCount; i++)
+            {
+                if (playerVictories[i] > mostWins)
+                {
+                    mostWins = playerVictories[i];
+                }
+            }
 
-        }
+            List<int> players = new();
 
-        private bool PossibleForAnyPlayerVictory()
-        {
-            return true;
+            for (int i = 0; i < playerCount; i++)
+            {
+                if (playerVictories[i] == mostWins)
+                {
+                    players.Add(i);
+                    matches++;
+                }
+            }
+
+            bool tie = matches > 1;
+            if (tie)
+            {
+                List<CentralMechComponent> playersMeches = new();
+                while (deathOrder.Count > 0)
+                {
+                    playersMeches.Add(deathOrder.Pop());
+                }
+
+                for (int i = 0; i < playersMeches.Count; i++)
+                {
+                    if (players.Contains((int)playersMeches[i].MechInputController.Player))
+                    {
+                        deathOrder.Push(playersMeches[i]);
+                    }
+
+                }
+            }
+            return tie;
         }
 
         private void OnMechDeath(CentralMechComponent cmc)

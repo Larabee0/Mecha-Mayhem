@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 namespace RedButton.Mech
 {
@@ -11,6 +12,7 @@ namespace RedButton.Mech
     /// </summary>
     public abstract class ProjectileCore : MonoBehaviour
     {
+        [SerializeField] protected CentralMechComponent origin;
         [SerializeField] protected Rigidbody rigid;
         [SerializeField] protected Collider[] projectileColliders;
         public Rigidbody Rigidbody => rigid;
@@ -24,6 +26,12 @@ namespace RedButton.Mech
         protected virtual void Start() { }
 
         protected virtual void Update() { }
+
+        protected virtual void AddToStats(int damage)
+        {
+            origin.stats.hitsMade++;
+            origin.stats.damageToOtherMechs += damage;
+        }
 
         /// <summary>
         /// OnCollisionEnter should be implemented.
