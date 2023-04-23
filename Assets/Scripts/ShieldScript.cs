@@ -183,6 +183,10 @@ namespace RedButton.Mech
 
         public void ShieldColour()
         {
+            if(this.shieldColour == null)
+            {
+                return;
+            }
             Color shieldColour = currentShieldHealth switch
             {
                 > 3 => Color.blue,

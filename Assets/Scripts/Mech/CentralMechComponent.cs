@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace RedButton.Mech
@@ -25,6 +26,8 @@ namespace RedButton.Mech
 
         [Header("Items that should recieve the player colour")]
         [SerializeField] private Colourable[] colourables;
+        [SerializeField] private Renderer[] fixedColourables;
+        [SerializeField] private DecalProjector[] decals;
         [SerializeField] protected Transform animationCentre;
         [SerializeField] private Transform[] weaponOriginPoints;
         private int weaponOriginIndex = 0;
@@ -97,6 +100,21 @@ namespace RedButton.Mech
         {
             OnHealthChange += OnHealthChanged;
             SetMechColour(MechAccentColour);
+            SetFixedMechColours(MechAccentColour);
+        }
+
+        private void SetFixedMechColours(Color colour)
+        {
+            for (int i = 0; i < fixedColourables.Length; i++)
+            {
+                fixedColourables[i].material.SetColor("_BaseColor", colour);
+            }
+
+            for (int i = 0; i < decals.Length; i++)
+            {
+                decals[i].material.SetColor("_BaseColor", colour);
+                decals[i].material.SetColor("_EmissiveColorHDR", colour * 1.5f);
+            }
         }
 
         private void SetMechColour(Color colour)
