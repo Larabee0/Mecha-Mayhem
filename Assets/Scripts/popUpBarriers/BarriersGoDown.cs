@@ -36,8 +36,6 @@ public class BarriersGoDown : MonoBehaviour
 
         barriers = new List<GameObject>();
         barriers.AddRange(GameObject.FindGameObjectsWithTag("Barrier"));
-        Debug.Log(barriers[2]);
-
 
         StartCoroutine(BarriersMovingDown());
         
