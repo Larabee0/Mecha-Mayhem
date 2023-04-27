@@ -15,16 +15,19 @@ public class BarriersGoDown : MonoBehaviour
 
     [Space]
     [Header("Barrier Level Prefabs")]
-    [SerializeField] private GameObject barrierPrefabUno;
+    [SerializeField] private GameObject[] barrierPrefabs;
+    
 
     List<GameObject> barriers;
-
+    
     bool spacebarReady = true;
 
 
 
     private void Awake()
     {
+        int prefabToUse = Random.Range(0, barrierPrefabs.Length - 1);
+        Instantiate(barrierPrefabs[prefabToUse]);
         //Need to add random prefab chooser once there is more prefabs to choose from
     }
     // Start is called before the first frame update

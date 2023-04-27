@@ -838,8 +838,8 @@ MonoBehaviour:
   minTimeBetweenBarriers: 4
   maxTimeBetweenBarriers: 10
   numberOfBarriers: 1
-  barrierPrefabUno: {fileID: 1428721652305783790, guid: 834340f94ce0ebc45bfb264297d4417e,
-    type: 3}
+  barrierPrefabs:
+  - {fileID: 1428721652305783790, guid: 834340f94ce0ebc45bfb264297d4417e, type: 3}
 --- !u!1 &1062186525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1795,72 +1795,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 664f809962a589342861360aa4b18831, type: 3}
---- !u!1001 &1428721650886981063
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 8.783
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783789, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1428721652305783790, guid: 834340f94ce0ebc45bfb264297d4417e,
-        type: 3}
-      propertyPath: m_Name
-      value: BarrierPrefabUno
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 834340f94ce0ebc45bfb264297d4417e, type: 3}
