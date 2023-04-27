@@ -16,7 +16,11 @@ namespace RedButton.GamePlay
 
         public override void AddTo(CentralMechComponent target)
         {
-            target.UpdateHealth(-healAmount);
+            if(target.Health< target.MaxHealth)
+            {
+                base.AddTo(target);
+                target.UpdateHealth(-healAmount);
+            }
         }
     }
 }

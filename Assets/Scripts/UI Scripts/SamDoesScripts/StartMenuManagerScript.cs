@@ -13,6 +13,7 @@ namespace RedButton.Core.UI
         [SerializeField] GameObject bgPanel;
         [SerializeField] GameObject bindPanel;
         [SerializeField] GameObject btnPanel;
+        [SerializeField] GameObject controlsPanel;
         [SerializeField] GameObject creditsPanel;
         [SerializeField] GameObject willCreditsPanel;
         [SerializeField] GameObject playerNumPanel;
@@ -22,6 +23,7 @@ namespace RedButton.Core.UI
         [Header("Buttons")]
         [SerializeField] GameObject btnPanelBtn;
         [SerializeField] GameObject optionsPanelBtn;
+        [SerializeField] GameObject controlsPanelBtn;
         [SerializeField] GameObject creditsPanelBtn;
         [SerializeField] GameObject playerNumPanelBtn;
         [SerializeField] GameObject returnBtn;
@@ -103,6 +105,22 @@ namespace RedButton.Core.UI
         {
             ControlArbiter.Instance.startScreenState = StartScreenState.MainMenu;
             btnPanel.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(btnPanelBtn);
+        }
+
+        public void OpenControls()
+        {
+            ControlArbiter.Instance.startScreenState = StartScreenState.ControsMenu;
+            btnPanel.SetActive(false);
+            controlsPanel.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(controlsPanelBtn);
+            ControlArbiter.Instance.GoForwardFromMainMenu();
+        }
+        public void CloseControls()
+        {
+            ControlArbiter.Instance.startScreenState = StartScreenState.MainMenu;
+            btnPanel.SetActive(true);
+            controlsPanel.SetActive(false);
             EventSystem.current.SetSelectedGameObject(btnPanelBtn);
         }
 

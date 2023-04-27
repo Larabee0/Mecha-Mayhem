@@ -15,6 +15,7 @@ namespace RedButton.Core
         Binding,
         MainMenu,
         OptionsMenu,
+        ControsMenu,
         SenstivityScreen,
         Credits,
         SetPlayerCount,

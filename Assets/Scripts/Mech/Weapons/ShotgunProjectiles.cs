@@ -19,11 +19,13 @@ namespace RedButton.Mech.Examples
         protected override void OnCollisionEnter(Collision collision)
         {
             base.OnCollisionEnter(collision);
-            CentralMechComponent mech = collision.gameObject.GetComponentInParent<CentralMechComponent>();
-            if (mech && mech != origin)
-            {
-                mech.UpdateHealth(damage);
-            }
+            //CentralMechComponent mech = collision.gameObject.GetComponentInParent<CentralMechComponent>();
+            //if (mech && mech != origin)
+            //{
+            //    origin.stats.hitsMade++;
+            //    origin.stats.damageToOtherMechs += damage;
+            //    mech.UpdateHealth(damage);
+            //}
         }
 
         IEnumerator GoBig()

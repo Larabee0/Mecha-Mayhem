@@ -2,6 +2,7 @@ using RedButton.Mech;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace RedButton.GamePlay
 {
     public class ShieldPowerUp : PowerUpCore
@@ -32,8 +33,11 @@ namespace RedButton.GamePlay
 
         private void OnDisable()
         {
-            shieldTarget.OnShieldDamaged -= OnTargetShieldDamaged;
-            Destroy(this);
+            if(shieldTarget != null)
+            {
+                shieldTarget.OnShieldDamaged -= OnTargetShieldDamaged;
+                Destroy(this);
+            }
         }
     }
 }
