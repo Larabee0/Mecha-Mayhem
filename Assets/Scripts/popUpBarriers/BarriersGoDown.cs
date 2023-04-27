@@ -5,10 +5,6 @@ using UnityEngine;
 public class BarriersGoDown : MonoBehaviour
 {
     [Space]
-    [Header("Height of barrier")]
-    [SerializeField] float barrierHeight;
-
-    [Space]
     [Header("Range of time between barriers")]
     [SerializeField] int minTimeBetweenBarriers;
     [SerializeField] int maxTimeBetweenBarriers;
@@ -17,15 +13,31 @@ public class BarriersGoDown : MonoBehaviour
     [Header("Number of Barriers going down at one time")]
     [SerializeField] int numberOfBarriers;
 
+    [Space]
+    [Header("Barrier Level Prefabs")]
+    [SerializeField] private GameObject barrierPrefabUno;
+
     List<GameObject> barriers;
 
     bool spacebarReady = true;
-    
+
+
+
+    private void Awake()
+    {
+        //Need to add random prefab chooser once there is more prefabs to choose from
+    }
     // Start is called before the first frame update
     void Start()
     {
+
+        barriers = new List<GameObject>();
         barriers.AddRange(GameObject.FindGameObjectsWithTag("Barrier"));
+        Debug.Log(barriers[2]);
+
+
         StartCoroutine(BarriersMovingDown());
+        
     }
 
     // Update is called once per frame
@@ -44,7 +56,7 @@ public class BarriersGoDown : MonoBehaviour
             int barrierNumber = Random.Range(0, barriers.Count - 1);
             GameObject barrierToMove = barriers[barrierNumber];
             barriers.RemoveAt(barrierNumber);
-            SendMessage("MoveDown", barrierToMove);
+            barrierToMove.SendMessage("MoveDown");
 
         }
         yield return new WaitForSeconds(timeBetweenBarriers);
@@ -59,6 +71,8 @@ public class BarriersGoDown : MonoBehaviour
         if (spacebarReady && Input.GetKeyDown(KeyCode.Space))
         {
             spacebarReady = false;
+            minTimeBetweenBarriers = minTimeBetweenBarriers / 2;
+            maxTimeBetweenBarriers = maxTimeBetweenBarriers / 2;
             int spacebarBarrierNumber = barriers.Count / 2;
             for (int i = 0; i < spacebarBarrierNumber; i++)
             {
@@ -66,7 +80,7 @@ public class BarriersGoDown : MonoBehaviour
                 int barrierNumber = Random.Range(0, barriers.Count - 1);
                 GameObject barrierToMove = barriers[barrierNumber];
                 barriers.RemoveAt(barrierNumber);
-                SendMessage("MoveDown", barrierToMove);
+                barrierToMove.SendMessage("MoveDown");
 
             }
         }

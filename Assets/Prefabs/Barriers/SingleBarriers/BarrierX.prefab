@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: d7801f2d9e5693746a5199a5119a6ca2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,8 +108,9 @@ GameObject:
   - component: {fileID: 6034407808431782812}
   - component: {fileID: 1410211563457790244}
   - component: {fileID: 1908972678551171802}
+  - component: {fileID: 4226711509985475481}
   m_Layer: 0
-  m_Name: BarrierX 1
+  m_Name: BarrierX
   m_TagString: Barrier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +144,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 3, y: 2, z: 0.5}
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &1908972678551171802
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -156,7 +157,23 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.5, y: 2, z: 3}
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4226711509985475481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4904347609391547740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ac65a7ad069c7449857b5eb2aa23f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thingToDestroy: {fileID: 4904347609391547740}
+  timeUp: 2
+  barrierHeight: 5
+  animWaitTime: 0.05
 --- !u!1 &8219412475585678439
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +183,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2438285326162240069}
-  - component: {fileID: 1753143193171857862}
   m_Layer: 0
   m_Name: BarrierMove
   m_TagString: Untagged
@@ -191,22 +207,6 @@ Transform:
   m_Father: {fileID: 6034407808431782812}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1753143193171857862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8219412475585678439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87ac65a7ad069c7449857b5eb2aa23f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  thingToDestroy: {fileID: 4904347609391547740}
-  timeUp: 5
-  barrierHeight: 5
-  animWaitTime: 0.05
 --- !u!1 &8943332068411417457
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,7 +269,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: d7801f2d9e5693746a5199a5119a6ca2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
