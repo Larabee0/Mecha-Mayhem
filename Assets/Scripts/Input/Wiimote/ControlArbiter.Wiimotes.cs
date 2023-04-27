@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using WiimoteApi;
 using RedButton.Core.WiimoteSupport;
+using UnityEngine.InputSystem.UI;
 
 namespace RedButton.Core
 {
@@ -23,7 +24,9 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer1 != null)
                 {
-                    Instance.wiimotePointer1.transform.position = new Vector3(value.x, Screen.height - value.y);
+                    //Instance.wiimotePointer1.transform.position = new Vector3(value.x, Screen.height - value.y);
+                    //Vector3 point = Camera.main.ScreenToWorldPoint();
+                    Instance.wiimoteSinglePointer.position = new Vector3(value.x, value.y, 0);
                 }
             }
         }
@@ -33,7 +36,8 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer2 != null)
                 {
-                    Instance.wiimotePointer2.transform.position = new Vector3(value.x, Screen.height - value.y);
+                    //Instance.wiimotePointer2.transform.position = new Vector3(value.x, Screen.height - value.y);
+                    Instance.wiimoteSinglePointer.position = new Vector3(value.x, value.y, 0);
                 }
             }
         }
@@ -43,7 +47,8 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer3 != null)
                 {
-                    Instance.wiimotePointer3.transform.position = new Vector3(value.x, Screen.height - value.y);
+                    //Instance.wiimotePointer3.transform.position = new Vector3(value.x, Screen.height - value.y);
+                    Instance.wiimoteSinglePointer.position = new Vector3(value.x, value.y, 0);
                 }
             }
         }
@@ -53,7 +58,8 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer4 != null)
                 {
-                    Instance.wiimotePointer4.transform.position = new Vector3(value.x, Screen.height - value.y);
+                    //Instance.wiimotePointer4.transform.position = new Vector3(value.x, Screen.height - value.y);
+                    Instance.wiimoteSinglePointer.position = new Vector3(value.x, value.y, 0);
                 }
             }
         }
@@ -108,6 +114,9 @@ namespace RedButton.Core
         private VisualElement wiimotePointer2;
         private VisualElement wiimotePointer3;
         private VisualElement wiimotePointer4;
+
+        [SerializeField] private RectTransform wiimoteSinglePointer;
+        [SerializeField] private VirtualMouseInput wiimoteVirtualMouse;
 
         // these strcutures are used to safely add and remove wiimotes from the Input System via the Static actions above.
         private List<Wiimote> Connected_WiimoteAPI_Wiimotes = new(); // all conneted WiimoteAPI.Wiimotes

@@ -658,17 +658,6 @@
                 },
                 {
                     "name": "",
-                    "id": "e70846bf-8b4d-483b-9fde-f871d006151c",
-                    "path": "*/{Submit}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Submit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "0c7ccd50-131e-4c54-8254-b9a24418a649",
                     "path": "*/{Cancel}",
                     "interactions": "",
@@ -864,6 +853,50 @@
                     "action": "PauseGame",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e70846bf-8b4d-483b-9fde-f871d006151c",
+                    "path": "*/{Submit}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "68e11105-997d-4819-9235-11dd8e09b5d3",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Submit",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "dc4761ea-c016-451e-ab81-19825d8e06f7",
+                    "path": "<WiimoteDevice>/bButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "665eee4d-22ae-46e3-a9d8-65f4eeedd219",
+                    "path": "<WiimoteDevice>/aButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
