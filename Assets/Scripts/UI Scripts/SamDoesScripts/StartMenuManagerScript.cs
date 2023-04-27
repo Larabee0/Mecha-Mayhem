@@ -89,7 +89,7 @@ namespace RedButton.Core.UI
             lvlSelectPanel.SetActive(false);
             PlayerAssignPanel.SetActive(false);
             DisableOkBtn();
-
+            
             EventSystem.current.SetSelectedGameObject(btnPanelBtn);
         }
 
