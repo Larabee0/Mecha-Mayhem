@@ -22,7 +22,7 @@ namespace RedButton.Core.WiimoteSupport
         public FourCC format => new('W', 'i', 'i', 'M');
 
         [InputControl(name = "dpad", layout = "Dpad", usage = "Hatswitch", displayName = "D-Pad", format = "BIT", sizeInBits = 4, bit = 0)]
-        [InputControl(name = "aButton", layout = "Button", bit = (int)WiimoteButton.A, usages = new[] { "PrimaryAction", "Submit" }, displayName = "A Button", shortDisplayName = "AWM")]
+        [InputControl(name = "aButton", layout = "Button", bit = (int)WiimoteButton.A, usages = new[] { "PrimaryAction" }, displayName = "A Button", shortDisplayName = "AWM")]
         [InputControl(name = "bButton", layout = "Button", bit = (int)WiimoteButton.B, usages = new[] { "SecondaryAction", "Back", "Cancel" }, displayName = "B Button", shortDisplayName = "BWM")]
         [InputControl(name = "cButton", layout = "Button", bit = (int)WiimoteButton.C, displayName = "Nunchuck C", shortDisplayName = "CNC")]
         [InputControl(name = "zButton", layout = "Button", bit = (int)WiimoteButton.Z, displayName = "Nunchuck Z", shortDisplayName = "ZNC")]

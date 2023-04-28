@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4353908924703524598}
-  - component: {fileID: 5024477043341582190}
   m_Layer: 0
   m_Name: BarrierMoves
   m_TagString: Untagged
@@ -34,22 +33,6 @@ Transform:
   m_Father: {fileID: 6949112160959568308}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5024477043341582190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1868170382627060170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87ac65a7ad069c7449857b5eb2aa23f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  thingToDestroy: {fileID: 4094973514419791250}
-  timeUp: 2
-  barrierHeight: 5
-  animWaitTime: 0.05
 --- !u!1 &4094973514419791250
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,6 +44,7 @@ GameObject:
   - component: {fileID: 6949112160959568308}
   - component: {fileID: 576067822155028633}
   - component: {fileID: 5595215333951463164}
+  - component: {fileID: 2262920760429174912}
   m_Layer: 0
   m_Name: BarrierL2
   m_TagString: Barrier
@@ -96,7 +80,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 3, y: 2, z: 0.5}
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &5595215333951463164
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -109,7 +93,23 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.5, y: 2, z: 2}
-  m_Center: {x: 1.5, y: 2, z: -0.75}
+  m_Center: {x: 1.5, y: 0, z: -0.75}
+--- !u!114 &2262920760429174912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094973514419791250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ac65a7ad069c7449857b5eb2aa23f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thingToDestroy: {fileID: 4094973514419791250}
+  timeUp: 2
+  barrierHeight: 5
+  animWaitTime: 0.05
 --- !u!1 &5125810765843593503
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,7 +171,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: d7801f2d9e5693746a5199a5119a6ca2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -254,7 +254,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: d7801f2d9e5693746a5199a5119a6ca2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

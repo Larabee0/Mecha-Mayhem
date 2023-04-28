@@ -42,7 +42,7 @@ namespace RedButton.Core
             {
                 devices = newDevices.ToArray()
             };
-            startScreenUIActionAsset.devices = newDevices.ToArray();
+            //startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Enable();
         }
