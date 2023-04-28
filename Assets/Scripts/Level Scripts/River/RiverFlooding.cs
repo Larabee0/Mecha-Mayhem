@@ -11,12 +11,14 @@ namespace RedButton.GamePlay
         public float Duration;
         public float FloodSpeed = 5f;
         public float timer = 0f;
+        private float Floodtick;
         public Vector3 destination;
         public Vector3 origin;
         private Vector3 FloodSpeedV3;
         public Transform RiverTransform;
         public float RiverFinalWidth;
         private bool IsGimmickOccuring;
+        private bool LocalGim = false;
         // Start is called before the first frame update
         void Start()
         {
@@ -37,24 +39,32 @@ namespace RedButton.GamePlay
             IsGimmickOccuring = GameArb.GetComponent<GimmickCore>().IsGimmickOccuring;
             if (IsGimmickOccuring == true)
             {
-                Flood();
+                if (LocalGim == false)
+                {
+                    LocalGim = true;
+                    Interval = GameArb.GetComponent<GimmickCore>().Interval;
+                    Duration = GameArb.GetComponent<GimmickCore>().Duration;
+                    StartCoroutine(Erupt());
+                }
+
             }
         }
 
-        public void Flood()
+        IEnumerator Erupt()
         {
-            if (Time.time < timer + Duration + Interval && gameObject.transform.position.y <= destination.y)
+            while (gameObject.transform.position.y <= destination.y)
             {
+                yield return new WaitForSeconds(Floodtick);
                 RaiseRiver();
             }
-            if (Time.time > timer + Duration + Interval && gameObject.transform.position.y > origin.y)
+            yield return new WaitForSeconds(Duration);
+            while (gameObject.transform.position.y > origin.y)
             {
+                yield return new WaitForSeconds(Floodtick);
                 LowerRiver();
             }
-            else if (Time.time > timer + Duration + Interval && gameObject.transform.position.y <= origin.y)
-            {
-                timer = Time.time;
-            }
+            LocalGim = false;
+            StopCoroutine(Erupt());
         }
 
         public void RaiseRiver()
