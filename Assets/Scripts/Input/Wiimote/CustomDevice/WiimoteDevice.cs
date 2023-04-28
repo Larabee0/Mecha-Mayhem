@@ -196,7 +196,8 @@ namespace RedButton.Core.WiimoteSupport
 
                 var state = new WiimoteState()
                 {
-                    position = newPos.Equals(float2.zero) ? oldPos : newPos,
+                    //position = newPos.Equals(float2.zero) ? oldPos : newPos,
+                    position = UpdateIR(wiimote),
                     nunchuckStick = UpdateNunchuckStick(wiimote)
                 };
                 //  After we check set the state of all buttons (nunchuck buttons too)

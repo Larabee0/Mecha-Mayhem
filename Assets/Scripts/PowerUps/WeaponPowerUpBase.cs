@@ -22,6 +22,7 @@ namespace RedButton.GamePlay
         {
             if (target.gameObject.GetComponent<WeaponPowerUpBase>() == null)
             {
+                base.AddTo(target);
                 WeaponPowerUpBase mechInstance = target.gameObject.AddComponent(GetType()) as WeaponPowerUpBase;
                 mechInstance.Copy(this);
                 mechInstance.SetUp(target);

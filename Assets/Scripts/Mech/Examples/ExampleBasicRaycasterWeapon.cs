@@ -34,7 +34,7 @@ namespace RedButton.Mech.Examples
         [SerializeField, Range(0f, 1f)] float laserEffectDecayDelayFraction = 1;
         [SerializeField] private MeshFilter projectileMeshFilter;
         [SerializeField] protected MeshRenderer projectileMeshRenderer;
-
+        protected Coroutine hideCoroutine;
         /// <summary>
         /// overriding start to create the mesh to modify at runtime.
         /// </summary>
@@ -57,10 +57,10 @@ namespace RedButton.Mech.Examples
 
         protected override void OnEnable()
         {
+            fireInterval = 0;
             base.OnEnable();
             projectileMeshRenderer.enabled = false;
         }
-
         protected virtual void OnValidate()
         {
             if (Application.isPlaying)
@@ -72,7 +72,11 @@ namespace RedButton.Mech.Examples
                 }
             }
         }
-
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            hideCoroutine = null;
+        }
         /// <summary>
         /// Fire is one of the methods that requires implmentation.
         /// Here whenever Fire() is called, it simply counts down a timer called FireInterval.
@@ -83,11 +87,10 @@ namespace RedButton.Mech.Examples
         {
             if (!CMC.ShieldActive)
             {
-                fireInterval -= Time.deltaTime;
                 switch (fireInterval)
                 {
                     case <= 0f:
-                        fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
+                        StartCoroutine(LaserCoolDown());
                         showTime = fireInterval / 2f; // showTime is half the time of the new fireInterval to ensure the laser visual is hidden before it fires again.
                         BasicRayCaster();
                         break;
@@ -107,6 +110,13 @@ namespace RedButton.Mech.Examples
                 showTime = Random.Range(fireIntervalMin, fireIntervalMax) / 2f;
                 BasicRayCaster();
             }
+        }
+
+        protected IEnumerator LaserCoolDown()
+        {
+            fireInterval = Random.Range(fireIntervalMin, fireIntervalMax);
+            yield return new WaitForSeconds(fireInterval);
+            fireInterval = 0f;
         }
 
         /// <summary>
@@ -146,17 +156,16 @@ namespace RedButton.Mech.Examples
         protected void HandleHit(RaycastHit hit)
         {
             ShieldTagger hitShield = hit.collider.gameObject.GetComponent<ShieldTagger>();
-            if (hitShield != null && hitShield.shield.ShieldOwner)
+            if (hitShield != null && hitShield != CMC.shield)
             {
                 hitShield.shield.DamageShield();
                 return;
             }
-            if (hitShield != null && hitShield != CMC.shield)
-            {
-            }
             CentralMechComponent otherMech = hit.collider.gameObject.GetComponentInParent<CentralMechComponent>();
             if (otherMech != null && otherMech != CMC) // saftey in case we hit ourselves.
             {
+                CMC.stats.hitsMade++;
+                CMC.stats.damageToOtherMechs += damage;
                 otherMech.UpdateHealth(damage);
             }
         }
@@ -172,12 +181,16 @@ namespace RedButton.Mech.Examples
             laserStart = start; laserEnd = end; // needed to keep the mesh updated in the coroutine.
             CorrectVertexTransform();
             projectileMeshRenderer.enabled = true;
-            StopAllCoroutines();
+            if(hideCoroutine != null)
+            {
+                StopCoroutine(hideCoroutine);
+                hideCoroutine = null;
+            }
             if(!enabled || !gameObject.activeInHierarchy)
             {
                 return;
             }
-            StartCoroutine(Hide()); // start the hide corountine to hide the visual after showTime has elapsed.
+            hideCoroutine = StartCoroutine(Hide()); // start the hide corountine to hide the visual after showTime has elapsed.
         }
         protected virtual void CorrectVertexTransform()
         {
@@ -200,6 +213,7 @@ namespace RedButton.Mech.Examples
                 yield return null;
             }
             projectileMeshRenderer.enabled = false;
+            hideCoroutine = null;
         }
     }
 }

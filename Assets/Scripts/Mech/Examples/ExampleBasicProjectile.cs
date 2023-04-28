@@ -10,7 +10,6 @@ namespace RedButton.Mech.Examples
     /// </summary>
     public class ExampleBasicProjectile : ProjectileCore
     {
-        [SerializeField] protected CentralMechComponent origin;
         protected int damage;
         bool hitShield = false;
         /// <summary>
@@ -42,6 +41,7 @@ namespace RedButton.Mech.Examples
                 CentralMechComponent mech = collision.gameObject.GetComponentInParent<CentralMechComponent>();
                 if (mech && mech != origin)
                 {
+                    AddToStats(damage);
                     mech.UpdateHealth(damage);
                 }
             }
