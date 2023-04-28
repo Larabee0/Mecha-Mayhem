@@ -371,7 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b736eeb79bea40346902902523aab47a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FloodInterval: 20
+  Interval: 0
   Duration: 15
   FloodSpeed: 5
   timer: 0
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e35f15044142c3478154d7f9cc44ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FloodInterval: 0
+  Interval: 0
   Duration: 0
   timer: 0
 --- !u!1 &593284237
@@ -683,6 +683,7 @@ GameObject:
   m_Component:
   - component: {fileID: 598138035}
   - component: {fileID: 598138034}
+  - component: {fileID: 598138036}
   m_Layer: 0
   m_Name: GameArbiter
   m_TagString: Untagged
@@ -734,6 +735,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &598138036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598138033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7708ec9699fb4e14bb335e0f5679cf35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxTimeInterval: 20
+  MinTimeInterval: 20
+  SpacebarCooldown: 30
+  MaxDuration: 20
+  MinDuration: 20
+  VolcanoAmount: 10
+  VolcanoDamage: 150
+  TestGroundLikelyhood: 0
+  TestGroundAmount: 0
+  Interval: 0
+  Duration: 0
+  TimeFlag: 0
+  IsGimmickOccuring: 0
 --- !u!1 &734645383
 GameObject:
   m_ObjectHideFlags: 0

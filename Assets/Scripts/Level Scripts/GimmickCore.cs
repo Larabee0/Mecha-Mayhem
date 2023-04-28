@@ -7,24 +7,26 @@ namespace RedButton.GamePlay
     public class GimmickCore : MonoBehaviour
     {
         [Header("Timings")]
-        [SerializeField] private float MaxTimeInterval;
-        [SerializeField] private float MinTimeInterval;
-        [SerializeField] private float SpacebarCooldown;
-        [SerializeField] private float MaxDuration;
-        [SerializeField] private float MinDuration;
+        public float MaxTimeInterval;
+        public float MinTimeInterval;
+        public float SpacebarCooldown;
+        public float MaxDuration;
+        public float MinDuration;
 
         [Space]
         [Header("Level Specific Parameters")]
-        public int VolcanoLikeleyhood;
-        public int VolcanoAmount;
+        public int VolcanoAmount = 10;
+        public int VolcanoDamage = 150;
         public int TestGroundLikelyhood;
         public int TestGroundAmount;
 
-        private float Interval;
-        private float Duration;
-        private float TimeFlag;
+        [HideInInspector] public float Interval;
+        [HideInInspector] public float Duration;
+        [HideInInspector] public float TimeFlag;
         [HideInInspector] public bool IsGimmickOccuring = false;
 
+        private bool SpacebarOn = false;
+        private bool SpacebarReady = false;
 
         // Start is called before the first frame update
         void Start()
@@ -37,17 +39,37 @@ namespace RedButton.GamePlay
         // Update is called once per frame
         void Update()
         {
-            if (Time.time > TimeFlag + Interval && Time.time < TimeFlag + Interval + Duration)
+            if (SpacebarReady)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    SpacebarOn = true;
+                }
+            }
+            
+            if (Time.time > TimeFlag + Interval && Time.time < TimeFlag + Interval + Duration || SpacebarOn)
             {
                 IsGimmickOccuring = true;
             }
             else if (Time.time > TimeFlag + Interval + Duration)
             {
                 IsGimmickOccuring = false;
+                
                 Interval = Random.Range(MinTimeInterval, MaxTimeInterval);
                 Duration = Random.Range(MinDuration, MaxDuration);
                 TimeFlag = Time.time;
+                if (SpacebarOn)
+                {
+                    StartCoroutine(SpacebarCD());
+                }
+                SpacebarOn = false;
             }
+        }
+
+        IEnumerator SpacebarCD()
+        {
+            yield return new WaitForSeconds(SpacebarCooldown);
+            SpacebarReady = true;
         }
     }
 }

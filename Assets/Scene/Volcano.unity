@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.3369, g: 325.0498, b: 430.21924, a: 1}
+  m_IndirectSpecularColor: {r: 261.9007, g: 324.45554, b: 429.43463, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -22540,7 +22540,8 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
-  m_Materials: []
+  m_Materials:
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22578,8 +22579,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1289768470}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.78, y: 6.3, z: -0.04}
-  m_LocalScale: {x: 9.415835, y: 1, z: 3.7032948}
+  m_LocalPosition: {x: 0.78, y: 6.6, z: -0.04}
+  m_LocalScale: {x: 5.648748, y: 1, z: 3.4820685}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -22597,17 +22598,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52d5d53c2e96384b86db8fdf940d721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EruptionInterval: 20
-  Duration: 10
-  spawnrate: 1.5
-  damage: 50
   Velocity: 5
   height: 20
   Ejecta: {fileID: 3970472757482318169, guid: 944e377db87212f45b61e8b07dc34858, type: 3}
   TargetPlane: {fileID: 1289768470}
   HazardZone: {fileID: 5313035773281563202, guid: d77adb9ea6d61204581bccf5596f0fcf,
     type: 3}
-  timer: 0
+  TimeFlag: 0
   TargetPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &1300101225
 GameObject:
@@ -27914,9 +27911,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da16cb3bf37942d4191bed6eedb57e0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EruptionInterval: 20
-  Duration: 10
-  damage: 110
   LavaSpeed: {x: 0, y: 5, z: 0}
   timer: 0
   destination: {x: 0, y: 0.38, z: 0}
@@ -30973,6 +30967,7 @@ GameObject:
   - component: {fileID: 1800510136}
   - component: {fileID: 1800510137}
   - component: {fileID: 1800510138}
+  - component: {fileID: 1800510139}
   m_Layer: 0
   m_Name: GameArbiter
   m_TagString: Untagged
@@ -31063,6 +31058,31 @@ MonoBehaviour:
   powerUpStartOfRoundDelay: 5
   minPowerUpTime: 3
   maxPowerUpTime: 6
+--- !u!114 &1800510139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800510135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7708ec9699fb4e14bb335e0f5679cf35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxTimeInterval: 25
+  MinTimeInterval: 20
+  SpacebarCooldown: 40
+  MaxDuration: 20
+  MinDuration: 15
+  VolcanoAmount: 30
+  VolcanoDamage: 150
+  TestGroundLikelyhood: 0
+  TestGroundAmount: 0
+  Interval: 0
+  Duration: 0
+  TimeFlag: 0
+  IsGimmickOccuring: 0
 --- !u!1 &1806554253
 GameObject:
   m_ObjectHideFlags: 0
