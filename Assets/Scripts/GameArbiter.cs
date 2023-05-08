@@ -139,20 +139,16 @@ namespace RedButton.GamePlay
                     return;
                 }
 
-                int winner = 0;
-                int wins = 0;
+                List<MechResults> results = new(playerCount);
 
                 for (int i = 0; i < playerCount; i++)
                 {
-                    if (playerVictories[i] > wins)
-                    {
-                        wins = playerVictories[i];
-                        winner = i;
-                    }
+                    results.Add(spawnedMechs[i].stats);
                 }
-
-                lastRoundWinner = string.Format("Player {0} ", (winner + 1).ToString());
-                ControlArbiter.Instance.UITranslator.EndScreenUI.OpenEndofGame(lastRoundWinner);
+                results.Sort();
+                results.Reverse();
+                // lastRoundWinner = string.Format("Player {0} ", (winner + 1).ToString());
+                ControlArbiter.Instance.UITranslator.EndScreenUI.OpenEndofGame(results);
                 return;
             }
 

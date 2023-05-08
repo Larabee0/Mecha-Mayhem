@@ -23,7 +23,7 @@ namespace RedButton.Core.WiimoteSupport
 
         [InputControl(name = "dpad", layout = "Dpad", usage = "Hatswitch", displayName = "D-Pad", format = "BIT", sizeInBits = 4, bit = 0)]
         [InputControl(name = "aButton", layout = "Button", bit = (int)WiimoteButton.A, usages = new[] { "PrimaryAction" }, displayName = "A Button", shortDisplayName = "AWM")]
-        [InputControl(name = "bButton", layout = "Button", bit = (int)WiimoteButton.B, usages = new[] { "SecondaryAction", "Back", "Cancel" }, displayName = "B Button", shortDisplayName = "BWM")]
+        [InputControl(name = "bButton", layout = "Button", bit = (int)WiimoteButton.B, usages = new[] { "SecondaryAction"}, displayName = "B Button", shortDisplayName = "BWM")]
         [InputControl(name = "cButton", layout = "Button", bit = (int)WiimoteButton.C, displayName = "Nunchuck C", shortDisplayName = "CNC")]
         [InputControl(name = "zButton", layout = "Button", bit = (int)WiimoteButton.Z, displayName = "Nunchuck Z", shortDisplayName = "ZNC")]
         [InputControl(name = "oneButton", layout = "Button", bit = (int)WiimoteButton.One, displayName = "One Button", shortDisplayName = "OWM")]

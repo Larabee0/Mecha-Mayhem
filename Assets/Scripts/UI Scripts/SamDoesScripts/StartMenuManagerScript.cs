@@ -10,39 +10,39 @@ namespace RedButton.Core.UI
     public class StartMenuManagerScript : MonoBehaviour
     {
         [Header("Panels")]
-        [SerializeField] GameObject bgPanel;
-        [SerializeField] GameObject bindPanel;
-        [SerializeField] GameObject btnPanel;
-        [SerializeField] GameObject controlsPanel;
-        [SerializeField] GameObject creditsPanel;
-        [SerializeField] GameObject willCreditsPanel;
-        [SerializeField] GameObject playerNumPanel;
-        [SerializeField] GameObject PlayerAssignPanel;
-        [SerializeField] GameObject lvlSelectPanel;
+        [SerializeField] private GameObject bgPanel;
+        [SerializeField] private GameObject bindPanel;
+        [SerializeField] private GameObject btnPanel;
+        [SerializeField] private GameObject controlsPanel;
+        [SerializeField] private GameObject creditsPanel;
+        [SerializeField] private GameObject willCreditsPanel;
+        [SerializeField] private GameObject playerNumPanel;
+        [SerializeField] private GameObject PlayerAssignPanel;
+        [SerializeField] private GameObject lvlSelectPanel;
 
         [Header("Buttons")]
-        [SerializeField] GameObject btnPanelBtn;
-        [SerializeField] GameObject optionsPanelBtn;
-        [SerializeField] GameObject controlsPanelBtn;
-        [SerializeField] GameObject creditsPanelBtn;
-        [SerializeField] GameObject playerNumPanelBtn;
-        [SerializeField] GameObject returnBtn;
-        [SerializeField] GameObject okBtn;
-        [SerializeField] GameObject changeBtn;
-        [SerializeField] GameObject lvlSelectPanelBtn;
+        [SerializeField] private GameObject btnPanelBtn;
+        [SerializeField] private GameObject optionsPanelBtn;
+        [SerializeField] private GameObject controlsPanelBtn;
+        [SerializeField] private GameObject creditsPanelBtn;
+        [SerializeField] private GameObject playerNumPanelBtn;
+        [SerializeField] private GameObject returnBtn;
+        [SerializeField] private GameObject okBtn;
+        [SerializeField] private GameObject changeBtn;
+        [SerializeField] private GameObject lvlSelectPanelBtn;
 
         [Header("Assignment Stuff")]
-        [SerializeField] Image p1Bg;
-        [SerializeField] Text p1ControllerTxt;
-        [SerializeField] Image p2Bg;
-        [SerializeField] Text p2ControllerTxt;
-        [SerializeField] Image p3Bg;
-        [SerializeField] Text p3ControllerTxt;
-        [SerializeField] Image p4Bg;
-        [SerializeField] Text p4ControllerTxt;
+        [SerializeField] private Image p1Bg;
+        [SerializeField] private Text p1ControllerTxt;
+        [SerializeField] private Image p2Bg;
+        [SerializeField] private Text p2ControllerTxt;
+        [SerializeField] private Image p3Bg;
+        [SerializeField] private Text p3ControllerTxt;
+        [SerializeField] private Image p4Bg;
+        [SerializeField] private Text p4ControllerTxt;
 
-        [SerializeField] Sprite bgSprite;
-        [SerializeField] Sprite willSprite;
+        [SerializeField] private Sprite bgSprite;
+        [SerializeField] private Sprite willSprite;
 
         [Header("Mech Selector")]
         public MechSelectorManager mechSelectorManager;

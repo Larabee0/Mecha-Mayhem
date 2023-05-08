@@ -44,6 +44,7 @@ namespace RedButton.Core
             };
             //startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
+            startScreenActionMap.UI.StartScreenAux.performed += StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Enable();
         }
 
@@ -65,14 +66,15 @@ namespace RedButton.Core
             {
                 Destroy(PlayerOne);
             }
+            startScreenActionMap.UI.Disable();
             PlayerOne = InstantiatePlayer(PlayerOneColour, devices, Controller.One);
             PlayerOne.RumbleMotor(0.075f, 1f, RumbleMotor.Both);
             PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
-            PlayerOne.EnableUIonly();
             uiTranslator.SetUIHoverTint(PlayerOneColour);
             startScreenActionMap.UI.Submit.performed -= StartScreenAnyButtonPressed;
-            startScreenActionMap.UI.Disable();
+            startScreenActionMap.UI.StartScreenAux.performed -= StartScreenAnyButtonPressed;
 
+            PlayerOne.EnableUIonly();
             if (UnityUI)
             {
                 startScreenState = StartScreenState.MainMenu;
@@ -84,6 +86,12 @@ namespace RedButton.Core
                 mainUIController.StartScreenController.ShowPlayerCountPicker();
                 EventSystem.current.SetSelectedGameObject(FindObjectOfType<PanelEventHandler>().gameObject);
             }
+            //StartCoroutine(DelayedPlayerOneUIEnable(devices));
+        }
+
+        private IEnumerator DelayedPlayerOneUIEnable(InputDevice[] devices)
+        {
+            yield return new WaitForSeconds(10f);
         }
 
         /// <summary>
@@ -145,7 +153,8 @@ namespace RedButton.Core
             startScreenActionMap.devices = newDevices.ToArray();
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += AssignControllerCallback;
-            startScreenActionMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
+            startScreenActionMap.UI.StartScreenAux.performed += AssignControllerCallback;
+            //startScreenActionMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
             startScreenActionMap.UI.Enable();
             if (PlayerOne != null)
             {
@@ -180,8 +189,9 @@ namespace RedButton.Core
                 }
                 yield return null;
             }
-            startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
+            //startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
+            startScreenActionMap.UI.StartScreenAux.performed -= AssignControllerCallback;
 
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
@@ -276,6 +286,7 @@ namespace RedButton.Core
             };
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
+            startScreenActionMap.UI.StartScreenAux.performed += StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Enable();
 
             startScreenState = StartScreenState.Binding;
@@ -351,6 +362,7 @@ namespace RedButton.Core
             }
             StopAllCoroutines();
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
+            startScreenActionMap.UI.StartScreenAux.performed -= AssignControllerCallback;
             startScreenActionMap.UI.Disable();
             startScreenActionMap.devices = PlayerOne.Devices ;
             startScreenUIActionAsset.devices = PlayerOne.Devices ;

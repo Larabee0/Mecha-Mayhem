@@ -71,6 +71,7 @@ namespace RedButton.Mech
                 Destroy(this);
                 return;
             }
+            stats.player = string.Format("Player {0}", ((int)MechInputController.Player) + 1);
             movementCore = GetComponentInChildren<MovementCore>();
 
             mechColliders = GetComponentsInChildren<Collider>();
@@ -95,11 +96,15 @@ namespace RedButton.Mech
             }
         }
 
+        private void OnEnable()
+        {
+            SetMechColour(MechAccentColour);
+            SetFixedMechColours(MechAccentColour);
+        }
+
         private void Start()
         {
             OnHealthChange += OnHealthChanged;
-            SetMechColour(MechAccentColour);
-            SetFixedMechColours(MechAccentColour);
         }
 
         private void SetFixedMechColours(Color colour)
@@ -155,6 +160,13 @@ namespace RedButton.Mech
 #endif
         }
 
+        private void OnDisable()
+        {
+            if (MechInputController)
+            {
+                MechInputController.StopRumbleMotor(RumbleMotor.Both);
+            }
+        }
         public Transform GetNextWeaponOrigin()
         {
             Transform origin = weaponOriginPoints[weaponOriginIndex];
