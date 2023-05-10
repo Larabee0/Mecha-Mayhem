@@ -14,7 +14,7 @@ public class MechResults : IComparable<MechResults>
     public int hitsTaken;
     public int damageRecieved;
 
-    public int Score => roundsWon * (powerUpsConsumed + hitsMade + damageToOtherMechs - hitsTaken - damageRecieved);
+    public int Score => 1+roundsWon * (powerUpsConsumed + hitsMade + damageToOtherMechs - hitsTaken - damageRecieved);
 
     public string this[int i] => i switch
     {
