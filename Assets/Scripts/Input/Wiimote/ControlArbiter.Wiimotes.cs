@@ -109,7 +109,6 @@ namespace RedButton.Core
 
         [Header("Wiimote Support")]
         // Wiimote pointer UI for multiple wiimote support
-        [SerializeField] private UIDocument wiimoteOverlay;
         [SerializeField] private RawImage wiimotePointer1;
         [SerializeField] private RawImage wiimotePointer2;
         [SerializeField] private RawImage wiimotePointer3;

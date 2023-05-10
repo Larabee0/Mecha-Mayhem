@@ -580,7 +580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlArbiterPrefab: {fileID: 84413471787384367, guid: b411cb4082c09ae42b388664326fa580,
     type: 3}
-  mainUIControllerPrefab: {fileID: 3506990393810735775, guid: 305b61cfa6a8f4d4eb59fca09fab419f,
+  mainUIControllerPrefab: {fileID: 4999563189195431456, guid: 9fd77f163a90b3148bf51f170049fe2c,
     type: 3}
 --- !u!4 &1082881692
 Transform:

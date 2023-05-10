@@ -65,3 +65,5 @@ MonoBehaviour:
   mainDocument: {fileID: 3506990393810735774}
   startScreenUI: {fileID: 9197481963319205126, guid: d10e310c09ee25340aad4bee1dbc22f8,
     type: 3}
+  healthBars: []
+  StartScene: 1

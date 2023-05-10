@@ -13,16 +13,15 @@ namespace RedButton.Core.UI
         [SerializeField] private UIDocument mainDocument;
         [SerializeField] private VisualTreeAsset startScreenUI;
 
+        [SerializeField] private HealthBar[] healthBars;
+
         private StartScreenUI startScreenController;
-        private EndScreenUI endScreenController;
-        public EndScreenUI EndScreenController => endScreenController;
         public StartScreenUI StartScreenController => startScreenController;
 
         private VisualElement RootVisualElenement => mainDocument.rootVisualElement;
 
         public ControllerInterruptUI controllerInterruptUI;
-        public HealthBarsUI[] healthBarsUI = new HealthBarsUI[4];
-        public bool StartScene => startScreenUI != null;
+        public bool StartScene = false;
 
         public bool UIShown
         {
@@ -47,7 +46,6 @@ namespace RedButton.Core.UI
         private void Start()
         {
             controllerInterruptUI = new ControllerInterruptUI(RootVisualElenement.Q("ControllerInterrupt"));
-            endScreenController = new EndScreenUI(RootVisualElenement.Q("EndScreenContainer"), this);
             SetUpHealthBars();
             if (StartScene)
             {
@@ -59,19 +57,19 @@ namespace RedButton.Core.UI
         #region HealthBars
         private void SetUpHealthBars()
         {
-            healthBarsUI[0] = new(RootVisualElenement.Q<ProgressBar>("HBP1"));
-            healthBarsUI[1] = new(RootVisualElenement.Q<ProgressBar>("HBP2"));
-            healthBarsUI[2] = new(RootVisualElenement.Q<ProgressBar>("HBP3"));
-            healthBarsUI[3] = new(RootVisualElenement.Q<ProgressBar>("HBP4"));
-            
+            for (int i = 0; i < healthBars.Length; i++)
+            {
+                healthBars[i].Setup();
+            }
+
             HideHealthBars();
         }
 
         public void HideHealthBars()
         {
-            for (int i = 0; i < healthBarsUI.Length; i++)
+            for (int i = 0; i < healthBars.Length; i++)
             {
-                healthBarsUI[i].Hide();
+                healthBars[i].Hide();
             }
         }
 
@@ -80,11 +78,11 @@ namespace RedButton.Core.UI
             int i = 0;
             for (; i < players.Count; i++)
             {
-                healthBarsUI[i].SetPlayer(players[i]);
+                SetPlayer(i, players[i]);
             }
-            for (; i < healthBarsUI.Length; i++)
+            for (; i < healthBars.Length; i++)
             {
-                healthBarsUI[i].Hide();
+                healthBars[i].Hide();
             }
 
             if(startScreenController != null)
@@ -95,7 +93,7 @@ namespace RedButton.Core.UI
 
         public void SetPlayer(int playerIndex,CentralMechComponent player)
         {
-            healthBarsUI[playerIndex].SetPlayer(player);
+            healthBars[playerIndex].SetPlayer(player);
         }
 
         #endregion
