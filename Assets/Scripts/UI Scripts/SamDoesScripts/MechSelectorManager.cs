@@ -42,7 +42,6 @@ namespace RedButton.Core.UI
         [SerializeField] private SelectionButtonContainer player4;
         [SerializeField, Range(0, 1)] private float selectorBackgroundInactiveTransparency = 0.5f;
         [SerializeField] private Color selectorBackgroundColourActiveModifier;
-        [SerializeField, Range(0, 1)] private float selectorColourModifierWeight = 0.5f;
 
         public SelectionButtonContainer this[int index] => index switch
         {

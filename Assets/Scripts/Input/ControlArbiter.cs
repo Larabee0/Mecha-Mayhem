@@ -108,7 +108,7 @@ namespace RedButton.Core
             }
             else
             {
-                mainUIController.transform.parent = transform;
+                mainUIController.transform.SetParent(transform, false);
             }
             
             // if an active instance already exists, lets bin ourselves including any UI or playerInput children.
