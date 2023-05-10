@@ -435,7 +435,7 @@ namespace RedButton.Core
 
             }
         }
-        private void SetWiimotePointerActive(bool active)
+        public void SetWiimotePointerActive(bool active)
         {
             switch (player)
             {

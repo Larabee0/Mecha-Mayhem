@@ -19,14 +19,14 @@ namespace RedButton.Mech.Examples
         protected override void PhysicsShoot()
         {
             // safety measure.
-            if (muzzleOriginPoint == null || targetObject == null)
+            if (muzzleOriginPoint == null)
             {
-                Debug.LogWarningFormat("MuzzleOrigin or TargetObject for weapon {0} was not set, aborting weapon firing", gameObject.name);
+                Debug.LogWarningFormat("MuzzleOrigin for weapon {0} was not set, aborting weapon firing", gameObject);
                 return;
             }
 
             // calculate the direction to fire the bullet along, this can also be used to set the rotation of it.
-            Vector3 bulletVector = (TargetPos - muzzleOriginPoint.position).normalized;
+            Vector3 bulletVector = TargetForward;
             Quaternion rotation = Quaternion.LookRotation(bulletVector);
             
             // spawn the projectile in the correct orientaiton and position

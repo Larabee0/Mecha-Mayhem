@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.3369, g: 325.0498, b: 430.21924, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1090,10 +1090,10 @@ MonoBehaviour:
     type: 3}
   playerCount: 0
   editorMechs:
-  - {fileID: 906662351260344358, guid: 28feec886106a3943b7ff848d4a973c8, type: 3}
+  - {fileID: 906662351260344358, guid: 66b3b1fe511df3b45b91a47d77f54f91, type: 3}
   - {fileID: 906662351260344358, guid: 2912a3eb51dff1245b2cf054671a9368, type: 3}
-  - {fileID: 52958292, guid: 63a7186cd238a2a49b2165a6366e4cf9, type: 3}
-  - {fileID: 52958292, guid: d21c1abb9336a3947ac91a7b92794cf8, type: 3}
+  - {fileID: 906662351260344358, guid: af6e9a408b3c88a4cbd41ce5f56b0f42, type: 3}
+  - {fileID: 906662351260344358, guid: 10865189010a0fa4eb400ff40c70b232, type: 3}
   spawnPoints:
   - {x: 8.71, y: 0.58, z: 0}
   - {x: 8.57, y: 0.58, z: -5.67}

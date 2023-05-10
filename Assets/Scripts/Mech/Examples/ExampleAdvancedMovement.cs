@@ -30,6 +30,9 @@ namespace RedButton.Mech.Examples
             targetPoint.position = pos;
             transform.forward = Vector3.RotateTowards(transform.forward, moveDir, rotationSpeed * Time.deltaTime, 0.0f);
             targetPointParent.forward = targetPointParentForward;
+
+
+            targetPoint.LookAt(Camera.main.transform.position, -Vector3.up);
         }
 
         /// <summary>

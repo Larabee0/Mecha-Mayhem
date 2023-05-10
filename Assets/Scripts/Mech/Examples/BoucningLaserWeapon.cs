@@ -47,13 +47,13 @@ namespace RedButton.Mech.Examples
         protected override void BasicRayCaster()
         {
             // safety measure.
-            if (muzzleOriginPoint == null || targetObject == null)
+            if (muzzleOriginPoint == null)
             {
-                Debug.LogWarningFormat("MuzzleOrigin or TargetObject for weapon {0} was not set, aborting weapon firing", gameObject.name);
+                Debug.LogWarningFormat("MuzzleOrigin for weapon {0} was not set, aborting weapon firing", gameObject);
                 return;
             }
 
-            Vector3 aimDirection = TargetPos - muzzleOriginPoint.position;
+            Vector3 aimDirection = TargetForward;
             Ray initialRay = new(muzzleOriginPoint.position, aimDirection);
             curLaserDst = 0f;
             for (int i = 0, v = 0; i < bounces; i++, v+=2)

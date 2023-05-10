@@ -77,6 +77,7 @@ namespace RedButton.Mech.Examples
         {
             base.OnDisable();
             hideCoroutine = null;
+            projectileMeshRenderer.enabled = false;
         }
         /// <summary>
         /// Fire is one of the methods that requires implmentation.
@@ -128,13 +129,13 @@ namespace RedButton.Mech.Examples
         protected virtual void BasicRayCaster()
         {
             // safety measure.
-            if(muzzleOriginPoint == null || targetObject == null)
+            if(muzzleOriginPoint == null)
             {
-                Debug.LogWarningFormat("MuzzleOrigin or TargetObject for weapon {0} was not set, aborting weapon firing", gameObject.name);
+                Debug.LogWarningFormat("MuzzleOrigin for weapon {0} was not set, aborting weapon firing", gameObject);
                 return;
             }
 
-            Vector3 aimDirection = TargetPos - muzzleOriginPoint.position;
+            Vector3 aimDirection = TargetForward;
             Ray ray = new(muzzleOriginPoint.position,aimDirection);
 
             Vector3 endPoint; // end point must be calulated weather the spherecast hits something or not.

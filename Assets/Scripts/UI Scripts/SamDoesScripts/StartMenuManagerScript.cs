@@ -33,12 +33,16 @@ namespace RedButton.Core.UI
 
         [Header("Assignment Stuff")]
         [SerializeField] private Image p1Bg;
+        [SerializeField] private Image p1Ic;
         [SerializeField] private Text p1ControllerTxt;
         [SerializeField] private Image p2Bg;
+        [SerializeField] private Image p2Ic;
         [SerializeField] private Text p2ControllerTxt;
         [SerializeField] private Image p3Bg;
+        [SerializeField] private Image p3Ic;
         [SerializeField] private Text p3ControllerTxt;
         [SerializeField] private Image p4Bg;
+        [SerializeField] private Image p4Ic;
         [SerializeField] private Text p4ControllerTxt;
 
         [SerializeField] private Sprite bgSprite;
@@ -64,10 +68,10 @@ namespace RedButton.Core.UI
 
         private void Awake()
         {
-            PlayerOneAssign = new(Controller.One, p1ControllerTxt, p1Bg);
-            PlayerTwoAssign = new(Controller.Two, p2ControllerTxt, p2Bg);
-            PlayerThreeAssign = new(Controller.Three, p3ControllerTxt, p3Bg);
-            PlayerFourAssign = new(Controller.Four, p4ControllerTxt, p4Bg);
+            PlayerOneAssign = new(Controller.One, p1ControllerTxt, p1Bg,p1Ic);
+            PlayerTwoAssign = new(Controller.Two, p2ControllerTxt, p2Bg, p2Ic);
+            PlayerThreeAssign = new(Controller.Three, p3ControllerTxt, p3Bg, p3Ic);
+            PlayerFourAssign = new(Controller.Four, p4ControllerTxt, p4Bg, p4Ic);
         }
 
         #region MainMenu & binding

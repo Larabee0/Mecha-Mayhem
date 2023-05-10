@@ -377,6 +377,7 @@ namespace RedButton.Core
             if (keepPlayerOneUI)
             {
                 PlayerOne.EnableUIonly();
+                PlayerOne.SetWiimotePointerActive(false);   
             }
         }
 
@@ -397,5 +398,16 @@ namespace RedButton.Core
             };
         }
 
+        public static Color GetPlayerColour(Controller player)
+        {
+            return player switch
+            {
+                Controller.One => PlayerOneColour,
+                Controller.Two => PlayerTwoColour,
+                Controller.Three => PlayerThreeColour,
+                Controller.Four => PlayerFourColour,
+                _ => Color.white
+            };
+        }
     }
 }

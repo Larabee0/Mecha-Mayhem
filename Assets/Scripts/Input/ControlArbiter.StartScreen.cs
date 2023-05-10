@@ -175,6 +175,7 @@ namespace RedButton.Core
         /// <returns></returns>
         private IEnumerator ControllerAssignmentCoroutine(Queue<UnityUITranslationLayer.ControllerAssignHelper> playersToAssign)
         {
+            float time = 0;
             while (playersToAssign.Count > 0 || playerToAssign != null)
             {
                 if (startScreenActionMap.devices.Value.Count != newDevices.Count)
@@ -187,7 +188,13 @@ namespace RedButton.Core
                     playerToAssign = playersToAssign.Dequeue();
                     playerToAssign.Highlight();
                 }
+                if(time > 0.5f)
+                {
+                    time = 0;
+                    playerToAssign.InvertTextColour();
+                }
                 yield return null;
+                time += Time.deltaTime;
             }
             //startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
@@ -217,6 +224,7 @@ namespace RedButton.Core
             SpawnAndAssignToPlayer(devices);
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.devices = newDevices.ToArray();
+            playerToAssign.SetTextBlack();
             playerToAssign = null;
         }
 

@@ -184,9 +184,13 @@ namespace RedButton.GamePlay
             {
                 powerUpsManager.SetUpPowerUps();
             }
+            activeMechs.ForEach(mech => {
+                mech.MechInputController.Disable();
+            });
             // hide round number
             for (int i = 0; i < activeMechs.Count; i++)
             {
+                activeMechs[i].MechInputController.SetPausingAllowed(true);
                 activeMechs[i].MechInputController.Enable();
                 activeMechs[i].gameObject.SetActive(true);
 
