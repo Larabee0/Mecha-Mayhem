@@ -125,11 +125,11 @@ namespace RedButton.Core
                 rumbleDevice = gamepad;
                 DeviceName = devices[0].displayName;
             }
-            SetWiimotePointerActive(setWiimotePointer);
+            player = playerNum;
+            //SetWiimotePointerActive(setWiimotePointer);
             CreateNewControlMap(devices);
             PersistantOptions.instance.OnUserSettingsChangedData += UpdateSensitivity;
             UpdateSensitivity();
-            player = playerNum;
             devicePath = devices[0].path;
             DeviceConnected = true;
         }

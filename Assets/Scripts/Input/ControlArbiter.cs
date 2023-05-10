@@ -202,12 +202,14 @@ namespace RedButton.Core
                 else
                 {
                     AssignToPlayer(controllers, i);
+                    
                     if (controllerMap.ContainsKey(controllers[i].DevicePath))
                     {
                         continue;
                     }
                     controllerMap.Add(controllers[i].DevicePath, controllers[i]);
                     controllers[i].Enable();
+                    controllers[i].SetWiimotePointerActive(false);
                     controllers[i].SetPausingAllowed(true);
                     allActiveControllers.Add(controllers[i].Player);
                 }
@@ -363,6 +365,7 @@ namespace RedButton.Core
             Time.timeScale = 1;
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
+            
             ValidateControllersAndPlayers();
             InputSystem.ResumeHaptics();
             
