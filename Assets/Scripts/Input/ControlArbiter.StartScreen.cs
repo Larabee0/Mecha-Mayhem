@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 namespace RedButton.Core
 {
@@ -42,7 +40,7 @@ namespace RedButton.Core
             {
                 devices = newDevices.ToArray()
             };
-            //startScreenUIActionAsset.devices = newDevices.ToArray();
+
             startScreenActionMap.UI.Submit.performed += StartScreenAnyButtonPressed;
             startScreenActionMap.UI.StartScreenAux.performed += StartScreenAnyButtonPressed;
             startScreenActionMap.UI.Enable();
@@ -77,12 +75,6 @@ namespace RedButton.Core
             PlayerOne.EnableUIonly();
             startScreenState = StartScreenState.MainMenu;
             uiTranslator.StartMenuUI.ShowMainMenu();
-            //StartCoroutine(DelayedPlayerOneUIEnable(devices));
-        }
-
-        private IEnumerator DelayedPlayerOneUIEnable(InputDevice[] devices)
-        {
-            yield return new WaitForSeconds(10f);
         }
 
         /// <summary>
@@ -145,14 +137,10 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += AssignControllerCallback;
             startScreenActionMap.UI.StartScreenAux.performed += AssignControllerCallback;
-            //startScreenActionMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
             startScreenActionMap.UI.Enable();
             if (PlayerOne != null)
             {
-                if (UnityUI)
-                {
-                    PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
-                }
+                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
                 PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
                 PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
             }
@@ -187,7 +175,7 @@ namespace RedButton.Core
                 yield return null;
                 time += Time.deltaTime;
             }
-            //startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
+
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
             startScreenActionMap.UI.StartScreenAux.performed -= AssignControllerCallback;
 

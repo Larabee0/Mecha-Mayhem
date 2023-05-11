@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 using WiimoteApi;
 using RedButton.Core.WiimoteSupport;
 using UnityEngine.InputSystem.UI;
@@ -13,8 +11,8 @@ namespace RedButton.Core
 {
     /// <summary>
     /// ControlArbiter.Wiimotes
-    /// this part of hte control arbiter is reliable but should be imporved to make the static properties more robust.
-    /// This part of hte control arbiter is resonsible for talking to the WiimoteAPI.WiimoteManager to get wiimotes,
+    /// this part of the control arbiter is reliable but should be imporved to make the static properties more robust.
+    /// This part of the control arbiter is resonsible for talking to the WiimoteAPI.WiimoteManager to get wiimotes,
     /// and send them to the Input System so they can be used in game.
     /// </summary>
     public partial class ControlArbiter : MonoBehaviour

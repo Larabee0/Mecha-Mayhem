@@ -21,7 +21,6 @@ namespace RedButton.Core
             All
         }
 
-
         public static bool Paused { get; private set; }
         public static Controller playerMode;
         public static ControlArbiter Instance { get { return instance; } private set { instance = value; } }
@@ -144,16 +143,8 @@ namespace RedButton.Core
         
         private void Start()
         {
-            // if (unityUI)
-            // {
-            //     uiTranslator.StartMenuUI.PlayerSelectCallback += MainUIController.StartScreenController.PlayerSelectCallback;
-            // }
-
-            if (UnityUI)
-            {
-                uiTranslator.StartMenuUI.optionsManager.LoadFromSettings();
-                mainUIController.UIShown = false;
-            }
+            uiTranslator.StartMenuUI.optionsManager.LoadFromSettings();
+            mainUIController.UIShown = false;
             WiimoteUISetup();
         }
 
