@@ -33,13 +33,13 @@ namespace RedButton.Mech
             }
             CMC.MechInputController.OnLeftStick += OnMove;
             CMC.MechInputController.OnRightStick += OnAim;
-        }
-
-        protected virtual void Start()
-        {
             targetPoint.localPosition += targetPoint.forward * targetPointDistance;
         }
 
+        protected virtual void OnEnable()
+        {
+            targetPoint.LookAt(Camera.main.transform.position, -Vector3.up);
+        }
         protected virtual void Update() { }
 
         protected virtual void FixedUpdate() { }
@@ -49,7 +49,7 @@ namespace RedButton.Mech
             CMC.MechInputController.OnRightStick -= OnAim;
         }
 
-        protected abstract void OnMove(Vector2 axis);
+        protected abstract void OnMove(Vector2 axis, bool animate);
 
         /// <summary>
         /// OnAim is implemented in the base class. But can be overriden in inheriting classes.
@@ -75,6 +75,7 @@ namespace RedButton.Mech
                 dir = Vector3.RotateTowards(targetPointParent.forward, targetDirection, aimInput * aimSpeed * CMC.MechInputController.ControllerSense * Time.deltaTime, 0.0f);
             }
             targetPointParent.forward = targetPointParentForward = dir;
+            targetPoint.LookAt(Camera.main.transform.position, -Vector3.up);
         }
     }
 }

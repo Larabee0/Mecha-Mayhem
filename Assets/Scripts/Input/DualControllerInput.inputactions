@@ -323,6 +323,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "StartScreenAux",
+                    "type": "Button",
+                    "id": "768b5bbd-0d8a-4db0-9bbc-2bc2fb4babb4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -669,6 +678,17 @@
                 },
                 {
                     "name": "",
+                    "id": "5eb16eb9-d57b-4bd8-9d10-c2739de4e7c3",
+                    "path": "<WiimoteDevice>/bButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5acb57c5-ec46-473a-820c-a0957f1fe67b",
                     "path": "<Mouse>/position",
                     "interactions": "",
@@ -867,34 +887,34 @@
                 },
                 {
                     "name": "One Modifier",
-                    "id": "68e11105-997d-4819-9235-11dd8e09b5d3",
+                    "id": "5e785544-7928-40de-98a1-81b156ac79c0",
                     "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Submit",
+                    "action": "StartScreenAux",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "modifier",
-                    "id": "dc4761ea-c016-451e-ab81-19825d8e06f7",
+                    "id": "7a7c192d-b4f1-41b9-8870-1be1fdb0f3ad",
                     "path": "<WiimoteDevice>/bButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Submit",
+                    "action": "StartScreenAux",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "binding",
-                    "id": "665eee4d-22ae-46e3-a9d8-65f4eeedd219",
+                    "id": "7be55c53-3520-4cf7-ac4b-7d84e35a1984",
                     "path": "<WiimoteDevice>/aButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Submit",
+                    "action": "StartScreenAux",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class MechResults
+public class MechResults : IComparable<MechResults>
 {
+    public string player;
     public int roundsWon;
     public int powerUpsConsumed;
     public int hitsMade;
@@ -13,5 +14,23 @@ public class MechResults
     public int hitsTaken;
     public int damageRecieved;
 
-    public int Score => roundsWon * (powerUpsConsumed + hitsMade + damageToOtherMechs - hitsTaken - damageRecieved);
+    public int Score => 1+roundsWon * (powerUpsConsumed + hitsMade + damageToOtherMechs - hitsTaken - damageRecieved);
+
+    public string this[int i] => i switch
+    {
+        0 => player,
+        1 => roundsWon.ToString(),
+        2 => hitsMade.ToString("D3"),
+        3 => damageToOtherMechs.ToString("D3"),
+        4 => powerUpsConsumed.ToString("D3"),
+        5 => hitsTaken.ToString("D3"),
+        6 => damageRecieved.ToString("D3"),
+        7 => Score.ToString("D5"),
+        _ => int.MaxValue.ToString()
+    };
+
+    public int CompareTo(MechResults other)
+    {
+        return roundsWon.CompareTo(other.roundsWon);
+    }
 }

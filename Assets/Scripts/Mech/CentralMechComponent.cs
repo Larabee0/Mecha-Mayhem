@@ -4,14 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace RedButton.Mech
 {
     [Serializable]
     public struct Colourable
     {
-        public MeshRenderer colourableTarget;
+        public Renderer colourableTarget;
         public int materialIndex;
         public bool all;
     }
@@ -28,7 +27,12 @@ namespace RedButton.Mech
         [SerializeField] private Colourable[] colourables;
         [SerializeField] private Renderer[] fixedColourables;
         [SerializeField] private DecalProjector[] decals;
-        [SerializeField] protected Transform animationCentre;
+
+        [Header("AimPoint")]
+        [SerializeField] private SpriteRenderer aimPointSR;
+        [SerializeField] protected Sprite[] aimPointSprites;
+        [Header("Transform points")]
+        [SerializeField] private Transform animationCentre;
         [SerializeField] private Transform[] weaponOriginPoints;
         private int weaponOriginIndex = 0;
 
@@ -72,6 +76,8 @@ namespace RedButton.Mech
                 Destroy(this);
                 return;
             }
+            aimPointSR.sprite =  aimPointSprites[(int)MechInputController.Player];
+            stats.player = string.Format("Player {0}", ((int)MechInputController.Player) + 1);
             movementCore = GetComponentInChildren<MovementCore>();
 
             mechColliders = GetComponentsInChildren<Collider>();
@@ -96,24 +102,36 @@ namespace RedButton.Mech
             }
         }
 
+        private void OnEnable()
+        {
+            SetMechColour(MechAccentColour);
+            SetFixedMechColours(MechAccentColour);
+        }
+
         private void Start()
         {
             OnHealthChange += OnHealthChanged;
-            SetMechColour(MechAccentColour);
-            SetFixedMechColours(MechAccentColour);
         }
 
         private void SetFixedMechColours(Color colour)
         {
             for (int i = 0; i < fixedColourables.Length; i++)
             {
+                if (fixedColourables[i] is SpriteRenderer spriteRenderer)
+                {
+                    spriteRenderer.color = colour;
+                    spriteRenderer.material.SetTexture("_UnlitColorMap", spriteRenderer.sprite.texture);
+                }
                 fixedColourables[i].material.SetColor("_BaseColor", colour);
+                fixedColourables[i].material.SetColor("_UnlitColor", colour);
+
             }
 
             for (int i = 0; i < decals.Length; i++)
             {
+                decals[i].material = new Material(decals[i].material);
                 decals[i].material.SetColor("_BaseColor", colour);
-                decals[i].material.SetColor("_EmissiveColorHDR", colour * 1.5f);
+                // decals[i].material.SetColor("_EmissiveColorHDR", colour * 1.5f);
             }
         }
 
@@ -141,6 +159,8 @@ namespace RedButton.Mech
             Vector3 lookTarget = MechMovementCore.TargetPoint.position;
             lookTarget.y = animationCentre.position.y;
             animationCentre.LookAt(lookTarget);
+
+
 #if UNITY_EDITOR
             if (debugging)
             {
@@ -156,6 +176,13 @@ namespace RedButton.Mech
 #endif
         }
 
+        private void OnDisable()
+        {
+            if (MechInputController)
+            {
+                MechInputController.StopRumbleMotor(RumbleMotor.Both);
+            }
+        }
         public Transform GetNextWeaponOrigin()
         {
             Transform origin = weaponOriginPoints[weaponOriginIndex];

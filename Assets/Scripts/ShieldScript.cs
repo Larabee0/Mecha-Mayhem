@@ -36,7 +36,6 @@ namespace RedButton.Mech
 
         protected override void Start()
         {
-            targetObject = CMC.MechMovementCore.TargetPoint;
             currentShieldHealth = maxShieldHealth;
         }
 

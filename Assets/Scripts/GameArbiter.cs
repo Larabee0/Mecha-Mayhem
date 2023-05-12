@@ -22,6 +22,7 @@ namespace RedButton.GamePlay
         [SerializeField] private bool roundStarted = false;
         public bool RoundStarted => roundStarted;
         public Pluse OnActiveSceneChanged;
+        public Pluse OnRoundStarted;
 
         [SerializeField] private PowerUpsManager powerUpsManager;
         [SerializeField] private int roundCount = 3;
@@ -39,6 +40,7 @@ namespace RedButton.GamePlay
                 Instantiate(controlArbiterPrefab);
             }
             ControlArbiter.Instance.OnPauseMenuQuit += EndRound;
+            OnRoundStarted += TestRound;
         }
 
         private void Start()
@@ -139,20 +141,16 @@ namespace RedButton.GamePlay
                     return;
                 }
 
-                int winner = 0;
-                int wins = 0;
+                List<MechResults> results = new(playerCount);
 
                 for (int i = 0; i < playerCount; i++)
                 {
-                    if (playerVictories[i] > wins)
-                    {
-                        wins = playerVictories[i];
-                        winner = i;
-                    }
+                    results.Add(spawnedMechs[i].stats);
                 }
-
-                lastRoundWinner = string.Format("Player {0} ", (winner + 1).ToString());
-                ControlArbiter.Instance.UITranslator.EndScreenUI.OpenEndofGame(lastRoundWinner);
+                results.Sort();
+                results.Reverse();
+                // lastRoundWinner = string.Format("Player {0} ", (winner + 1).ToString());
+                ControlArbiter.Instance.UITranslator.EndScreenUI.OpenEndofGame(results);
                 return;
             }
 
@@ -188,14 +186,19 @@ namespace RedButton.GamePlay
             {
                 powerUpsManager.SetUpPowerUps();
             }
+            activeMechs.ForEach(mech => {
+                mech.MechInputController.Disable();
+            });
             // hide round number
             for (int i = 0; i < activeMechs.Count; i++)
             {
+                activeMechs[i].MechInputController.SetPausingAllowed(true);
                 activeMechs[i].MechInputController.Enable();
                 activeMechs[i].gameObject.SetActive(true);
 
                 activeMechs[i].OnMechDied += OnMechDeath;
             }
+            OnRoundStarted?.Invoke();
         }
 
         private void StartRoundWithOptions(string roundName, List<int>targetPlayers)
@@ -290,6 +293,12 @@ namespace RedButton.GamePlay
             {
                 Debug.LogFormat(cmc.gameObject,"Unexpected mech death at {0} ", Time.realtimeSinceStartup);
             }
+        }
+
+
+        public void TestRound()
+        {
+            Debug.Log("Round Started");
         }
 
         private void OnDestroy()

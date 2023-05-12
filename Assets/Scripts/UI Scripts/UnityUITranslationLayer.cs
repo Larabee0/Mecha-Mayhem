@@ -92,35 +92,60 @@ namespace RedButton.Core.UI
 
         public class ControllerAssignHelper
         {
+            private const float alpha = 0.5470588f;
+            private const float alpha2 = 0.9470588f;
             public Controller playerNum;
             public Text lable;
             public Image image;
+            public Image icon;
 
-            public ControllerAssignHelper(Controller playerNum, Text lable, Image image)
+            public ControllerAssignHelper(Controller playerNum, Text lable, Image image, Image icon)
             {
                 this.playerNum = playerNum;
                 this.lable = lable;
                 this.image = image;
+                this.icon = icon;
                 lable.text = "";
                 SetShown(false,Color.grey);
             }
 
             public void Highlight()
             {
-                image.color = Color.white;
+                Color colour = ControlArbiter.GetPlayerColour(playerNum);
+                image.color = colour;
+                colour.a = alpha2;
+                icon.color = colour;
                 lable.text = "Press Any Button";
             }
 
             public void Set(PlayerInput player)
             {
-                image.color = player.playerColour;
+                Color colour = player.playerColour;
+                colour.a = alpha*0.5f;
+                image.color = colour;
+                colour.a = alpha2 * 0.5f;
+                icon.color = colour;
                 lable.text = string.Format("{0}", player.DeviceName);
+            }
+
+            public void InvertTextColour()
+            {
+                lable.color = lable.color == Color.black ? Color.white : Color.black;
+            }
+
+            public void SetTextBlack()
+            {
+                lable.color = Color.black;
             }
 
             public void SetShown(bool hidden, Color colour)
             {
-                lable.transform.parent.gameObject.SetActive(hidden);
+                colour = Color.white;
+                icon.transform.parent.gameObject.SetActive(hidden);
                 image.color = colour;
+                colour = ControlArbiter.GetPlayerColour(playerNum);
+                colour.a = alpha;
+                icon.color = colour;
                 lable.text = "";
             }
 

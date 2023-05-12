@@ -59,7 +59,7 @@ namespace RedButton.Core
         public ButtonEventContainer fireTwoButton = new();
 
         // Joy stick axis events
-        public Vector2Axis OnLeftStick;
+        public Vector2BoolAxis OnLeftStick;
         public Vector2BoolAxis OnRightStick;
 
         // current rumble strengths for each rumble motor
@@ -125,11 +125,11 @@ namespace RedButton.Core
                 rumbleDevice = gamepad;
                 DeviceName = devices[0].displayName;
             }
-            EnableWiimotePointer();
+            player = playerNum;
+            //SetWiimotePointerActive(setWiimotePointer);
             CreateNewControlMap(devices);
             PersistantOptions.instance.OnUserSettingsChangedData += UpdateSensitivity;
             UpdateSensitivity();
-            player = playerNum;
             devicePath = devices[0].path;
             DeviceConnected = true;
         }
@@ -202,6 +202,7 @@ namespace RedButton.Core
 
         public void EnableUIonly()
         {
+            SetWiimotePointerActive(setWiimotePointer);
             controlMapEnabled = false;
             uiOnlyEnabled = true;
             controlMap.UI.Enable();
@@ -234,15 +235,16 @@ namespace RedButton.Core
         /// </summary>
         public void Disable()
         {
-            controlMapEnabled= uiOnlyEnabled = false;
+            SetWiimotePointerActive(false);
+            controlMapEnabled = uiOnlyEnabled = false;
             controlMap.MechControls.Disable();
             controlMap.UI.Disable();
+            StopRumbleMotor(global::RumbleMotor.Both);
             StopAllCoroutines();
         }
 
         private void Update()
         {
-            EnableWiimotePointer();
             if (debugging)
             {
                 if (Input.GetKeyUp(KeyCode.Space) && !Input.GetKey(KeyCode.LeftShift))
@@ -268,7 +270,6 @@ namespace RedButton.Core
             Debug.Log("Decommissioning Player Input Script!");
             Disable();
             DisposeOfCurrentControlMap();
-            StopRumbleMotor(global::RumbleMotor.Both);
         }
 
         #region Buttons
@@ -367,7 +368,7 @@ namespace RedButton.Core
             if (leftStickProcess != null)
             {
                 StopCoroutine(leftStickProcess);
-                OnLeftStick?.Invoke(Vector2.zero);
+                OnLeftStick?.Invoke(Vector2.zero,false);
             }
         }
 
@@ -378,6 +379,7 @@ namespace RedButton.Core
                 StopCoroutine(rightStickProcess);
                 Vector2 value = AimAtRightStick ? controlMap.MechControls.RightStick.ReadValue<Vector2>() : Vector2.zero;
                 OnRightStick?.Invoke(value, AimAtRightStick);
+
                 if (setWiimotePointer)
                 {
                     SetWiimotePointer(value);
@@ -390,7 +392,7 @@ namespace RedButton.Core
         {
             while (true)
             {
-                OnLeftStick?.Invoke(controlMap.MechControls.LeftStick.ReadValue<Vector2>());
+                OnLeftStick?.Invoke(controlMap.MechControls.LeftStick.ReadValue<Vector2>(),true);
                 yield return null;
             }
         }
@@ -434,21 +436,21 @@ namespace RedButton.Core
 
             }
         }
-        private void EnableWiimotePointer()
+        public void SetWiimotePointerActive(bool active)
         {
             switch (player)
             {
                 case Controller.One:
-                    ControlArbiter.Wiimote1PointerEnable = setWiimotePointer;
+                    ControlArbiter.Wiimote1PointerEnable = active;
                     break;
                 case Controller.Two:
-                    ControlArbiter.Wiimote2PointerEnable = setWiimotePointer;
+                    ControlArbiter.Wiimote2PointerEnable = active;
                     break;
                 case Controller.Three:
-                    ControlArbiter.Wiimote3PointerEnable = setWiimotePointer;
+                    ControlArbiter.Wiimote3PointerEnable = active;
                     break;
                 case Controller.Four:
-                    ControlArbiter.Wiimote4PointerEnable = setWiimotePointer;
+                    ControlArbiter.Wiimote4PointerEnable = active;
                     break;
 
             }
@@ -496,7 +498,7 @@ namespace RedButton.Core
         /// Provides a way to force stop the rumble motors for this player's controller
         /// </summary>
         /// <param name="rumbleMotor"> Specific motor to stop, low, high or both rumble frequencies.</param>
-        private void StopRumbleMotor(RumbleMotor rumbleMotor)
+        public void StopRumbleMotor(RumbleMotor rumbleMotor)
         {
             if ((rumbleMotor == global::RumbleMotor.LowFreq || rumbleMotor == global::RumbleMotor.Both) && lowRumbleProcess != null)
             {

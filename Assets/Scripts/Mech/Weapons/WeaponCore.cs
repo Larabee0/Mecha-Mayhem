@@ -14,11 +14,8 @@ namespace RedButton.Mech
     {
         protected CentralMechComponent CMC;
         public CentralMechComponent Owner => CMC;
-        protected Transform targetObject; // gotten by MovementCore this is what the weapon will try and look at, aiming it.
-        
-        // these properties are both overrideable
-        protected virtual Vector3 TargetPos => targetObject.position;
-        protected virtual Vector3 TargetForward => targetObject.forward;
+
+        protected virtual Vector3 TargetForward => muzzleOriginPoint.forward;
 
         [HideInInspector] public bool Grouped; // if the weapon is part of a group this is set to true by the group.
         protected bool UnboundFromControls = true;
@@ -57,7 +54,6 @@ namespace RedButton.Mech
 
         protected virtual void Start()
         {
-            targetObject = CMC.MechMovementCore.TargetPoint;
             if(muzzleOriginPoint == null)
             {
                 muzzleOriginPoint = CMC.GetNextWeaponOrigin();

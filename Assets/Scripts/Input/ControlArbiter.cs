@@ -5,6 +5,7 @@ using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
 using System.Linq;
 using UnityEngine.InputSystem.UI;
+using UnityEditor.Sprites;
 
 namespace RedButton.Core
 {
@@ -21,7 +22,6 @@ namespace RedButton.Core
             All
         }
 
-
         public static bool Paused { get; private set; }
         public static Controller playerMode;
         public static ControlArbiter Instance { get { return instance; } private set { instance = value; } }
@@ -31,7 +31,7 @@ namespace RedButton.Core
         public static PlayerInput PlayerTwo = null;
         public static PlayerInput PlayerThree = null;
         public static PlayerInput PlayerFour = null;
-        public static PlayerInput KeyboardPlayer = null;
+        public static PlayerInput CurrentAuthority = null;
         public PlayerInput this[int i]
         {
             get => i switch
@@ -108,7 +108,7 @@ namespace RedButton.Core
             }
             else
             {
-                mainUIController.transform.parent = transform;
+                mainUIController.transform.SetParent(transform, false);
             }
             
             // if an active instance already exists, lets bin ourselves including any UI or playerInput children.
@@ -138,22 +138,14 @@ namespace RedButton.Core
             PlayerTwo = null;
             PlayerThree = null;
             PlayerFour = null;
-            KeyboardPlayer = null;
+            CurrentAuthority = null;
             HotStart();
         }
         
         private void Start()
         {
-            // if (unityUI)
-            // {
-            //     uiTranslator.StartMenuUI.PlayerSelectCallback += MainUIController.StartScreenController.PlayerSelectCallback;
-            // }
-
-            if (UnityUI)
-            {
-                uiTranslator.StartMenuUI.optionsManager.LoadFromSettings();
-                mainUIController.UIShown = false;
-            }
+            uiTranslator.StartMenuUI.optionsManager.LoadFromSettings();
+            mainUIController.UIShown = false;
             WiimoteUISetup();
         }
 
@@ -202,12 +194,14 @@ namespace RedButton.Core
                 else
                 {
                     AssignToPlayer(controllers, i);
+                    
                     if (controllerMap.ContainsKey(controllers[i].DevicePath))
                     {
                         continue;
                     }
                     controllerMap.Add(controllers[i].DevicePath, controllers[i]);
                     controllers[i].Enable();
+                    controllers[i].SetWiimotePointerActive(false);
                     controllers[i].SetPausingAllowed(true);
                     allActiveControllers.Add(controllers[i].Player);
                 }
@@ -233,6 +227,7 @@ namespace RedButton.Core
                     this[i].SetPausingAllowed(false);
                 }
             }
+            CurrentAuthority = null;
         }
 
         private void AssignToPlayer(PlayerInput[] controllers, int i)
@@ -258,10 +253,6 @@ namespace RedButton.Core
                     PlayerFour = controllers[i];
                     PlayerFour.playerColour = playerFourColour;
                     break;
-                case Controller.Keyboard:
-                    PlayerTwo = KeyboardPlayer = controllers[i];
-                    PlayerTwo.playerColour = playerTwoColour;
-                    break;
             }
         }
 
@@ -273,6 +264,7 @@ namespace RedButton.Core
             startScreenActionMap.devices = player.Devices;
             player.EnableUIonly();
             uiTranslator.SetUIHoverTint(player.playerColour);
+            CurrentAuthority = player;
         }
 
         #region Hot Start
@@ -354,6 +346,7 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = pauser.Devices;
             startScreenActionMap.devices = pauser.Devices;
             Time.timeScale = 0;
+            CurrentAuthority = pauser;
         }
 
         public void UnPauseGame()
@@ -363,6 +356,8 @@ namespace RedButton.Core
             Time.timeScale = 1;
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
+
+            CurrentAuthority = null;
             ValidateControllersAndPlayers();
             InputSystem.ResumeHaptics();
             
@@ -377,6 +372,7 @@ namespace RedButton.Core
             if (keepPlayerOneUI)
             {
                 PlayerOne.EnableUIonly();
+                PlayerOne.SetWiimotePointerActive(false);   
             }
         }
 
@@ -397,5 +393,16 @@ namespace RedButton.Core
             };
         }
 
+        public static Color GetPlayerColour(Controller player)
+        {
+            return player switch
+            {
+                Controller.One => PlayerOneColour,
+                Controller.Two => PlayerTwoColour,
+                Controller.Three => PlayerThreeColour,
+                Controller.Four => PlayerFourColour,
+                _ => Color.white
+            };
+        }
     }
 }

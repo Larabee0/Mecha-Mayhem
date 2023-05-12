@@ -10,39 +10,43 @@ namespace RedButton.Core.UI
     public class StartMenuManagerScript : MonoBehaviour
     {
         [Header("Panels")]
-        [SerializeField] GameObject bgPanel;
-        [SerializeField] GameObject bindPanel;
-        [SerializeField] GameObject btnPanel;
-        [SerializeField] GameObject controlsPanel;
-        [SerializeField] GameObject creditsPanel;
-        [SerializeField] GameObject willCreditsPanel;
-        [SerializeField] GameObject playerNumPanel;
-        [SerializeField] GameObject PlayerAssignPanel;
-        [SerializeField] GameObject lvlSelectPanel;
+        [SerializeField] private GameObject bgPanel;
+        [SerializeField] private GameObject bindPanel;
+        [SerializeField] private GameObject btnPanel;
+        [SerializeField] private GameObject controlsPanel;
+        [SerializeField] private GameObject creditsPanel;
+        [SerializeField] private GameObject willCreditsPanel;
+        [SerializeField] private GameObject playerNumPanel;
+        [SerializeField] private GameObject PlayerAssignPanel;
+        [SerializeField] private GameObject lvlSelectPanel;
 
         [Header("Buttons")]
-        [SerializeField] GameObject btnPanelBtn;
-        [SerializeField] GameObject optionsPanelBtn;
-        [SerializeField] GameObject controlsPanelBtn;
-        [SerializeField] GameObject creditsPanelBtn;
-        [SerializeField] GameObject playerNumPanelBtn;
-        [SerializeField] GameObject returnBtn;
-        [SerializeField] GameObject okBtn;
-        [SerializeField] GameObject changeBtn;
-        [SerializeField] GameObject lvlSelectPanelBtn;
+        [SerializeField] private GameObject btnPanelBtn;
+        [SerializeField] private GameObject optionsPanelBtn;
+        [SerializeField] private GameObject controlsPanelBtn;
+        [SerializeField] private GameObject creditsPanelBtn;
+        [SerializeField] private GameObject playerNumPanelBtn;
+        [SerializeField] private GameObject returnBtn;
+        [SerializeField] private GameObject okBtn;
+        [SerializeField] private GameObject changeBtn;
+        [SerializeField] private GameObject lvlSelectPanelBtn;
 
         [Header("Assignment Stuff")]
-        [SerializeField] Image p1Bg;
-        [SerializeField] Text p1ControllerTxt;
-        [SerializeField] Image p2Bg;
-        [SerializeField] Text p2ControllerTxt;
-        [SerializeField] Image p3Bg;
-        [SerializeField] Text p3ControllerTxt;
-        [SerializeField] Image p4Bg;
-        [SerializeField] Text p4ControllerTxt;
+        [SerializeField] private Image p1Bg;
+        [SerializeField] private Image p1Ic;
+        [SerializeField] private Text p1ControllerTxt;
+        [SerializeField] private Image p2Bg;
+        [SerializeField] private Image p2Ic;
+        [SerializeField] private Text p2ControllerTxt;
+        [SerializeField] private Image p3Bg;
+        [SerializeField] private Image p3Ic;
+        [SerializeField] private Text p3ControllerTxt;
+        [SerializeField] private Image p4Bg;
+        [SerializeField] private Image p4Ic;
+        [SerializeField] private Text p4ControllerTxt;
 
-        [SerializeField] Sprite bgSprite;
-        [SerializeField] Sprite willSprite;
+        [SerializeField] private Sprite bgSprite;
+        [SerializeField] private Sprite willSprite;
 
         [Header("Mech Selector")]
         public MechSelectorManager mechSelectorManager;
@@ -64,10 +68,10 @@ namespace RedButton.Core.UI
 
         private void Awake()
         {
-            PlayerOneAssign = new(Controller.One, p1ControllerTxt, p1Bg);
-            PlayerTwoAssign = new(Controller.Two, p2ControllerTxt, p2Bg);
-            PlayerThreeAssign = new(Controller.Three, p3ControllerTxt, p3Bg);
-            PlayerFourAssign = new(Controller.Four, p4ControllerTxt, p4Bg);
+            PlayerOneAssign = new(Controller.One, p1ControllerTxt, p1Bg,p1Ic);
+            PlayerTwoAssign = new(Controller.Two, p2ControllerTxt, p2Bg, p2Ic);
+            PlayerThreeAssign = new(Controller.Three, p3ControllerTxt, p3Bg, p3Ic);
+            PlayerFourAssign = new(Controller.Four, p4ControllerTxt, p4Bg, p4Ic);
         }
 
         #region MainMenu & binding
@@ -189,7 +193,7 @@ namespace RedButton.Core.UI
         public void OpenAssignment(int playerNum)
         {
             Controller playerCount = (Controller)(playerNum- 1);
-            ControlArbiter.Instance.UnSubFromMainMenuBack();
+            ControlArbiter.Instance.UnSubFromMainMenuBack(ControlArbiter.PlayerOne);
             ControlArbiter.Instance.startScreenState = StartScreenState.ControllerAssignment;
             PlayerSelectCallback(playerCount);
         }

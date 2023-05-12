@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 namespace RedButton.Mech.Examples
 {
@@ -17,11 +18,14 @@ namespace RedButton.Mech.Examples
         [SerializeField] protected float moveSpeed = 20;
         [SerializeField] protected float forceMultiplier = 1;
         [SerializeField] protected float rotationSpeed = 5 ;
+        [SerializeField] private SkinnedMeshRenderer skinnedMesh;
+        [SerializeField] private Animator animator;
         protected float moveInput;
         protected Vector3 moveDir;
 
-        protected override void OnMove(Vector2 axis)
+        protected override void OnMove(Vector2 axis, bool animate)
         {
+            animator.SetBool("isWalking", animate);
             moveInput = axis.magnitude;
             moveDir = moveInput > 0 ? new Vector3(axis.x, 0f, axis.y).normalized : transform.forward;
             targetPointParentForward = targetPointParent.forward;
@@ -30,6 +34,9 @@ namespace RedButton.Mech.Examples
             targetPoint.position = pos;
             transform.forward = Vector3.RotateTowards(transform.forward, moveDir, rotationSpeed * Time.deltaTime, 0.0f);
             targetPointParent.forward = targetPointParentForward;
+
+
+            targetPoint.LookAt(Camera.main.transform.position, -Vector3.up);
         }
 
         /// <summary>

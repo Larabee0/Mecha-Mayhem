@@ -345,6 +345,15 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StartScreenAux"",
+                    ""type"": ""Button"",
+                    ""id"": ""768b5bbd-0d8a-4db0-9bbc-2bc2fb4babb4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -691,6 +700,17 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""5eb16eb9-d57b-4bd8-9d10-c2739de4e7c3"",
+                    ""path"": ""<WiimoteDevice>/bButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""5acb57c5-ec46-473a-820c-a0957f1fe67b"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
@@ -889,34 +909,34 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""One Modifier"",
-                    ""id"": ""68e11105-997d-4819-9235-11dd8e09b5d3"",
+                    ""id"": ""5e785544-7928-40de-98a1-81b156ac79c0"",
                     ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Submit"",
+                    ""action"": ""StartScreenAux"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""modifier"",
-                    ""id"": ""dc4761ea-c016-451e-ab81-19825d8e06f7"",
+                    ""id"": ""7a7c192d-b4f1-41b9-8870-1be1fdb0f3ad"",
                     ""path"": ""<WiimoteDevice>/bButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Submit"",
+                    ""action"": ""StartScreenAux"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""binding"",
-                    ""id"": ""665eee4d-22ae-46e3-a9d8-65f4eeedd219"",
+                    ""id"": ""7be55c53-3520-4cf7-ac4b-7d84e35a1984"",
                     ""path"": ""<WiimoteDevice>/aButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Submit"",
+                    ""action"": ""StartScreenAux"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -961,6 +981,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        m_UI_StartScreenAux = m_UI.FindAction("StartScreenAux", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1088,6 +1109,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_RightClick;
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
+    private readonly InputAction m_UI_StartScreenAux;
     public struct UIActions
     {
         private @DualControllerInput m_Wrapper;
@@ -1103,6 +1125,7 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
         public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+        public InputAction @StartScreenAux => m_Wrapper.m_UI_StartScreenAux;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1145,6 +1168,9 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 @TrackedDeviceOrientation.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
+                @StartScreenAux.started -= m_Wrapper.m_UIActionsCallbackInterface.OnStartScreenAux;
+                @StartScreenAux.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnStartScreenAux;
+                @StartScreenAux.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnStartScreenAux;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1182,6 +1208,9 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
                 @TrackedDeviceOrientation.started += instance.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.performed += instance.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.canceled += instance.OnTrackedDeviceOrientation;
+                @StartScreenAux.started += instance.OnStartScreenAux;
+                @StartScreenAux.performed += instance.OnStartScreenAux;
+                @StartScreenAux.canceled += instance.OnStartScreenAux;
             }
         }
     }
@@ -1215,5 +1244,6 @@ public partial class @DualControllerInput : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        void OnStartScreenAux(InputAction.CallbackContext context);
     }
 }

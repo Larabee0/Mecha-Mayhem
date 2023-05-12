@@ -1,19 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 using WiimoteApi;
 using RedButton.Core.WiimoteSupport;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.UI;
 
 namespace RedButton.Core
 {
     /// <summary>
     /// ControlArbiter.Wiimotes
-    /// this part of hte control arbiter is reliable but should be imporved to make the static properties more robust.
-    /// This part of hte control arbiter is resonsible for talking to the WiimoteAPI.WiimoteManager to get wiimotes,
+    /// this part of the control arbiter is reliable but should be imporved to make the static properties more robust.
+    /// This part of the control arbiter is resonsible for talking to the WiimoteAPI.WiimoteManager to get wiimotes,
     /// and send them to the Input System so they can be used in game.
     /// </summary>
     public partial class ControlArbiter : MonoBehaviour
@@ -24,8 +23,6 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer1 != null)
                 {
-                    //Instance.wiimotePointer1.transform.position = new Vector3(value.x, Screen.height - value.y);
-                    //Vector3 point = Camera.main.ScreenToWorldPoint();
                     Instance.wiimoteSinglePointer.position = new Vector3(value.x, value.y, 0);
                 }
             }
@@ -36,7 +33,6 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer2 != null)
                 {
-                    //Instance.wiimotePointer2.transform.position = new Vector3(value.x, Screen.height - value.y);
                     Instance.wiimoteSinglePointer.position = new Vector3(value.x, value.y, 0);
                 }
             }
@@ -47,7 +43,6 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer3 != null)
                 {
-                    //Instance.wiimotePointer3.transform.position = new Vector3(value.x, Screen.height - value.y);
                     Instance.wiimoteSinglePointer.position = new Vector3(value.x, value.y, 0);
                 }
             }
@@ -58,7 +53,6 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer4 != null)
                 {
-                    //Instance.wiimotePointer4.transform.position = new Vector3(value.x, Screen.height - value.y);
                     Instance.wiimoteSinglePointer.position = new Vector3(value.x, value.y, 0);
                 }
             }
@@ -69,7 +63,8 @@ namespace RedButton.Core
             {
                 if(Instance.wiimotePointer1 != null)
                 {
-                    Instance.wiimotePointer1.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
+                    Instance.wiimotePointer1.gameObject.SetActive(value);
+                    Instance.wiimotePointer1.color = PlayerOneColour;
                 }
             }
         }
@@ -79,7 +74,8 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer2 != null)
                 {
-                    Instance.wiimotePointer2.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
+                    Instance.wiimotePointer2.gameObject.SetActive(value);
+                    Instance.wiimotePointer2.color = PlayerTwoColour;
                 }
             }
         }
@@ -89,7 +85,8 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer3 != null)
                 {
-                    Instance.wiimotePointer3.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
+                    Instance.wiimotePointer3.gameObject.SetActive(value);
+                    Instance.wiimotePointer3.color = PlayerThreeColour;
                 }
             }
         }
@@ -99,7 +96,8 @@ namespace RedButton.Core
             {
                 if (Instance.wiimotePointer4 != null)
                 {
-                    Instance.wiimotePointer4.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
+                    Instance.wiimotePointer4.gameObject.SetActive(value);
+                    Instance.wiimotePointer4.color = PlayerFourColour;
                 }
             }
         }
@@ -109,20 +107,19 @@ namespace RedButton.Core
 
         [Header("Wiimote Support")]
         // Wiimote pointer UI for multiple wiimote support
-        [SerializeField] private UIDocument wiimoteOverlay;
-        private VisualElement wiimotePointer1;
-        private VisualElement wiimotePointer2;
-        private VisualElement wiimotePointer3;
-        private VisualElement wiimotePointer4;
+        [SerializeField] private RawImage wiimotePointer1;
+        [SerializeField] private RawImage wiimotePointer2;
+        [SerializeField] private RawImage wiimotePointer3;
+        [SerializeField] private RawImage wiimotePointer4;
 
         [SerializeField] private RectTransform wiimoteSinglePointer;
         [SerializeField] private VirtualMouseInput wiimoteVirtualMouse;
 
         // these strcutures are used to safely add and remove wiimotes from the Input System via the Static actions above.
         private List<Wiimote> Connected_WiimoteAPI_Wiimotes = new(); // all conneted WiimoteAPI.Wiimotes
-        private Dictionary<string,Wiimote> HID_Paths_To_WiimoteAPI_Wiimote = new(); // WiimoteAPI.Wiimote HID Paths to WiimoteAPI.Wiimote Instances
-        private Dictionary<string, WiimoteDevice> IS_Paths_To_IS_Wiimote = new(); // InputSystem WiimoteDevice Paths to WiimoteDevice Instances
-        private Dictionary<Wiimote, WiimoteDevice> WiimoteAPI_Wiimote_To_IS_Wiimote = new(); // WiimoteAPI.Wiimote to WiimoteDevice Instances
+        private readonly Dictionary<string,Wiimote> HID_Paths_To_WiimoteAPI_Wiimote = new(); // WiimoteAPI.Wiimote HID Paths to WiimoteAPI.Wiimote Instances
+        private readonly Dictionary<string, WiimoteDevice> IS_Paths_To_IS_Wiimote = new(); // InputSystem WiimoteDevice Paths to WiimoteDevice Instances
+        private readonly Dictionary<Wiimote, WiimoteDevice> WiimoteAPI_Wiimote_To_IS_Wiimote = new(); // WiimoteAPI.Wiimote to WiimoteDevice Instances
 
         /// <summary>
         /// Called from Awake.
@@ -150,14 +147,6 @@ namespace RedButton.Core
         /// </summary>
         private void WiimoteUISetup()
         {
-            if (wiimoteOverlay.rootVisualElement == null)
-            {
-                Debug.Log("wiimote overlay root is null");
-            }
-            wiimotePointer1 = wiimoteOverlay.rootVisualElement.Q("WiiCusor1");
-            wiimotePointer2 = wiimoteOverlay.rootVisualElement.Q("WiiCusor2");
-            wiimotePointer3 = wiimoteOverlay.rootVisualElement.Q("WiiCusor3");
-            wiimotePointer4 = wiimoteOverlay.rootVisualElement.Q("WiiCusor4");
             Wiimote1PointerEnable = false;
             Wiimote2PointerEnable = false;
             Wiimote3PointerEnable = false;
