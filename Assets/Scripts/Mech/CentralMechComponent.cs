@@ -241,12 +241,15 @@ namespace RedButton.Mech
 
         private void Die()
         {
-            Destroy(Instantiate(deathExplodePrefab, transform.position, Quaternion.identity), 5f);
             Debug.Log("Died", gameObject);
             Debug.LogFormat("Death Time {0}", Time.realtimeSinceStartup);
             MechInputController.Disable();
             transform.root.gameObject.SetActive(false);
             OnMechDied?.Invoke(this);
+            if (deathExplodePrefab != null)
+            {
+                Destroy(Instantiate(deathExplodePrefab, transform.position, Quaternion.identity), 5f);
+            }
         }
     }
 }
