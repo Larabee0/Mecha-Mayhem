@@ -209,6 +209,7 @@ MonoBehaviour:
   - {fileID: 3787287981354902782}
   - {fileID: 682423232627183996}
   - {fileID: 1724184865272603686}
+  StartScene: 1
 --- !u!223 &7077454535339893614
 Canvas:
   m_ObjectHideFlags: 0

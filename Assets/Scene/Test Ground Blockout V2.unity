@@ -635,6 +635,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4999563189195431456, guid: 9fd77f163a90b3148bf51f170049fe2c,
+        type: 3}
+      propertyPath: StartScene
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4999563189195431458, guid: 9fd77f163a90b3148bf51f170049fe2c,
         type: 3}
       propertyPath: m_RootOrder
