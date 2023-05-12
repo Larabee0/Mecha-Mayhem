@@ -23,6 +23,8 @@ namespace RedButton.GamePlay
             rigidbody.AddForce(0,-velocity,0, ForceMode.VelocityChange);
             GameObject Haz = GameObject.Instantiate(HazardZone);
             Haz.transform.position = TargetPoint;
+            Destroy(gameObject, 5);
+            Destroy(Haz, 5);
         }
         // Update is called once per frame
 

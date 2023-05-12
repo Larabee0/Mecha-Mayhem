@@ -9,11 +9,10 @@ namespace RedButton.GamePlay
     /// </summary>
     public class VolcanoGimmick : MonoBehaviour
     {
-        [Header("Ejecta Characteristics")]
-        [SerializeField] private int EruptionInterval = 60;
-        [SerializeField] private int Duration = 10;
-        [SerializeField] private float spawnrate = 1;
-        [SerializeField] public int damage = 50;
+        private float Interval;
+        private float Duration;
+        private int amount;
+        private float spawnrate;
 
         [Header("Flight characteristics")]
         [SerializeField] public float Velocity = 5f;
@@ -25,39 +24,44 @@ namespace RedButton.GamePlay
         [SerializeField] private GameObject HazardZone;
 
         [Header("Debugging")]
-        public float timer = 0f;
+        public float TimeFlag = 0f;
         public Vector3 TargetPoint;
+        private bool IsGimmickOccuring;
+        private bool LocalGim = false;
 
         void Start()
         {
-            spawnrate = spawnrate / 1000;
-            timer = Time.time;
+            TimeFlag = Time.time;
         }
 
-
-        private void Update()
+        void Update()
         {
-            if (Time.time >= timer + EruptionInterval)
+            GameObject GameArb = GameObject.Find("GameArbiter");
+            IsGimmickOccuring = GameArb.GetComponent<GimmickCore>().IsGimmickOccuring;
+            if (IsGimmickOccuring == true)
             {
-                Erupt();
-            }
-
-        }
-        public void Erupt()
-        {
-            if (Time.time < timer + Duration + EruptionInterval)
-            {
-                if (Random.Range(0f, 1f) < spawnrate)
-                {
-                    NewTarget();
-                    SpawnEjecta();
+                if (LocalGim == false)
+                { 
+                    Interval = GameArb.GetComponent<GimmickCore>().Interval;
+                    Duration = GameArb.GetComponent<GimmickCore>().Duration;
+                    amount = GameArb.GetComponent<GimmickCore>().VolcanoAmount - 1;
+                    spawnrate = Duration / amount;
+                    //Debug.Log("volcano: " + Duration + "," + spawnrate + "," + amount);
+                    TimeFlag = Time.time;
+                    LocalGim = true;
+                    StartCoroutine(Erupt());
                 }
             }
-            else
-            {
-                timer = Time.time;
+        }
+        IEnumerator Erupt()
+        {
+            while (Time.time < TimeFlag + Duration) {
+                yield return new WaitForSeconds(spawnrate);
+                NewTarget();
+                SpawnEjecta();
             }
-            
+            yield return LocalGim = false;
+            StopCoroutine(Erupt());          
         }
 
         public void SpawnEjecta()
@@ -65,7 +69,7 @@ namespace RedButton.GamePlay
             // safety measure.
             if  (TargetPlane == null)
             {
-                Debug.LogWarningFormat("MuzzleOrigin or TargetObject for weapon {0} was not set, aborting weapon firing", gameObject.name);
+                Debug.LogWarningFormat("Target Plane for VolcanoGimmick was not set ", gameObject.name);
                 return;
             }
 

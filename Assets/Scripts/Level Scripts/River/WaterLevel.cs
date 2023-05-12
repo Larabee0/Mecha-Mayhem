@@ -5,25 +5,31 @@ namespace RedButton.GamePlay
 {
     public class WaterLevel : MonoBehaviour
     {
-        public int FloodInterval;
-        public int Duration;
+        public float Interval;
+        public float Duration;
         public float timer = 0f;
         private Vector3 RiverFinalWidth;
         private Vector3 OriginalWidth;
-        private float speed = 2;
+        private float speed = 0.7f;
+        private bool IsGimmickOccuring;
+
         // Use this for initialization
         void Start()
         {
-            GameObject RiverWater = GameObject.Find("FloodWater");
-            Duration = RiverWater.GetComponent<RiverFlooding>().Duration;
-            FloodInterval = RiverWater.GetComponent<RiverFlooding>().FloodInterval;
+            
+            GameObject GameArb = GameObject.Find("GameArbiter");
+            Interval = GameArb.GetComponent<GimmickCore>().Interval;
+            Duration = GameArb.GetComponent<GimmickCore>().Duration;
             OriginalWidth.Set(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+            GameObject RiverWater = GameObject.Find("FloodWater");
             RiverFinalWidth.Set(RiverWater.GetComponent<RiverFlooding>().RiverFinalWidth, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
         }
 
         void Update()
         {
-            if (Time.time >= timer + FloodInterval)
+            GameObject GameArb = GameObject.Find("GameArbiter");
+            IsGimmickOccuring = GameArb.GetComponent<GimmickCore>().IsGimmickOccuring;
+            if (IsGimmickOccuring == true)
             {
                 Flood();
             }
@@ -31,15 +37,15 @@ namespace RedButton.GamePlay
 
         public void Flood()
         {
-            if (Time.time < timer + Duration + FloodInterval && gameObject.transform.localScale.x <= RiverFinalWidth.x)
+            if (Time.time < timer + Duration + Interval && gameObject.transform.localScale.x <= RiverFinalWidth.x)
             {
                 RaiseRiver();
             }
-            if (Time.time > timer + Duration + FloodInterval && gameObject.transform.localScale.x > OriginalWidth.x)
+            if (Time.time > timer + Duration + Interval && gameObject.transform.localScale.x > OriginalWidth.x)
             {
                 LowerRiver();
             }
-            else if (Time.time > timer + Duration + FloodInterval && gameObject.transform.localScale.x <= OriginalWidth.x)
+            else if (Time.time > timer + Duration + Interval && gameObject.transform.localScale.x <= OriginalWidth.x)
             {
                 timer = Time.time;
             }

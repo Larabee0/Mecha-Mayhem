@@ -11,8 +11,8 @@ namespace RedButton.GamePlay
 
         private void Awake()
         {
-            GameObject Caldera = GameObject.Find("TargetPlane");
-            damage = Caldera.GetComponent<VolcanoGimmick>().damage;
+            GameObject GameArb = GameObject.Find("GameArbiter");
+            damage = GameArb.GetComponent<GimmickCore>().VolcanoDamage;
             Destroy(gameObject, 3f);
         }
         // Update is called once per frame

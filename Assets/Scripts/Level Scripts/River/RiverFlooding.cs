@@ -7,15 +7,18 @@ namespace RedButton.GamePlay
     public class RiverFlooding : MonoBehaviour
     {
         [Header("Flood Charecteristics: \n")]
-        public int FloodInterval;
-        public int Duration;
+        public float Interval;
+        public float Duration;
         public float FloodSpeed = 5f;
         public float timer = 0f;
+        private float Floodtick;
         public Vector3 destination;
         public Vector3 origin;
         private Vector3 FloodSpeedV3;
         public Transform RiverTransform;
         public float RiverFinalWidth;
+        private bool IsGimmickOccuring;
+        private bool LocalGim = false;
         // Start is called before the first frame update
         void Start()
         {
@@ -24,31 +27,44 @@ namespace RedButton.GamePlay
             GameObject FloodCylinder = GameObject.Find("FloodCylinder");
             RiverTransform = FloodCylinder.GetComponentInChildren<Transform>();
             RiverFinalWidth = RiverTransform.localScale.x;
+            GameObject GameArb = GameObject.Find("GameArbiter");
+            Interval = GameArb.GetComponent<GimmickCore>().Interval;
+            Duration = GameArb.GetComponent<GimmickCore>().Duration;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (Time.time >= timer + FloodInterval)
+            GameObject GameArb = GameObject.Find("GameArbiter");
+            IsGimmickOccuring = GameArb.GetComponent<GimmickCore>().IsGimmickOccuring;
+            if (IsGimmickOccuring == true)
             {
-                Flood();
+                if (LocalGim == false)
+                {
+                    LocalGim = true;
+                    Interval = GameArb.GetComponent<GimmickCore>().Interval;
+                    Duration = GameArb.GetComponent<GimmickCore>().Duration;
+                    StartCoroutine(Erupt());
+                }
+
             }
         }
 
-        public void Flood()
+        IEnumerator Erupt()
         {
-            if (Time.time < timer + Duration + FloodInterval && gameObject.transform.position.y <= destination.y)
+            while (gameObject.transform.position.y <= destination.y)
             {
+                yield return new WaitForSeconds(Floodtick);
                 RaiseRiver();
             }
-            if (Time.time > timer + Duration + FloodInterval && gameObject.transform.position.y > origin.y)
+            yield return new WaitForSeconds(Duration);
+            while (gameObject.transform.position.y > origin.y)
             {
+                yield return new WaitForSeconds(Floodtick);
                 LowerRiver();
             }
-            else if (Time.time > timer + Duration + FloodInterval && gameObject.transform.position.y <= origin.y)
-            {
-                timer = Time.time;
-            }
+            LocalGim = false;
+            StopCoroutine(Erupt());
         }
 
         public void RaiseRiver()

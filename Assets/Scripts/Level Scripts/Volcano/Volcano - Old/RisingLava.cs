@@ -6,15 +6,18 @@ namespace RedButton.GamePlay
 {
     public class RisingLava : MonoBehaviour
     {
-        [Header("Lava Charecteristics: \n")]
-        [SerializeField] private int EruptionInterval = 60;
-        [SerializeField] private int Duration = 10;
-        [SerializeField] public int damage = 110;
+        private float Interval;
+        private float Duration;
+        private int Damage;
 
         public Vector3 LavaSpeed;
+        private float Lavatick;
         public float timer = 0f;
         public Vector3 destination;
         public Vector3 origin;
+        private bool IsGimmickOccuring;
+        private bool LocalGim = false;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -24,26 +27,37 @@ namespace RedButton.GamePlay
         // Update is called once per frame
         void Update()
         {
-            if (Time.time >= timer + EruptionInterval)
+            GameObject GameArb = GameObject.Find("GameArbiter");
+            IsGimmickOccuring = GameArb.GetComponent<GimmickCore>().IsGimmickOccuring;
+            if (IsGimmickOccuring == true)
             {
-                Erupt();
+                if (LocalGim == false)
+                {
+                    LocalGim = true;
+                    Interval = GameArb.GetComponent<GimmickCore>().Interval;
+                    Duration = GameArb.GetComponent<GimmickCore>().Duration;
+                    Damage = GameArb.GetComponent<GimmickCore>().VolcanoDamage;      
+                    StartCoroutine(Erupt());
+                }
+                
             }
         }
 
-        public void Erupt()
+        IEnumerator Erupt()
         {
-            if (Time.time < timer + Duration + EruptionInterval && gameObject.transform.position.y <= destination.y)
+            while (gameObject.transform.position.y <= destination.y)
             {
+                yield return new WaitForSeconds(Lavatick);
                 RaiseLava();
             }
-            else if (Time.time > timer + Duration + EruptionInterval && gameObject.transform.position.y > origin.y)
+            yield return new WaitForSeconds(Duration);
+            while (gameObject.transform.position.y > origin.y)
             {
+                yield return new WaitForSeconds(Lavatick);
                 LowerLava();
             }
-            else if (Time.time > timer + Duration + EruptionInterval && gameObject.transform.position.y <= origin.y)
-            {
-                timer = Time.time;
-            }
+            LocalGim = false;
+            StopCoroutine(Erupt());           
         }
 
         public void RaiseLava()
@@ -62,7 +76,7 @@ namespace RedButton.GamePlay
             if (collision.gameObject.tag == "Player")
             {
                 Mech.CentralMechComponent mech = collision.gameObject.GetComponentInParent<Mech.CentralMechComponent>();
-                mech.UpdateHealth(damage);
+                mech.UpdateHealth(Damage);
             }
         }
     }
