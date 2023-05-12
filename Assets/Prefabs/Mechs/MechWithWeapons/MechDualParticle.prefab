@@ -8,6 +8,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 52958292, guid: 5128ad36df0315443a2883b996cec26e, type: 3}
+      propertyPath: defaultWeapon
+      value: Dual Particle Guns
+      objectReference: {fileID: 0}
+    - target: {fileID: 52958292, guid: 5128ad36df0315443a2883b996cec26e, type: 3}
       propertyPath: weaponOriginPoints.Array.data[1]
       value: 
       objectReference: {fileID: 8046720956349475197}

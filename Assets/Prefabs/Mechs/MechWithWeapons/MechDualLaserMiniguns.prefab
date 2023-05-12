@@ -160,6 +160,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 52958292, guid: 5128ad36df0315443a2883b996cec26e, type: 3}
+      propertyPath: defaultWeapon
+      value: Dual Mini Guns
+      objectReference: {fileID: 0}
     - target: {fileID: 2331743068901684101, guid: 5128ad36df0315443a2883b996cec26e,
         type: 3}
       propertyPath: m_RootOrder
