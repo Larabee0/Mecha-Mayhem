@@ -24,7 +24,7 @@ namespace RedButton.Mech.Examples
 
         [Header("Raycast Weapon settings")]
         [SerializeField] protected LayerMask IgnoreCollisionsLayers;
-        [SerializeField] private float laserBrightness=5;
+        [SerializeField] private float laserBrightness = 5;
         [SerializeField] private bool takeMechAccentColour = false;
         [SerializeField, Range(0f, 1f)] float fireIntervalMin = 0.01f;
         [SerializeField, Range(0f, 1f)] float fireIntervalMax = 0.05f;
@@ -39,13 +39,13 @@ namespace RedButton.Mech.Examples
         /// overriding start to create the mesh to modify at runtime.
         /// </summary>
         protected override void Start()
-        { 
+        {
             // start requires base.Start() to be called so the target object is still set.
             // Alternatively you could copy all the code from WeaponCore's start method and not have to do this.
             base.Start();
             projectileMeshFilter.mesh = projectileMesh = new Mesh() { subMeshCount = 1 };
 
-            projectileMesh.SetVertices(new Vector3[] {Vector3.zero, Vector3.forward });
+            projectileMesh.SetVertices(new Vector3[] { Vector3.zero, Vector3.forward });
             projectileMesh.SetIndices(new int[] { 0, 1 }, MeshTopology.Lines, 0);
             projectileMeshRenderer.enabled = false;
             if (takeMechAccentColour)
@@ -66,7 +66,7 @@ namespace RedButton.Mech.Examples
         {
             if (Application.isPlaying)
             {
-                if(CMC != null)
+                if (CMC != null)
                 {
                     projectileMeshRenderer.material.SetColor("_BaseColor", CMC.MechAccentColour);
                     projectileMeshRenderer.material.SetColor("_EmissiveColor", CMC.MechAccentColour * laserBrightness);
@@ -129,17 +129,17 @@ namespace RedButton.Mech.Examples
         protected virtual void BasicRayCaster()
         {
             // safety measure.
-            if(muzzleOriginPoint == null)
+            if (muzzleOriginPoint == null)
             {
                 Debug.LogWarningFormat("MuzzleOrigin for weapon {0} was not set, aborting weapon firing", gameObject);
                 return;
             }
 
             Vector3 aimDirection = TargetForward;
-            Ray ray = new(muzzleOriginPoint.position,aimDirection);
+            Ray ray = new(muzzleOriginPoint.position, aimDirection);
 
             Vector3 endPoint; // end point must be calulated weather the spherecast hits something or not.
-            switch (Physics.SphereCast(ray, laserDiameter, out RaycastHit hit, raycastRange,~IgnoreCollisionsLayers))
+            switch (Physics.SphereCast(ray, laserDiameter, out RaycastHit hit, raycastRange, ~IgnoreCollisionsLayers))
             {
                 case true:
                     endPoint = hit.point; // if the sphere cast hits something we can set the end point to the hit point.
@@ -178,23 +178,24 @@ namespace RedButton.Mech.Examples
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
-        protected virtual void  Show(Vector3 start, Vector3 end)
+        protected virtual void Show(Vector3 start, Vector3 end)
         {
             laserStart = start; laserEnd = end; // needed to keep the mesh updated in the coroutine.
-            CorrectVertexTransform();
+            CorrectVertexTransform(laserStart);
             projectileMeshRenderer.enabled = true;
-            if(hideCoroutine != null)
+            if (hideCoroutine != null)
             {
                 StopCoroutine(hideCoroutine);
                 hideCoroutine = null;
             }
-            if(!enabled || !gameObject.activeInHierarchy)
+            if (!enabled || !gameObject.activeInHierarchy)
             {
                 return;
             }
             hideCoroutine = StartCoroutine(Hide()); // start the hide corountine to hide the visual after showTime has elapsed.
         }
-        protected virtual void CorrectVertexTransform()
+
+        protected void CorrectVertexTransform(Vector3 laserStart)
         {
             projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(laserStart), transform.InverseTransformPoint(laserEnd) });
         }
@@ -207,11 +208,11 @@ namespace RedButton.Mech.Examples
         protected virtual IEnumerator Hide()
         {
             float decayStartTime = showTime * laserEffectDecayDelayFraction;
-            while(showTime > 0)
+            while (showTime > 0)
             {
                 showTime -= Time.deltaTime;
                 Vector3 currentStart = Vector3.Lerp(laserStart, laserEnd, Mathf.InverseLerp(decayStartTime, 0, showTime));
-                projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(currentStart), transform.InverseTransformPoint(laserEnd) });
+                CorrectVertexTransform(currentStart);
                 yield return null;
             }
             projectileMeshRenderer.enabled = false;
