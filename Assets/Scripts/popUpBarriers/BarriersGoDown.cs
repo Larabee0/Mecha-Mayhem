@@ -23,13 +23,6 @@ public class BarriersGoDown : MonoBehaviour
     
     bool spacebarReady = true;
 
-
-    private void SummonBarriers()
-    {
-        
-        //Need to add random prefab chooser once there is more prefabs to choose from
-    }
-
     private void SummonBarriers()
     {
         int prefabToUse = Random.Range(0, barrierPrefabs.Length - 1);
