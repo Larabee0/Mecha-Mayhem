@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RedButton.GamePlay;
 
 public class BarriersGoDown : MonoBehaviour
 {
@@ -26,24 +27,54 @@ public class BarriersGoDown : MonoBehaviour
 
     private void Awake()
     {
+        
+        //Need to add random prefab chooser once there is more prefabs to choose from
+    }
+
+    private void SummonBarriers()
+    {
         int prefabToUse = Random.Range(0, barrierPrefabs.Length - 1);
         Instantiate(barrierPrefabs[prefabToUse]);
-        //Need to add random prefab chooser once there is more prefabs to choose from
     }
     // Start is called before the first frame update
     void Start()
     {
 
+        FindObjectOfType<GameArbiter>().OnRoundStarted += BarriersRound;
+
+    }
+    private void BarriersRound()
+    {
+        LookForBarriersDelete();
+        SummonBarriers();
+        LookForBarriers();
+        ResetSpaceBar();
+    }
+    private void LookForBarriersDelete()
+    {
+        barriers = new List<GameObject>();
+        barriers.AddRange(GameObject.FindGameObjectsWithTag("Barrier"));
+
+        foreach (GameObject barrier in barriers)
+        {
+            Destroy(barrier);
+        }
+    }
+    private void LookForBarriers()
+    {
         barriers = new List<GameObject>();
         barriers.AddRange(GameObject.FindGameObjectsWithTag("Barrier"));
 
         StartCoroutine(BarriersMovingDown());
-        
     }
-
+    private void ResetSpaceBar()
+    {
+        spacebarReady = true;
+    }
     // Update is called once per frame
     void Update()
     {
+
         SpaceBarPresed();
     }
 
