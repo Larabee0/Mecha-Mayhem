@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.ProBuilder;
+using UnityEngine.UIElements;
 
 namespace RedButton.Mech.Examples
 {
@@ -21,8 +23,10 @@ namespace RedButton.Mech.Examples
 
         private Vector3 laserStart;
         private Vector3 laserEnd;
+        private Vector3 hitNormal;
 
         [Header("Raycast Weapon settings")]
+        [SerializeField] protected GameObject laserExplodePrefab;
         [SerializeField] protected LayerMask IgnoreCollisionsLayers;
         [SerializeField] private float laserBrightness = 5;
         [SerializeField] private bool takeMechAccentColour = false;
@@ -143,6 +147,7 @@ namespace RedButton.Mech.Examples
             {
                 case true:
                     endPoint = hit.point; // if the sphere cast hits something we can set the end point to the hit point.
+                    hitNormal = hit.normal;
                     HandleHit(hit);
                     break;
                 case false:
@@ -215,8 +220,14 @@ namespace RedButton.Mech.Examples
                 CorrectVertexTransform(currentStart);
                 yield return null;
             }
+            SpawnLaserExplosion(laserEnd,hitNormal);
             projectileMeshRenderer.enabled = false;
             hideCoroutine = null;
+        }
+
+        protected void SpawnLaserExplosion(Vector3 position, Vector3 normal)
+        {
+            Destroy(Instantiate(laserExplodePrefab, position, Quaternion.Euler(normal)), 3f);
         }
     }
 }
