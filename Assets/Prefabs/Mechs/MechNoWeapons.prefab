@@ -834,6 +834,8 @@ MonoBehaviour:
   moveSpeed: 30
   forceMultiplier: 10
   rotationSpeed: 5
+  skinnedMesh: {fileID: 3222246349715223425}
+  animator: {fileID: 3777092056171449418}
 --- !u!1 &2331743069289660089
 GameObject:
   m_ObjectHideFlags: 0
@@ -2040,16 +2042,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2331743069697241315}
     m_Modifications:
-    - target: {fileID: 2482682417714772350, guid: 49df3f2a0c9bb7f429e14d659df3d3fc,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 1096432f5c6bd734bb6b1f4cc127b039, type: 2}
-    - target: {fileID: 2482682417714772350, guid: 49df3f2a0c9bb7f429e14d659df3d3fc,
-        type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: 791b80f834e2eaf4aa87a15fe1d8ed50, type: 2}
     - target: {fileID: 3920508398328612985, guid: 49df3f2a0c9bb7f429e14d659df3d3fc,
         type: 3}
       propertyPath: m_Name
@@ -2121,6 +2113,12 @@ SkinnedMeshRenderer:
 --- !u!4 &3738080374493567036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4405542093664047811, guid: 49df3f2a0c9bb7f429e14d659df3d3fc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1063963844821125887}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3777092056171449418 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4226936441107678901, guid: 49df3f2a0c9bb7f429e14d659df3d3fc,
     type: 3}
   m_PrefabInstance: {fileID: 1063963844821125887}
   m_PrefabAsset: {fileID: 0}
