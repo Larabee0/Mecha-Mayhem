@@ -40,7 +40,7 @@ namespace RedButton.GamePlay
                 Instantiate(controlArbiterPrefab);
             }
             ControlArbiter.Instance.OnPauseMenuQuit += EndRound;
-            OnRoundStarted += TestRound;
+            OnRoundStarted += TestRound; 
         }
 
         private void Start()

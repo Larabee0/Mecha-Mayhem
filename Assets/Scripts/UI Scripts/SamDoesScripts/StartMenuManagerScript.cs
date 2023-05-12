@@ -85,6 +85,7 @@ namespace RedButton.Core.UI
         {
             bindPanel.SetActive(false);
             btnPanel.SetActive(true);
+            controlsPanel.SetActive(false);
             playerNumPanel.SetActive(false);
             optionsManager.Close();
             creditsPanel.SetActive(false);

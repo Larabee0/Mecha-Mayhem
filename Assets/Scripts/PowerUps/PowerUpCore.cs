@@ -1,9 +1,18 @@
 using RedButton.Mech;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace RedButton.GamePlay
 {
+    [Serializable]
+    public class PowerUpContainer
+    {
+        public string name = "";
+        public int limit = 3;
+        public PowerUpCore powerUp;
+    }
+
     public class PowerUpCore : MonoBehaviour
     {
         protected CentralMechComponent CMC;
