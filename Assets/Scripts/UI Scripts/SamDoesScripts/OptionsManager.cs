@@ -11,6 +11,9 @@ namespace RedButton.Core.UI
     public class OptionsManager : MonoBehaviour
     {
         [SerializeField] private StartMenuManagerScript startMenuManager;
+
+        [SerializeField] private Image backgroundImage;
+
         [SerializeField] private GameObject mainOptions;
         [SerializeField] private GameObject sensivitiyOptions;
         [SerializeField] private Button sensitivityButton;
@@ -27,7 +30,7 @@ namespace RedButton.Core.UI
         [SerializeField] private Slider p3SenstivitySlider;
         [SerializeField] private Text p4Text;
         [SerializeField] private Slider p4SenstivitySlider;
-
+        private bool inGame = false;
         private bool SensitivtyOpen => sensivitiyOptions.activeSelf;
 
         private int GimmickDisplay { set => gimmickText.text = string.Format("Gimmick Delay: {0} Seconds.", value); }
@@ -65,6 +68,7 @@ namespace RedButton.Core.UI
 
         public void Open()
         {
+            backgroundImage.enabled = true;
             gameObject.SetActive(true);
             mainOptions.SetActive(true);
             sensivitiyOptions.SetActive(false);
@@ -112,6 +116,11 @@ namespace RedButton.Core.UI
 
         public void ReturnButtonCallback()
         {
+            if (inGame)
+            {
+                CloseSensitivtiyInGame();
+                return;
+            }
             if (SensitivtyOpen)
             {
                 ControlArbiter.Instance.GoBackToOptionsMain(new());
@@ -125,6 +134,46 @@ namespace RedButton.Core.UI
         public void SensitivtyButtonCallback()
         {
             OpenSensitivty();
+        }
+
+        public void OpenSensitivityInGame()
+        {
+            p1SenstivitySlider.gameObject.SetActive(false);
+            p2SenstivitySlider.gameObject.SetActive(false);
+            p3SenstivitySlider.gameObject.SetActive(false);
+            p4SenstivitySlider.gameObject.SetActive(false);
+            Slider targetSlider = ControlArbiter.CurrentAuthority.Player switch
+            {
+                Controller.One => p1SenstivitySlider,
+                Controller.Two => p2SenstivitySlider,
+                Controller.Three => p3SenstivitySlider,
+                Controller.Four => p4SenstivitySlider,
+                _ => null,
+            };
+            targetSlider.gameObject.SetActive(true);
+            ControlArbiter.Instance.startScreenState = StartScreenState.SenstivityScreen;
+            backgroundImage.enabled = inGame = true;
+            gameObject.SetActive(true);
+            mainOptions.SetActive(false);
+            sensivitiyOptions.SetActive(true);
+            P1Display = (int)p1SenstivitySlider.value;
+            P2Display = (int)p2SenstivitySlider.value;
+            P3Display = (int)p3SenstivitySlider.value;
+            P4Display = (int)p4SenstivitySlider.value;
+            EventSystem.current.SetSelectedGameObject(targetSlider.gameObject);
+        }
+
+        public void CloseSensitivtiyInGame()
+        {
+            p1SenstivitySlider.gameObject.SetActive(true);
+            p2SenstivitySlider.gameObject.SetActive(true);
+            p3SenstivitySlider.gameObject.SetActive(true);
+            p4SenstivitySlider.gameObject.SetActive(true);
+            gameObject.SetActive(false);
+            mainOptions.SetActive(false);
+            sensivitiyOptions.SetActive(false);
+            UpdateSettings();
+            ControlArbiter.Instance.UITranslator.PauseMenuUI.Open();
         }
     }
 }

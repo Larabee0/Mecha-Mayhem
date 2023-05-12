@@ -5,6 +5,7 @@ using RedButton.Core.WiimoteSupport;
 using RedButton.Core.UI;
 using System.Linq;
 using UnityEngine.InputSystem.UI;
+using UnityEditor.Sprites;
 
 namespace RedButton.Core
 {
@@ -30,7 +31,7 @@ namespace RedButton.Core
         public static PlayerInput PlayerTwo = null;
         public static PlayerInput PlayerThree = null;
         public static PlayerInput PlayerFour = null;
-        public static PlayerInput KeyboardPlayer = null;
+        public static PlayerInput CurrentAuthority = null;
         public PlayerInput this[int i]
         {
             get => i switch
@@ -137,7 +138,7 @@ namespace RedButton.Core
             PlayerTwo = null;
             PlayerThree = null;
             PlayerFour = null;
-            KeyboardPlayer = null;
+            CurrentAuthority = null;
             HotStart();
         }
         
@@ -226,6 +227,7 @@ namespace RedButton.Core
                     this[i].SetPausingAllowed(false);
                 }
             }
+            CurrentAuthority = null;
         }
 
         private void AssignToPlayer(PlayerInput[] controllers, int i)
@@ -251,10 +253,6 @@ namespace RedButton.Core
                     PlayerFour = controllers[i];
                     PlayerFour.playerColour = playerFourColour;
                     break;
-                case Controller.Keyboard:
-                    PlayerTwo = KeyboardPlayer = controllers[i];
-                    PlayerTwo.playerColour = playerTwoColour;
-                    break;
             }
         }
 
@@ -266,6 +264,7 @@ namespace RedButton.Core
             startScreenActionMap.devices = player.Devices;
             player.EnableUIonly();
             uiTranslator.SetUIHoverTint(player.playerColour);
+            CurrentAuthority = player;
         }
 
         #region Hot Start
@@ -347,6 +346,7 @@ namespace RedButton.Core
             startScreenUIActionAsset.devices = pauser.Devices;
             startScreenActionMap.devices = pauser.Devices;
             Time.timeScale = 0;
+            CurrentAuthority = pauser;
         }
 
         public void UnPauseGame()
@@ -356,7 +356,8 @@ namespace RedButton.Core
             Time.timeScale = 1;
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
-            
+
+            CurrentAuthority = null;
             ValidateControllersAndPlayers();
             InputSystem.ResumeHaptics();
             

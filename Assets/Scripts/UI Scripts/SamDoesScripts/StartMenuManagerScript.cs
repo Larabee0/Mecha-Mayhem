@@ -193,7 +193,7 @@ namespace RedButton.Core.UI
         public void OpenAssignment(int playerNum)
         {
             Controller playerCount = (Controller)(playerNum- 1);
-            ControlArbiter.Instance.UnSubFromMainMenuBack();
+            ControlArbiter.Instance.UnSubFromMainMenuBack(ControlArbiter.PlayerOne);
             ControlArbiter.Instance.startScreenState = StartScreenState.ControllerAssignment;
             PlayerSelectCallback(playerCount);
         }

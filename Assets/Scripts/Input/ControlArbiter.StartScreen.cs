@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem;
+using System;
 
 namespace RedButton.Core
 {
@@ -98,11 +99,8 @@ namespace RedButton.Core
         {
             startScreenState = StartScreenState.ConfirmAssignment;
             startScreenActionMap.UI.Enable();
-            if (PlayerOne != null)
-            {
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
-            }
+
+            PlayerOneUICancelDelegateUpdate(GoBackToStartScreen, GoBackToPlayerCountPickScreen);
 
             startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.devices = PlayerOne.Devices;
@@ -115,13 +113,7 @@ namespace RedButton.Core
         /// </summary>
         public void AcceptControllerAssignment()
         {
-            if (PlayerOne != null)
-            {
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
-
-                // go back to controll assigment screen with controllers assigned but not accepted.
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToControllerAssignment;
-            }
+            PlayerOneUICancelDelegateUpdate(GoBackToPlayerCountPickScreen, GoBackToControllerAssignment);
             startScreenState = StartScreenState.MechSelect;
         }
 
@@ -132,7 +124,7 @@ namespace RedButton.Core
         public void StartControllerAssignment(Queue<UnityUITranslationLayer.ControllerAssignHelper> playersToAssign)
         {
             startScreenState = StartScreenState.ControllerAssignment;
-            
+
             startScreenActionMap.devices = newDevices.ToArray();
             startScreenUIActionAsset.devices = newDevices.ToArray();
             startScreenActionMap.UI.Submit.performed += AssignControllerCallback;
@@ -141,9 +133,9 @@ namespace RedButton.Core
             if (PlayerOne != null)
             {
                 PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
             }
+            PlayerOneUICancelDelegateUpdate(GoBackToStartScreen, GoBackToPlayerCountPickScreen);
+
             StartCoroutine(ControllerAssignmentCoroutine(playersToAssign));
         }
 
@@ -167,7 +159,7 @@ namespace RedButton.Core
                     playerToAssign = playersToAssign.Dequeue();
                     playerToAssign.Highlight();
                 }
-                if(time > 0.5f)
+                if (time > 0.5f)
                 {
                     time = 0;
                     playerToAssign.InvertTextColour();
@@ -282,29 +274,31 @@ namespace RedButton.Core
 
         public void GoForwardFromMainMenu()
         {
-            if (PlayerOne != null)
+            PlayerOneUICancelDelegateUpdate(GoBackToStartScreen, GoBackToMainMenu);
+        }
+
+        public void PlayerOneUICancelDelegateUpdate(Action<InputAction.CallbackContext> unSubscribe, Action<InputAction.CallbackContext> subscribe)
+        {
+            PlayerUICancelDelegateUpdate(PlayerOne, unSubscribe, subscribe);
+        }
+
+        public void PlayerUICancelDelegateUpdate(PlayerInput player, Action<InputAction.CallbackContext> unSubscribe, Action<InputAction.CallbackContext> subscribe)
+        {
+            if (player != null)
             {
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToStartScreen;
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMainMenu;
+                player.ControlMap.UI.Cancel.performed -= unSubscribe;
+                player.ControlMap.UI.Cancel.performed += subscribe;
             }
         }
 
         public void GoForwardToSenstitivty()
         {
-            if (PlayerOne != null)
-            {
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToOptionsMain;
-            }
+            PlayerOneUICancelDelegateUpdate(GoBackToMainMenu, GoBackToOptionsMain);
         }
 
         public void GoBackToOptionsMain(InputAction.CallbackContext obj)
         {
-            if (PlayerOne != null)
-            {
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToOptionsMain;
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMainMenu;
-            }
+            PlayerOneUICancelDelegateUpdate(GoBackToOptionsMain, GoBackToMainMenu);
 
             uiTranslator.StartMenuUI.optionsManager.CloseSensitivty();
         }
@@ -312,20 +306,16 @@ namespace RedButton.Core
 
         public void GoBackToMainMenu(InputAction.CallbackContext obj)
         {
-            if (PlayerOne != null)
-            {
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToStartScreen;
-            }
+            PlayerOneUICancelDelegateUpdate(GoBackToMainMenu, GoBackToStartScreen);
             uiTranslator.StartMenuUI.ShowMainMenu();
             startScreenState = StartScreenState.MainMenu;
         }
 
-        public void UnSubFromMainMenuBack()
+        public void UnSubFromMainMenuBack(PlayerInput player)
         {
-            if (PlayerOne != null)
+            if (player != null)
             {
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
+                player.ControlMap.UI.Cancel.performed -= GoBackToMainMenu;
             }
         }
 
@@ -336,7 +326,7 @@ namespace RedButton.Core
         /// <param name="obj"></param>
         public void GoBackToPlayerCountPickScreen(InputAction.CallbackContext obj)
         {
-            if(PlayerOne == null)
+            if (PlayerOne == null)
             {
                 return;
             }
@@ -344,8 +334,8 @@ namespace RedButton.Core
             startScreenActionMap.UI.Submit.performed -= AssignControllerCallback;
             startScreenActionMap.UI.StartScreenAux.performed -= AssignControllerCallback;
             startScreenActionMap.UI.Disable();
-            startScreenActionMap.devices = PlayerOne.Devices ;
-            startScreenUIActionAsset.devices = PlayerOne.Devices ;
+            startScreenActionMap.devices = PlayerOne.Devices;
+            startScreenUIActionAsset.devices = PlayerOne.Devices;
             startScreenActionMap.UI.Cancel.performed -= GoBackToPlayerCountPickScreen;
 
             playerToAssign = null;
@@ -370,11 +360,7 @@ namespace RedButton.Core
         public void GoBackToControllerAssignment(InputAction.CallbackContext obj)
         {
             startScreenState = StartScreenState.ControllerAssignment;
-            if (PlayerOne != null)
-            {
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToPlayerCountPickScreen;
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToControllerAssignment;
-            }
+            PlayerOneUICancelDelegateUpdate(GoBackToControllerAssignment, GoBackToPlayerCountPickScreen);
 
             uiTranslator.StartMenuUI.PlayerSelectCallback(playerMode, true);
             uiTranslator.StartMenuUI.mechSelectorManager.gameObject.SetActive(false);
@@ -383,21 +369,13 @@ namespace RedButton.Core
 
         public void GoForwardFromMechSelector()
         {
-            if (PlayerOne != null)
-            {
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToMechSelector;
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToControllerAssignment;
-            }
+            PlayerOneUICancelDelegateUpdate(GoBackToControllerAssignment, GoBackToMechSelector);
             startScreenState = StartScreenState.LevelSelect;
         }
 
         public void GoBackToMechSelector(InputAction.CallbackContext obj)
         {
-            if (PlayerOne != null)
-            {
-                PlayerOne.ControlMap.UI.Cancel.performed += GoBackToControllerAssignment;
-                PlayerOne.ControlMap.UI.Cancel.performed -= GoBackToMechSelector;
-            }
+            PlayerOneUICancelDelegateUpdate(GoBackToMechSelector, GoBackToControllerAssignment);
 
             uiTranslator.StartMenuUI.CLoseLvlSelectInternal();
             uiTranslator.StartMenuUI.mechSelectorManager.OpenSelector();
@@ -444,7 +422,7 @@ namespace RedButton.Core
             }
         }
         #endregion
-        
+
         public void ControlArbiterToGameArbiterHandoff()
         {
             if (PlayerOne != null)
@@ -465,6 +443,5 @@ namespace RedButton.Core
             uiTranslator.ShowStartSreen();
             uiTranslator.StartMenuUI.OpenLvlSelect();
         }
-
     }
 }

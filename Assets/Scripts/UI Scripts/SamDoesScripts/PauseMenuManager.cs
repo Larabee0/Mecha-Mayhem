@@ -24,5 +24,10 @@ namespace RedButton.Core.UI
         {
             ControlArbiter.Instance.UnPauseGame();
         }
+
+        public void SensitivityButton()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }
