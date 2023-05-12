@@ -502,8 +502,8 @@ MonoBehaviour:
   m_AffectsTransparency: 0
   m_DecalLayerMask: 1
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.35159293}
-  m_Size: {x: 3, y: 3, z: 0.8820911}
+  m_Offset: {x: 0, y: 0, z: 0.97373915}
+  m_Size: {x: 3, y: 3, z: 2.5921283}
   m_FadeFactor: 1
   m_Version: 2
 --- !u!1 &1679659101052166488
