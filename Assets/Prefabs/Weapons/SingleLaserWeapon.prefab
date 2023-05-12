@@ -52,7 +52,7 @@ MonoBehaviour:
   controlBehaviour: 2
   projectilePrefab: {fileID: 0}
   muzzleOriginPoint: {fileID: 0}
-  laserExplodePrefab: {fileID: 1100116203970478773, guid: 6118295ef647f794ab16221288899b76,
+  laserExplodePrefab: {fileID: 6671018145220874213, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
     type: 3}
   IgnoreCollisionsLayers:
     serializedVersion: 2

@@ -53,7 +53,8 @@ namespace RedButton.Mech
 
         [Header("Player Stats")]
         public MechResults stats=new();
-
+        public string defaultWeapon = "";
+        public StringPassThrough OnWeaponChanged;
         public FloatPassThrough OnHealthChange;
         public MechPassThroughDelegeate OnMechDied;
 
@@ -112,6 +113,7 @@ namespace RedButton.Mech
         private void Start()
         {
             OnHealthChange += OnHealthChanged;
+            OnWeaponChanged?.Invoke(defaultWeapon);
         }
 
         private void SetFixedMechColours(Color colour)
@@ -241,12 +243,15 @@ namespace RedButton.Mech
 
         private void Die()
         {
-            Destroy(Instantiate(deathExplodePrefab, transform.position, Quaternion.identity), 5f);
             Debug.Log("Died", gameObject);
             Debug.LogFormat("Death Time {0}", Time.realtimeSinceStartup);
             MechInputController.Disable();
             transform.root.gameObject.SetActive(false);
             OnMechDied?.Invoke(this);
+            if (deathExplodePrefab != null)
+            {
+                Destroy(Instantiate(deathExplodePrefab, transform.position, Quaternion.identity), 5f);
+            }
         }
     }
 }

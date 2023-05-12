@@ -227,7 +227,9 @@ namespace RedButton.Mech.Examples
 
         protected void SpawnLaserExplosion(Vector3 position, Vector3 normal)
         {
-            Destroy(Instantiate(laserExplodePrefab, position, Quaternion.Euler(normal)), 3f);
+            Transform spawn = Instantiate(laserExplodePrefab, position, Quaternion.identity).transform;
+            spawn.forward = normal;
+            Destroy(spawn.gameObject, 3f);
         }
     }
 }
