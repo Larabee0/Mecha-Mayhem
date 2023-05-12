@@ -976,10 +976,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6671018145220874210, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6671018145220874213, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
         type: 3}
       propertyPath: m_Name
       value: LaserHit
+      objectReference: {fileID: 0}
+    - target: {fileID: 6671018145220874213, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b0b61e31dcf4914d876a3fa8dcd097d, type: 3}
