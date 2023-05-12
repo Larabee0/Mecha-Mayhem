@@ -10,6 +10,7 @@ namespace RedButton.Mech.Examples
 {
     public class BoucningLaserWeapon : ExampleBasicRaycasterWeapon
     {
+        [SerializeField] private Transform laserTransform;
         [SerializeField] private int bounces = 5;
         [SerializeField] private Vector3[] points;
         [SerializeField] private Vector3[] meshVertices;
@@ -17,7 +18,7 @@ namespace RedButton.Mech.Examples
         [SerializeField] private float laserLength = 5f;
         private BezierPath bezierPath;
 
-        private float curLaserDst = 0f;
+
         protected override void Start()
         {
             base.Start();
@@ -36,6 +37,7 @@ namespace RedButton.Mech.Examples
 
         private void ResetLaser()
         {
+            laserTransform.SetParent(transform);
             points = new Vector3[bounces * 2];
             meshVertices = new Vector3[3];
             int[] indicies = new int[] { 0, 1, 1, 2 };
@@ -55,17 +57,17 @@ namespace RedButton.Mech.Examples
 
             Vector3 aimDirection = TargetForward;
             Ray initialRay = new(muzzleOriginPoint.position, aimDirection);
-            curLaserDst = 0f;
+            float curLaserDst = 0f;
             for (int i = 0, v = 0; i < bounces; i++, v+=2)
             {
                 if (Physics.SphereCast(initialRay, laserDiameter, out RaycastHit hitInfo, raycastRange, ~IgnoreCollisionsLayers))
                 {
                     HandleHit(hitInfo);
                     float dst = Vector3.Distance(initialRay.origin, hitInfo.point);
-                    points[v] = transform.InverseTransformPoint( initialRay.origin);
+                    points[v] =  transform.InverseTransformPoint(initialRay.origin);
                     aimDirection = Vector3.ProjectOnPlane(Vector3.Reflect(initialRay.direction, hitInfo.normal), Vector3.up);
                     initialRay = new(hitInfo.point, aimDirection);
-                    points[v+1] = transform.InverseTransformPoint(hitInfo.point);
+                    points[v + 1] = transform.InverseTransformPoint(hitInfo.point);
                     curLaserDst += dst;
                 }
             }
@@ -83,7 +85,11 @@ namespace RedButton.Mech.Examples
             }
             projectileMesh.SetVertices(meshVertices);
         }
-
+        protected override void Show(Vector3 start, Vector3 end)
+        {
+            base.Show(start, end);
+            laserTransform.SetParent(null);
+        }
         private void OnDrawGizmos()
         {
             for (int i = 0; i < points.Length-1; i++)
@@ -94,7 +100,7 @@ namespace RedButton.Mech.Examples
 
         protected override IEnumerator Hide()
         {
-            VertexPath vertexPath = new(bezierPath, transform, 0.1f);
+            VertexPath vertexPath = new(bezierPath, laserTransform, 0.1f);
             
             float halfLength = laserLength / 2;
             float startTime = showTime;
@@ -108,12 +114,16 @@ namespace RedButton.Mech.Examples
                 Vector3 end = vertexPath.GetPointAtDistance(showTimeCentrePointDst+halfLength, EndOfPathInstruction.Stop);
                 meshVertices[0]= start; meshVertices[1]= centre; meshVertices[2]= end;
 
-                CorrectVertexTransform();
+                projectileMesh.SetVertices(meshVertices);
+                //CorrectVertexTransform();
                 showTime -= Time.deltaTime;
 
                 yield return null;
             }
             projectileMeshRenderer.enabled = false;
+            laserTransform.SetParent(transform);
+            laserTransform.localPosition = Vector3.zero;
+            laserTransform.localRotation = Quaternion.identity;
         }
 
 

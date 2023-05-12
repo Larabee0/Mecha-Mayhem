@@ -178,7 +178,7 @@ namespace RedButton.Mech.Examples
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
-        protected void Show(Vector3 start, Vector3 end)
+        protected virtual void  Show(Vector3 start, Vector3 end)
         {
             laserStart = start; laserEnd = end; // needed to keep the mesh updated in the coroutine.
             CorrectVertexTransform();
