@@ -22,6 +22,7 @@ namespace RedButton.GamePlay
         [SerializeField] private bool roundStarted = false;
         public bool RoundStarted => roundStarted;
         public Pluse OnActiveSceneChanged;
+        public Pluse OnRoundStarted;
 
         [SerializeField] private PowerUpsManager powerUpsManager;
         [SerializeField] private int roundCount = 3;
@@ -39,6 +40,7 @@ namespace RedButton.GamePlay
                 Instantiate(controlArbiterPrefab);
             }
             ControlArbiter.Instance.OnPauseMenuQuit += EndRound;
+            OnRoundStarted += TestRound;
         }
 
         private void Start()
@@ -196,6 +198,7 @@ namespace RedButton.GamePlay
 
                 activeMechs[i].OnMechDied += OnMechDeath;
             }
+            OnRoundStarted?.Invoke();
         }
 
         private void StartRoundWithOptions(string roundName, List<int>targetPlayers)
@@ -290,6 +293,12 @@ namespace RedButton.GamePlay
             {
                 Debug.LogFormat(cmc.gameObject,"Unexpected mech death at {0} ", Time.realtimeSinceStartup);
             }
+        }
+
+
+        public void TestRound()
+        {
+            Debug.Log("Round Started");
         }
 
         private void OnDestroy()
