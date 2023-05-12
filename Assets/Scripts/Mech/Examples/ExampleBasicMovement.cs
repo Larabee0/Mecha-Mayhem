@@ -20,7 +20,7 @@ namespace RedButton.Mech.Examples
         /// On move is the only required member to implement all others are optional.
         /// </summary>
         /// <param name="axis"></param>
-        protected override void OnMove(Vector2 axis)
+        protected override void OnMove(Vector2 axis,bool animate)
         {
             moveInput = axis.magnitude;
             moveDir = moveInput > 0 ? new Vector3(axis.x, 0f, axis.y).normalized : transform.forward;

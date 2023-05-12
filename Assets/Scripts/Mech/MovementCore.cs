@@ -49,7 +49,7 @@ namespace RedButton.Mech
             CMC.MechInputController.OnRightStick -= OnAim;
         }
 
-        protected abstract void OnMove(Vector2 axis);
+        protected abstract void OnMove(Vector2 axis, bool animate);
 
         /// <summary>
         /// OnAim is implemented in the base class. But can be overriden in inheriting classes.

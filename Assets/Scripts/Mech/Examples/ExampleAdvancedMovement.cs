@@ -23,9 +23,9 @@ namespace RedButton.Mech.Examples
         protected float moveInput;
         protected Vector3 moveDir;
 
-        protected override void OnMove(Vector2 axis)
+        protected override void OnMove(Vector2 axis, bool animate)
         {
-            animator.Play("Take 001");
+            animator.SetBool("isWalking", animate);
             moveInput = axis.magnitude;
             moveDir = moveInput > 0 ? new Vector3(axis.x, 0f, axis.y).normalized : transform.forward;
             targetPointParentForward = targetPointParent.forward;

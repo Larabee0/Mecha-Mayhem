@@ -59,7 +59,7 @@ namespace RedButton.Core
         public ButtonEventContainer fireTwoButton = new();
 
         // Joy stick axis events
-        public Vector2Axis OnLeftStick;
+        public Vector2BoolAxis OnLeftStick;
         public Vector2BoolAxis OnRightStick;
 
         // current rumble strengths for each rumble motor
@@ -368,7 +368,7 @@ namespace RedButton.Core
             if (leftStickProcess != null)
             {
                 StopCoroutine(leftStickProcess);
-                OnLeftStick?.Invoke(Vector2.zero);
+                OnLeftStick?.Invoke(Vector2.zero,false);
             }
         }
 
@@ -379,6 +379,7 @@ namespace RedButton.Core
                 StopCoroutine(rightStickProcess);
                 Vector2 value = AimAtRightStick ? controlMap.MechControls.RightStick.ReadValue<Vector2>() : Vector2.zero;
                 OnRightStick?.Invoke(value, AimAtRightStick);
+
                 if (setWiimotePointer)
                 {
                     SetWiimotePointer(value);
@@ -391,7 +392,7 @@ namespace RedButton.Core
         {
             while (true)
             {
-                OnLeftStick?.Invoke(controlMap.MechControls.LeftStick.ReadValue<Vector2>());
+                OnLeftStick?.Invoke(controlMap.MechControls.LeftStick.ReadValue<Vector2>(),true);
                 yield return null;
             }
         }

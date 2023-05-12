@@ -38,7 +38,7 @@ namespace RedButton.Core.WiimoteSupport
         {
             if(wiimoteInput != null)
             {
-                OnMove(wiimoteInput.NunChuckStick);
+                OnMove(wiimoteInput.NunChuckStick,false);
                 OnAim(wiimoteInput.PointPosition, true);
             }
             else
@@ -48,7 +48,7 @@ namespace RedButton.Core.WiimoteSupport
                     x = Input.GetAxis("Horizontal"),
                     y = Input.GetAxis("Vertical")
                 };
-                OnMove(keyboardAxis);
+                OnMove(keyboardAxis,false);
                 OnAim(Input.mousePosition, true);
             }
         }
