@@ -130,15 +130,19 @@ namespace RedButton.GamePlay
             deathOrder.Peek().stats.roundsWon += 1;
             lastRoundWinner = string.Format("Player {0} ", ((int)deathOrder.Peek().MechInputController.Player) + 1);
             currentRound += 1;
-
-
             // end game if rounds finished
+            StartCoroutine(NextRoundDelayed());
+        }
+
+        private IEnumerator NextRoundDelayed()
+        {
+            yield return new WaitForSeconds(1.5f);
             if (currentRound > roundCount)
             {
                 if (TieBreakerRound())
                 {
                     PrepareNextRound(string.Format("Tie Breaker Round!"));
-                    return;
+                    yield break;
                 }
 
                 List<MechResults> results = new(playerCount);
@@ -149,9 +153,9 @@ namespace RedButton.GamePlay
                 }
                 results.Sort();
                 results.Reverse();
-                // lastRoundWinner = string.Format("Player {0} ", (winner + 1).ToString());
+
                 ControlArbiter.Instance.UITranslator.EndScreenUI.OpenEndofGame(results);
-                return;
+                yield break;
             }
 
             PrepareNextRound(string.Format("Round {0} of {1}", currentRound, roundCount));

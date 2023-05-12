@@ -13,6 +13,7 @@ namespace RedButton.Mech.Examples
         [SerializeField] private Transform laserTransform;
         [SerializeField] private int bounces = 5;
         [SerializeField] private Vector3[] points;
+        [SerializeField] private Vector3[] hitNormals;
         [SerializeField] private Vector3[] meshVertices;
 
         [SerializeField] private float laserLength = 5f;
@@ -45,7 +46,7 @@ namespace RedButton.Mech.Examples
                 points = new Vector3[bounces * 2];
                 meshVertices = new Vector3[3];
                 int[] indicies = new int[] { 0, 1, 1, 2 };
-
+                hitNormals = new Vector3[bounces];
                 projectileMesh.SetVertices(meshVertices);
                 projectileMesh.SetIndices(indicies, MeshTopology.Lines, 0);
             }
@@ -70,9 +71,12 @@ namespace RedButton.Mech.Examples
                     HandleHit(hitInfo);
                     float dst = Vector3.Distance(initialRay.origin, hitInfo.point);
                     points[v] = transform.InverseTransformPoint(initialRay.origin);
+                    //points[v] = initialRay.origin;
                     aimDirection = Vector3.ProjectOnPlane(Vector3.Reflect(initialRay.direction, hitInfo.normal), Vector3.up);
                     initialRay = new(hitInfo.point, aimDirection);
                     points[v + 1] = transform.InverseTransformPoint(hitInfo.point);
+                    //points[v + 1] = hitInfo.point;
+                    hitNormals[i] = hitInfo.normal;
                     curLaserDst += dst;
                 }
             }
@@ -85,7 +89,9 @@ namespace RedButton.Mech.Examples
         {
             base.Show(start, end);
             laserTransform.SetParent(null);
+            SpawnLaserExplosion(transform.TransformPoint(points[1]), hitNormals[1]);
         }
+
         private void OnDrawGizmos()
         {
             for (int i = 0; i < points.Length - 1; i++)
@@ -100,11 +106,16 @@ namespace RedButton.Mech.Examples
 
             float halfLength = laserLength / 2;
             float startTime = showTime;
+            bool exploded = false;
             while (showTime > 0)
             {
-
-                float showTimeCentrePointDst = Mathf.Lerp(0, vertexPath.length, Mathf.InverseLerp(startTime, 0, showTime));
-
+                float timePeroid = Mathf.InverseLerp(startTime, 0, showTime);
+                float showTimeCentrePointDst = Mathf.Lerp(0, vertexPath.length, timePeroid);
+                if(!exploded && timePeroid >= 0.5f)
+                {
+                    SpawnLaserExplosion(transform.TransformPoint(points[3]), hitNormals[2]);
+                    exploded = true;
+                }
                 Vector3 start = vertexPath.GetPointAtDistance(showTimeCentrePointDst - halfLength, EndOfPathInstruction.Stop);
                 Vector3 centre = vertexPath.GetPointAtDistance(showTimeCentrePointDst, EndOfPathInstruction.Stop);
                 Vector3 end = vertexPath.GetPointAtDistance(showTimeCentrePointDst + halfLength, EndOfPathInstruction.Stop);
@@ -115,10 +126,13 @@ namespace RedButton.Mech.Examples
 
                 yield return null;
             }
+
+            SpawnLaserExplosion(transform.TransformPoint(points[^1]), hitNormals[^1]);
             projectileMeshRenderer.enabled = false;
             laserTransform.SetParent(transform);
             laserTransform.localPosition = Vector3.zero;
             laserTransform.localRotation = Quaternion.identity;
         }
+
     }
 }

@@ -41,7 +41,7 @@ public class BarriersGoDown : MonoBehaviour
         SummonBarriers();
         LookForBarriers();
         ResetSpaceBar();
-    }
+    }   
     private void LookForBarriersDelete()
     {
         barriers = new List<GameObject>();
