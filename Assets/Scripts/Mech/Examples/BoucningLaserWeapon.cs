@@ -89,14 +89,21 @@ namespace RedButton.Mech.Examples
         {
             base.Show(start, end);
             laserTransform.SetParent(null);
-            SpawnLaserExplosion(transform.TransformPoint(points[1]), hitNormals[1]);
+            SpawnLaserExplosion(transform.TransformPoint(points[1]), hitNormals[0]);
         }
 
         private void OnDrawGizmos()
         {
+            Gizmos.color = Color.white;
             for (int i = 0; i < points.Length - 1; i++)
             {
                 Gizmos.DrawLine(transform.TransformPoint(points[i]), transform.TransformPoint(points[i + 1]));
+                
+            }
+            Gizmos.color = Color.blue;
+            for (int i = 0, p = 1; i < hitNormals.Length; i++,p+=2)
+            {
+                Gizmos.DrawRay(transform.TransformPoint(points[p]), hitNormals[i]);
             }
         }
 
@@ -113,7 +120,7 @@ namespace RedButton.Mech.Examples
                 float showTimeCentrePointDst = Mathf.Lerp(0, vertexPath.length, timePeroid);
                 if(!exploded && timePeroid >= 0.5f)
                 {
-                    SpawnLaserExplosion(transform.TransformPoint(points[3]), hitNormals[2]);
+                    SpawnLaserExplosion(transform.TransformPoint(points[3]), hitNormals[1]);
                     exploded = true;
                 }
                 Vector3 start = vertexPath.GetPointAtDistance(showTimeCentrePointDst - halfLength, EndOfPathInstruction.Stop);
