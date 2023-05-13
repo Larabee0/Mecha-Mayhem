@@ -24,9 +24,6 @@ namespace RedButton.GamePlay
         {
             timer = Time.time;
             FloodSpeedV3.Set(0, FloodSpeed, 0);
-            GameObject FloodCylinder = GameObject.Find("FloodCylinder");
-            RiverTransform = FloodCylinder.GetComponentInChildren<Transform>();
-            RiverFinalWidth = RiverTransform.localScale.x;
             GameObject GameArb = GameObject.Find("GameArbiter");
             Interval = GameArb.GetComponent<GimmickCore>().Interval;
             Duration = GameArb.GetComponent<GimmickCore>().Duration;

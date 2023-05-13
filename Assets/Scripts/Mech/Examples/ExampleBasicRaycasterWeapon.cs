@@ -213,14 +213,21 @@ namespace RedButton.Mech.Examples
         protected virtual IEnumerator Hide()
         {
             float decayStartTime = showTime * laserEffectDecayDelayFraction;
+            bool exploded = false;
             while (showTime > 0)
             {
                 showTime -= Time.deltaTime;
-                Vector3 currentStart = Vector3.Lerp(laserStart, laserEnd, Mathf.InverseLerp(decayStartTime, 0, showTime));
+                float time = Mathf.InverseLerp(decayStartTime, 0, showTime);
+                if(!exploded && time > 0.5f)
+                {
+                    SpawnLaserExplosion(laserEnd, hitNormal);
+                     exploded = true;
+                }
+                Vector3 currentStart = Vector3.Lerp(laserStart, laserEnd, time);
                 CorrectVertexTransform(currentStart);
                 yield return null;
             }
-            SpawnLaserExplosion(laserEnd,hitNormal);
+            
             projectileMeshRenderer.enabled = false;
             hideCoroutine = null;
         }
