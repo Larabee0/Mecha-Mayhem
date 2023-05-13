@@ -200,7 +200,7 @@ namespace RedButton.Mech.Examples
             hideCoroutine = StartCoroutine(Hide()); // start the hide corountine to hide the visual after showTime has elapsed.
         }
 
-        protected void CorrectVertexTransform(Vector3 laserStart)
+        protected virtual void CorrectVertexTransform(Vector3 laserStart)
         {
             projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(laserStart), transform.InverseTransformPoint(laserEnd) });
         }

@@ -84,6 +84,11 @@ namespace RedButton.Mech.Examples
             Show(points[0], points[^1]);
 
         }
+        
+        protected override void CorrectVertexTransform(Vector3 laserStart)
+        {
+            
+        }
 
         protected override void Show(Vector3 start, Vector3 end)
         {

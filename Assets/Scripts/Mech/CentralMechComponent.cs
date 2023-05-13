@@ -228,7 +228,10 @@ namespace RedButton.Mech
         private void OnHealthChanged(float newValue)
         {
             MechInputController.RumbleMotor(flashTime, 0.25f, RumbleMotor.Both);
-            StartCoroutine(Flashmech());
+            if(gameObject.activeInHierarchy)
+            {
+                StartCoroutine(Flashmech());
+            }
             if (newValue <= 0)
             {
                 // we died

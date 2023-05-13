@@ -57,7 +57,6 @@ namespace RedButton.GamePlay
                 mechsToSpawn = internalSpawns.ToArray();
             }
             SpawnMechs();
-            ControlArbiter.Instance.MainUIController.SetPlayers(activeMechs);
             PrepGame();
 
             List<int> targetPlayers = new();
@@ -137,6 +136,7 @@ namespace RedButton.GamePlay
         private IEnumerator NextRoundDelayed()
         {
             yield return new WaitForSeconds(1.5f);
+            ControlArbiter.Instance.MainUIController.HideHealthBars();
             if (currentRound > roundCount)
             {
                 if (TieBreakerRound())
@@ -202,6 +202,7 @@ namespace RedButton.GamePlay
 
                 activeMechs[i].OnMechDied += OnMechDeath;
             }
+            ControlArbiter.Instance.MainUIController.SetPlayers(activeMechs);
             OnRoundStarted?.Invoke();
         }
 

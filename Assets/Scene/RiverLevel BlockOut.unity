@@ -135,9 +135,9 @@ GameObject:
   - component: {fileID: 49912178}
   - component: {fileID: 49912177}
   - component: {fileID: 49912176}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (5)
-  m_TagString: Untagged
+  m_TagString: Projectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -391,9 +391,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 167500875}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LevelBlockOut
-  m_TagString: Untagged
+  m_TagString: Projectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -672,9 +672,9 @@ GameObject:
   - component: {fileID: 330692796}
   - component: {fileID: 330692795}
   - component: {fileID: 330692794}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Projectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1112,6 +1112,8 @@ MonoBehaviour:
   editorMechs:
   - {fileID: 906662351260344358, guid: 2912a3eb51dff1245b2cf054671a9368, type: 3}
   - {fileID: 906662351260344358, guid: 66b3b1fe511df3b45b91a47d77f54f91, type: 3}
+  - {fileID: 906662351260344358, guid: 66b3b1fe511df3b45b91a47d77f54f91, type: 3}
+  - {fileID: 906662351260344358, guid: 66b3b1fe511df3b45b91a47d77f54f91, type: 3}
   spawnPoints:
   - {x: 18.74, y: 9.692576, z: 25.68}
   - {x: 16.71, y: 9.692576, z: 0.05}
@@ -1518,9 +1520,9 @@ GameObject:
   - component: {fileID: 562253512}
   - component: {fileID: 562253511}
   - component: {fileID: 562253510}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (6)
-  m_TagString: Untagged
+  m_TagString: Projectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1910,9 +1912,9 @@ GameObject:
   - component: {fileID: 779080252}
   - component: {fileID: 779080251}
   - component: {fileID: 779080250}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Projectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2503,9 +2505,9 @@ GameObject:
   - component: {fileID: 1176428798}
   - component: {fileID: 1176428797}
   - component: {fileID: 1176428796}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: Projectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3705,9 +3707,9 @@ GameObject:
   - component: {fileID: 1532855680}
   - component: {fileID: 1532855679}
   - component: {fileID: 1532855678}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (3)
-  m_TagString: Untagged
+  m_TagString: Projectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4085,9 +4087,9 @@ GameObject:
   - component: {fileID: 1611859393}
   - component: {fileID: 1611859392}
   - component: {fileID: 1611859391}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Projectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5187,7 +5189,7 @@ GameObject:
   - component: {fileID: 1983767818}
   - component: {fileID: 1983767817}
   - component: {fileID: 1983767820}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
