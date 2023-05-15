@@ -190,7 +190,7 @@ namespace RedButton.GamePlay
             {
                 powerUpsManager.SetUpPowerUps();
             }
-            activeMechs.ForEach(mech => {
+            spawnedMechs.ForEach(mech => {
                 mech.MechInputController.Disable();
             });
             // hide round number

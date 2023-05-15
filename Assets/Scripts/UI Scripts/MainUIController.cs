@@ -75,16 +75,16 @@ namespace RedButton.Core.UI
 
         public void SetPlayers(List<CentralMechComponent> players)
         {
-            int i = 0;
-            for (; i < players.Count; i++)
-            {
-                SetPlayer((int)players[i].MechInputController.Player, players[i]);
-            }
-            for (; i < healthBars.Length; i++)
+            for (int i = 0; i < healthBars.Length; i++)
             {
                 healthBars[i].Hide();
             }
 
+            for (int i = 0; i < players.Count; i++)
+            {
+                SetPlayer((int)players[i].MechInputController.Player, players[i]);
+            }
+            
             if(startScreenController != null)
             {
                 startScreenController.RootVisualElement.style.display = DisplayStyle.None;
