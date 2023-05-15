@@ -710,6 +710,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4197592924234310648, guid: 9fd77f163a90b3148bf51f170049fe2c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4900421896602243041, guid: 9fd77f163a90b3148bf51f170049fe2c,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -843,6 +848,11 @@ PrefabInstance:
     - target: {fileID: 7277890464390469942, guid: 9fd77f163a90b3148bf51f170049fe2c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277890464390469942, guid: 9fd77f163a90b3148bf51f170049fe2c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7827680370961077612, guid: 9fd77f163a90b3148bf51f170049fe2c,
@@ -2121,7 +2131,7 @@ MonoBehaviour:
   gameArbiter: {fileID: 1574726065}
   powerUps:
   - name: Health
-    limit: 1
+    limit: 2
     powerUp: {fileID: 1615739709745365508, guid: 61be1f31b9746304dbb3e6d1dba6a480,
       type: 3}
   - name: Shield

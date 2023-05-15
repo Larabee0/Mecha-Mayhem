@@ -115,8 +115,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.149994, y: -71.816086}
-  m_SizeDelta: {x: 148.29999, y: 66.36782}
+  m_AnchoredPosition: {x: 74.149994, y: -71.5625}
+  m_SizeDelta: {x: 148.29999, y: 66.875}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &84272895
 CanvasRenderer:
@@ -353,8 +353,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.149994, y: -71.816086}
-  m_SizeDelta: {x: 148.29999, y: 66.36782}
+  m_AnchoredPosition: {x: 74.149994, y: -71.5625}
+  m_SizeDelta: {x: 148.29999, y: 66.875}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &164257247
 CanvasRenderer:
@@ -1972,8 +1972,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.149994, y: -19.316088}
-  m_SizeDelta: {x: 148.29999, y: 38.632175}
+  m_AnchoredPosition: {x: 74.149994, y: -19.0625}
+  m_SizeDelta: {x: 148.29999, y: 38.125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &509624020
 CanvasRenderer:
@@ -2402,8 +2402,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.149994, y: -71.816086}
-  m_SizeDelta: {x: 148.29999, y: 66.36782}
+  m_AnchoredPosition: {x: 74.149994, y: -71.5625}
+  m_SizeDelta: {x: 148.29999, y: 66.875}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &607595132
 CanvasRenderer:
@@ -2482,8 +2482,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.149994, y: -19.316088}
-  m_SizeDelta: {x: 148.29999, y: 38.632175}
+  m_AnchoredPosition: {x: 74.149994, y: -19.0625}
+  m_SizeDelta: {x: 148.29999, y: 38.125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &608072516
 CanvasRenderer:
@@ -3218,10 +3218,16 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
+    m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Press enter to start
+  m_Text: 'Press A on Xbox Controller
+
+    or
+
+    A and B on Wiimote
+
+    To Start'
 --- !u!1 &824345500
 GameObject:
   m_ObjectHideFlags: 0
@@ -4255,8 +4261,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.149994, y: -71.816086}
-  m_SizeDelta: {x: 148.29999, y: 66.36782}
+  m_AnchoredPosition: {x: 74.149994, y: -71.5625}
+  m_SizeDelta: {x: 148.29999, y: 66.875}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1112110744
 CanvasRenderer:
@@ -4799,8 +4805,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.149994, y: -19.316088}
-  m_SizeDelta: {x: 148.29999, y: 38.632175}
+  m_AnchoredPosition: {x: 74.149994, y: -19.0625}
+  m_SizeDelta: {x: 148.29999, y: 38.125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1357515900
 CanvasRenderer:
@@ -5330,8 +5336,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.149994, y: -19.316088}
-  m_SizeDelta: {x: 148.29999, y: 38.632175}
+  m_AnchoredPosition: {x: 74.149994, y: -19.0625}
+  m_SizeDelta: {x: 148.29999, y: 38.125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1597042786
 CanvasRenderer:
@@ -7759,7 +7765,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -318.89807}
+  m_AnchoredPosition: {x: 400, y: -360.84}
   m_SizeDelta: {x: 800, y: 318.8981}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &2031221831

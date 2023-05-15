@@ -78,7 +78,7 @@ namespace RedButton.Core.UI
             int i = 0;
             for (; i < players.Count; i++)
             {
-                SetPlayer(i, players[i]);
+                SetPlayer((int)players[i].MechInputController.Player, players[i]);
             }
             for (; i < healthBars.Length; i++)
             {

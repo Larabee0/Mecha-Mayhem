@@ -393,7 +393,7 @@ namespace RedButton.Core.UI
 
         public void RandomLevel()
         {
-            LvlBtnClick(Random.Range(2, 4));
+            LvlBtnClick(Random.Range(2, 5));
         }
 
         public void LvlBtnClick(int lvl)

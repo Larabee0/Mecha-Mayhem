@@ -1971,9 +1971,9 @@ MonoBehaviour:
   playerCount: 0
   editorMechs:
   - {fileID: 906662351260344358, guid: 28feec886106a3943b7ff848d4a973c8, type: 3}
+  - {fileID: 906662351260344358, guid: 10865189010a0fa4eb400ff40c70b232, type: 3}
   - {fileID: 906662351260344358, guid: 2912a3eb51dff1245b2cf054671a9368, type: 3}
   - {fileID: 906662351260344358, guid: af6e9a408b3c88a4cbd41ce5f56b0f42, type: 3}
-  - {fileID: 906662351260344358, guid: 10865189010a0fa4eb400ff40c70b232, type: 3}
   spawnPoints:
   - {x: 8.71, y: 0.58, z: 0}
   - {x: 8.57, y: 0.58, z: -5.67}
