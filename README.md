@@ -1,5 +1,9 @@
 # Mecha Mayhem
 
+Mecha Mayhem is a game where you fight friends and family with a variety of weapons from a laser gun to a shotgun. You have one goal to be the last fighter standing.
+
+Experience different arenas to fight your friends and family in, each with it's own unique gimmick. If you want to cause some chaos try hitting the red button
+
 ## Third Party Resources
 - Path Creator [MIT] https://github.com/SebLague/Path-Creator
 - Lava Shader [Free Tutorial] - https://www.patreon.com/posts/shader-graph-33388865
