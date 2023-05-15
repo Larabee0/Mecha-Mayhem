@@ -4,7 +4,7 @@ Mecha Mayhem is a game where you fight friends and family with a variety of weap
 
 Experience different arenas to fight your friends and family in, each with it's own unique gimmick. If you want to cause some chaos try hitting the red button
 
-# Itch
+# itch
 Find the game on https://redbuttonstudios.itch.io/mecha-mayhem
 
 ## Third Party Resources
