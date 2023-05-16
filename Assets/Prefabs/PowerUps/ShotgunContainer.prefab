@@ -63,7 +63,6 @@ MonoBehaviour:
   powerUpCore: {fileID: 0}
   manager: {fileID: 0}
   mechInTrigger: 0
-  powerUpActive: 0
   spinSpeed: 1
   brightness: 10000
 --- !u!114 &682019581686224044
@@ -81,6 +80,7 @@ MonoBehaviour:
   limit: 2
   powerUpColour: {r: 0.46981373, g: 0.043137252, b: 1, a: 1}
   weaponTime: 10
+  weaponName: Dual Shotguns
   stockGroups: []
   addedWeapons: []
   stockWeapons: []

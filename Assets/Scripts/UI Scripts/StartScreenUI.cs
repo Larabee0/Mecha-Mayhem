@@ -35,7 +35,7 @@ namespace RedButton.Core.UI
         /// </summary>
         public void ShowMainMenu()
         {
-            startScreen.style.display = DisplayStyle.Flex;
+            startScreen.style.display = DisplayStyle.None;
             mainMenu.style.display = DisplayStyle.None;
             ControllerAssignment.style.display = DisplayStyle.None;
             mechSelectScreen.style.display = DisplayStyle.None;

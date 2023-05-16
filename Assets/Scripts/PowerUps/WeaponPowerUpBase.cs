@@ -8,6 +8,7 @@ namespace RedButton.GamePlay
     public abstract class WeaponPowerUpBase : PowerUpCore
     {
         public float weaponTime;
+        [SerializeField] protected string weaponName;
         [SerializeField] protected WeaponGroup[] stockGroups;
         [SerializeField] protected List<GameObject> addedWeapons = new();
         [SerializeField] protected List<WeaponCore> stockWeapons;
@@ -16,6 +17,7 @@ namespace RedButton.GamePlay
         {
             WeaponPowerUpBase weaponPowerUp = source as WeaponPowerUpBase;
             weaponTime = weaponPowerUp.weaponTime;
+            weaponName = weaponPowerUp.weaponName;
         }
 
         public override void AddTo(CentralMechComponent target)
@@ -68,6 +70,8 @@ namespace RedButton.GamePlay
 
         public virtual IEnumerator PowerUpTimeOut()
         {
+            CentralMechComponent cmc = GetComponent<CentralMechComponent>();
+            cmc.OnWeaponChanged?.Invoke(weaponName);
             yield return new WaitForSeconds(weaponTime);
             RemoveSelf();
         }
@@ -87,6 +91,8 @@ namespace RedButton.GamePlay
                 Destroy(addedWeapons[i]);
             }
             Destroy(this);
+            CentralMechComponent cmc = GetComponent<CentralMechComponent>();
+            cmc.OnWeaponChanged?.Invoke(cmc.defaultWeapon);
         }
 
         protected virtual void OnDisable()

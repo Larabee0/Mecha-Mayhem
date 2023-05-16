@@ -40,7 +40,7 @@ namespace RedButton.GamePlay
                 Instantiate(controlArbiterPrefab);
             }
             ControlArbiter.Instance.OnPauseMenuQuit += EndRound;
-            OnRoundStarted += TestRound;
+            OnRoundStarted += TestRound; 
         }
 
         private void Start()
@@ -57,7 +57,6 @@ namespace RedButton.GamePlay
                 mechsToSpawn = internalSpawns.ToArray();
             }
             SpawnMechs();
-            ControlArbiter.Instance.MainUIController.SetPlayers(activeMechs);
             PrepGame();
 
             List<int> targetPlayers = new();
@@ -130,15 +129,20 @@ namespace RedButton.GamePlay
             deathOrder.Peek().stats.roundsWon += 1;
             lastRoundWinner = string.Format("Player {0} ", ((int)deathOrder.Peek().MechInputController.Player) + 1);
             currentRound += 1;
-
-
             // end game if rounds finished
+            StartCoroutine(NextRoundDelayed());
+        }
+
+        private IEnumerator NextRoundDelayed()
+        {
+            yield return new WaitForSeconds(1.5f);
+            ControlArbiter.Instance.MainUIController.HideHealthBars();
             if (currentRound > roundCount)
             {
                 if (TieBreakerRound())
                 {
                     PrepareNextRound(string.Format("Tie Breaker Round!"));
-                    return;
+                    yield break;
                 }
 
                 List<MechResults> results = new(playerCount);
@@ -149,9 +153,9 @@ namespace RedButton.GamePlay
                 }
                 results.Sort();
                 results.Reverse();
-                // lastRoundWinner = string.Format("Player {0} ", (winner + 1).ToString());
+
                 ControlArbiter.Instance.UITranslator.EndScreenUI.OpenEndofGame(results);
-                return;
+                yield break;
             }
 
             PrepareNextRound(string.Format("Round {0} of {1}", currentRound, roundCount));
@@ -186,7 +190,7 @@ namespace RedButton.GamePlay
             {
                 powerUpsManager.SetUpPowerUps();
             }
-            activeMechs.ForEach(mech => {
+            spawnedMechs.ForEach(mech => {
                 mech.MechInputController.Disable();
             });
             // hide round number
@@ -198,6 +202,7 @@ namespace RedButton.GamePlay
 
                 activeMechs[i].OnMechDied += OnMechDeath;
             }
+            ControlArbiter.Instance.MainUIController.SetPlayers(activeMechs);
             OnRoundStarted?.Invoke();
         }
 

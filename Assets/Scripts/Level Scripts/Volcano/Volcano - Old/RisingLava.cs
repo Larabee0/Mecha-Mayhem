@@ -22,6 +22,8 @@ namespace RedButton.GamePlay
         void Start()
         {
             timer = Time.time;
+            GameObject GameArb = GameObject.Find("GameArbiter");
+            Damage = GameArb.GetComponent<GimmickCore>().VolcanoDamage;
         }
 
         // Update is called once per frame
@@ -35,8 +37,7 @@ namespace RedButton.GamePlay
                 {
                     LocalGim = true;
                     Interval = GameArb.GetComponent<GimmickCore>().Interval;
-                    Duration = GameArb.GetComponent<GimmickCore>().Duration;
-                    Damage = GameArb.GetComponent<GimmickCore>().VolcanoDamage;      
+                    Duration = GameArb.GetComponent<GimmickCore>().Duration;    
                     StartCoroutine(Erupt());
                 }
                 

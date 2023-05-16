@@ -11,9 +11,9 @@ namespace RedButton.GamePlay
     public class PowerUpsManager : MonoBehaviour
     {
         [SerializeField] private GameArbiter gameArbiter;
-        [SerializeField] private Vector3[] spawnPoints = new Vector3[4];
-        [SerializeField] private PowerUpCore[] powerUps;
-        [SerializeField] private MapPowerUp powerUpPrefab;
+        
+        [SerializeField] private PowerUpContainer[] powerUps;
+        [Space(100)]
         [SerializeField] private List<MapPowerUp> powerUpInstances;
         [SerializeField] private Dictionary<Type, int> onMapPowerUps = new();
         [SerializeField] private int globalCountOffset;
@@ -29,18 +29,24 @@ namespace RedButton.GamePlay
 
         public readonly HashSet<MapPowerUp> activePowerUps = new();
         public readonly HashSet<MapPowerUp> inactivePowerUps = new();
-        
+
         public float minPowerUpTime;
         public float maxPowerUpTime;
 
         private void Awake()
         {
-            if(gameArbiter == null)
+            if (gameArbiter == null)
             {
                 gameArbiter = GetComponent<GameArbiter>();
             }
 
-            if(maxPowerUps == 0 || autoCalculateMaxPowerUps)
+            powerUpInstances = new(GetComponentsInChildren<MapPowerUp>());
+            gameArbiter.OnRoundStarted += OnRoundStart;
+        }
+
+        private void OnRoundStart()
+        {
+            if (maxPowerUps == 0 || autoCalculateMaxPowerUps)
             {
                 maxPowerUps = gameArbiter.PlayerCount * autoCalMultiplier;
             }
@@ -51,8 +57,7 @@ namespace RedButton.GamePlay
             if (powerUpInstances.Count != 0)
             {
                 StopAllCoroutines();
-                powerUpInstances.ForEach(powerUpInstance => Destroy(powerUpInstance.gameObject,UnityEngine.Random.value));
-                powerUpInstances.Clear();
+                powerUpInstances.ForEach(powerUpInstance => powerUpInstance.ConsumePowerUp());
                 onMapPowerUps.Clear();
                 inactivePowerUps.Clear();
                 activePowerUps.Clear();
@@ -62,15 +67,12 @@ namespace RedButton.GamePlay
         public void SetUpPowerUps()
         {
             StopAndClear();
-            for (int i = 0; i < spawnPoints.Length; i++)
-            {
-                powerUpInstances.Add(Instantiate(powerUpPrefab, spawnPoints[i], Quaternion.identity, transform));
-                powerUpInstances[^1].manager = this;
-            }
+            
+            powerUpInstances.ForEach(powerUp => powerUp.manager = this);
 
             for (int i = 0; i < powerUps.Length; i++)
             {
-                onMapPowerUps.Add(powerUps[i].GetType(), 0);
+                onMapPowerUps.Add(powerUps[i].powerUp.GetType(), 0);
             }
             inactivePowerUps.UnionWith(powerUpInstances);
 
@@ -105,7 +107,7 @@ namespace RedButton.GamePlay
                         closestPoint = inactivePowerUps[UnityEngine.Random.Range(0, inactivePowerUps.Length)];
                     }
 
-                    if ( closestPoint != null && !closestPoint.mechInTrigger)
+                    if (closestPoint != null && !closestPoint.mechInTrigger)
                     {
                         closestPoint.SetPowerUp(GetPowerUp());
                     }
@@ -128,7 +130,7 @@ namespace RedButton.GamePlay
                     if (onMapPowerUps[types[i]] <= count && onMapPowerUps[types[i]] < powerUps[i].limit + globalCountOffset)
                     {
                         type = types[i];
-                        lowestType = powerUps[i];
+                        lowestType = powerUps[i].powerUp;
                         count = onMapPowerUps[types[i]];
                     }
                 }
@@ -136,11 +138,11 @@ namespace RedButton.GamePlay
             else
             {
                 int safety = 0;
-                while(lowestType == null && safety < powerUps.Length * 10)
+                while (lowestType == null && safety < powerUps.Length * 10)
                 {
                     int index = UnityEngine.Random.Range(0, types.Count);
-                    PowerUpCore powerUp = powerUps[index];
-                    if(onMapPowerUps[types[index]]< powerUp.limit + globalCountOffset)
+                    PowerUpCore powerUp = powerUps[index].powerUp;
+                    if (onMapPowerUps[types[index]] < powerUp.limit + globalCountOffset)
                     {
                         type = types[index];
                         lowestType = powerUp;
@@ -148,7 +150,7 @@ namespace RedButton.GamePlay
                     safety++;
                 }
             }
-            if(lowestType != null)
+            if (lowestType != null)
             {
                 onMapPowerUps[type]++;
             }
@@ -157,7 +159,7 @@ namespace RedButton.GamePlay
 
         public void ReleasePowerUp(Type powerUpType)
         {
-            onMapPowerUps[powerUpType] = onMapPowerUps[powerUpType] <= 0 ? 0 : onMapPowerUps[powerUpType]-=1;
+            onMapPowerUps[powerUpType] = onMapPowerUps[powerUpType] <= 0 ? 0 : onMapPowerUps[powerUpType] -= 1;
         }
     }
 }

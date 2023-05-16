@@ -115,7 +115,7 @@ namespace RedButton.Core.UI
                 image.color = colour;
                 colour.a = alpha2;
                 icon.color = colour;
-                lable.text = "Press Any Button";
+                lable.text = "Press A or A & B on Wiimote";
             }
 
             public void Set(PlayerInput player)

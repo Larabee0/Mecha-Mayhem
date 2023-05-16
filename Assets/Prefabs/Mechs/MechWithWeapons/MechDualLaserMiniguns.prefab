@@ -69,6 +69,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3429308890410828798, guid: 61099967fb516cb44a0548b0846619d2,
         type: 3}
+      propertyPath: laserExplodePrefab
+      value: 
+      objectReference: {fileID: 6671018145220874213, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
+        type: 3}
+    - target: {fileID: 3429308890410828798, guid: 61099967fb516cb44a0548b0846619d2,
+        type: 3}
       propertyPath: takeMechAccentColour
       value: 1
       objectReference: {fileID: 0}
@@ -87,6 +93,12 @@ PrefabInstance:
       propertyPath: damage
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5719943823390740577, guid: 61099967fb516cb44a0548b0846619d2,
+        type: 3}
+      propertyPath: laserExplodePrefab
+      value: 
+      objectReference: {fileID: 6671018145220874213, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
+        type: 3}
     - target: {fileID: 5719943823390740577, guid: 61099967fb516cb44a0548b0846619d2,
         type: 3}
       propertyPath: takeMechAccentColour
@@ -117,6 +129,12 @@ PrefabInstance:
       propertyPath: damage
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8650779820934156410, guid: 61099967fb516cb44a0548b0846619d2,
+        type: 3}
+      propertyPath: laserExplodePrefab
+      value: 
+      objectReference: {fileID: 6671018145220874213, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
+        type: 3}
     - target: {fileID: 8650779820934156410, guid: 61099967fb516cb44a0548b0846619d2,
         type: 3}
       propertyPath: takeMechAccentColour
@@ -160,6 +178,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 52958292, guid: 5128ad36df0315443a2883b996cec26e, type: 3}
+      propertyPath: defaultWeapon
+      value: Dual Mini Guns
+      objectReference: {fileID: 0}
     - target: {fileID: 2331743068901684101, guid: 5128ad36df0315443a2883b996cec26e,
         type: 3}
       propertyPath: m_RootOrder
@@ -297,6 +319,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3429308890410828798, guid: 61099967fb516cb44a0548b0846619d2,
         type: 3}
+      propertyPath: laserExplodePrefab
+      value: 
+      objectReference: {fileID: 6671018145220874213, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
+        type: 3}
+    - target: {fileID: 3429308890410828798, guid: 61099967fb516cb44a0548b0846619d2,
+        type: 3}
       propertyPath: takeMechAccentColour
       value: 1
       objectReference: {fileID: 0}
@@ -317,6 +345,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5719943823390740577, guid: 61099967fb516cb44a0548b0846619d2,
         type: 3}
+      propertyPath: laserExplodePrefab
+      value: 
+      objectReference: {fileID: 6671018145220874213, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
+        type: 3}
+    - target: {fileID: 5719943823390740577, guid: 61099967fb516cb44a0548b0846619d2,
+        type: 3}
       propertyPath: takeMechAccentColour
       value: 1
       objectReference: {fileID: 0}
@@ -335,6 +369,12 @@ PrefabInstance:
       propertyPath: damage
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8650779820934156410, guid: 61099967fb516cb44a0548b0846619d2,
+        type: 3}
+      propertyPath: laserExplodePrefab
+      value: 
+      objectReference: {fileID: 6671018145220874213, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
+        type: 3}
     - target: {fileID: 8650779820934156410, guid: 61099967fb516cb44a0548b0846619d2,
         type: 3}
       propertyPath: takeMechAccentColour

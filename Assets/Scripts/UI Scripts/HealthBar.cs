@@ -1,6 +1,7 @@
 using RedButton.Mech;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,9 +10,10 @@ namespace RedButton.Core.UI {
     {
         private CentralMechComponent targetMech;
         [SerializeField] private Text healthLabel;
+        [SerializeField] private TextMeshProUGUI weaponLabel;
         [SerializeField] private Slider slider;
         [SerializeField] private Image background;
-
+        private string weaponInitialText = "";
         public Color BarColour
         {
             get => background.color;
@@ -34,6 +36,7 @@ namespace RedButton.Core.UI {
         public void Setup()
         {
             healthBarLabelText = HealthBarLabel;
+            weaponInitialText = weaponLabel.text;
         }
 
         public void SetPlayer(CentralMechComponent mech)
@@ -42,6 +45,7 @@ namespace RedButton.Core.UI {
             if (targetMech != null)
             {
                 targetMech.OnHealthChange -= OnHealthChange;
+                targetMech.OnWeaponChanged -= SetWeapon;
             }
             BarColour = targetMech.MechAccentColour;
             HealthBarLabel = healthBarLabelText;
@@ -49,7 +53,13 @@ namespace RedButton.Core.UI {
             slider.maxValue = targetMech.MaxHealth;
             Value = targetMech.Health;
             targetMech.OnHealthChange += OnHealthChange;
+            targetMech.OnWeaponChanged += SetWeapon;
             Show();
+        }
+
+        public void SetWeapon(string weapon)
+        {
+            weaponLabel.text = string.Format("{0} {1}", weaponInitialText, weapon);
         }
 
         public void Show()

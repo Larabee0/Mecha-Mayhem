@@ -134,6 +134,8 @@ MonoBehaviour:
   controlBehaviour: 2
   projectilePrefab: {fileID: 0}
   muzzleOriginPoint: {fileID: 0}
+  laserExplodePrefab: {fileID: 6671018145220874213, guid: 6b0b61e31dcf4914d876a3fa8dcd097d,
+    type: 3}
   IgnoreCollisionsLayers:
     serializedVersion: 2
     m_Bits: 128
@@ -149,5 +151,6 @@ MonoBehaviour:
   laserTransform: {fileID: 1185208014130128432}
   bounces: 3
   points: []
+  hitNormals: []
   meshVertices: []
   laserLength: 5

@@ -37,6 +37,7 @@ namespace RedButton.Mech
         private int weaponOriginIndex = 0;
 
         [Header("Health")]
+        public GameObject deathExplodePrefab;
         public ShieldScript shield;
         [SerializeField] private Texture2D healthBackgroundDeath;
         public Texture2D HealthBackgroundDeath => healthBackgroundDeath;
@@ -52,7 +53,8 @@ namespace RedButton.Mech
 
         [Header("Player Stats")]
         public MechResults stats=new();
-
+        public string defaultWeapon = "";
+        public StringPassThrough OnWeaponChanged;
         public FloatPassThrough OnHealthChange;
         public MechPassThroughDelegeate OnMechDied;
 
@@ -111,6 +113,7 @@ namespace RedButton.Mech
         private void Start()
         {
             OnHealthChange += OnHealthChanged;
+            OnWeaponChanged?.Invoke(defaultWeapon);
         }
 
         private void SetFixedMechColours(Color colour)
@@ -225,7 +228,10 @@ namespace RedButton.Mech
         private void OnHealthChanged(float newValue)
         {
             MechInputController.RumbleMotor(flashTime, 0.25f, RumbleMotor.Both);
-            StartCoroutine(Flashmech());
+            if(gameObject.activeInHierarchy)
+            {
+                StartCoroutine(Flashmech());
+            }
             if (newValue <= 0)
             {
                 // we died
@@ -240,12 +246,15 @@ namespace RedButton.Mech
 
         private void Die()
         {
-            
             Debug.Log("Died", gameObject);
             Debug.LogFormat("Death Time {0}", Time.realtimeSinceStartup);
             MechInputController.Disable();
             transform.root.gameObject.SetActive(false);
             OnMechDied?.Invoke(this);
+            if (deathExplodePrefab != null)
+            {
+                Destroy(Instantiate(deathExplodePrefab, transform.position, Quaternion.identity), 5f);
+            }
         }
     }
 }

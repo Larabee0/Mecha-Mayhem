@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.ProBuilder;
+using UnityEngine.UIElements;
 
 namespace RedButton.Mech.Examples
 {
@@ -21,8 +23,10 @@ namespace RedButton.Mech.Examples
 
         private Vector3 laserStart;
         private Vector3 laserEnd;
+        private Vector3 hitNormal;
 
         [Header("Raycast Weapon settings")]
+        [SerializeField] protected GameObject laserExplodePrefab;
         [SerializeField] protected LayerMask IgnoreCollisionsLayers;
         [SerializeField] private float laserBrightness = 5;
         [SerializeField] private bool takeMechAccentColour = false;
@@ -143,6 +147,7 @@ namespace RedButton.Mech.Examples
             {
                 case true:
                     endPoint = hit.point; // if the sphere cast hits something we can set the end point to the hit point.
+                    hitNormal = hit.normal;
                     HandleHit(hit);
                     break;
                 case false:
@@ -195,7 +200,7 @@ namespace RedButton.Mech.Examples
             hideCoroutine = StartCoroutine(Hide()); // start the hide corountine to hide the visual after showTime has elapsed.
         }
 
-        protected void CorrectVertexTransform(Vector3 laserStart)
+        protected virtual void CorrectVertexTransform(Vector3 laserStart)
         {
             projectileMesh.SetVertices(new Vector3[] { transform.InverseTransformPoint(laserStart), transform.InverseTransformPoint(laserEnd) });
         }
@@ -208,15 +213,30 @@ namespace RedButton.Mech.Examples
         protected virtual IEnumerator Hide()
         {
             float decayStartTime = showTime * laserEffectDecayDelayFraction;
+            bool exploded = false;
             while (showTime > 0)
             {
                 showTime -= Time.deltaTime;
-                Vector3 currentStart = Vector3.Lerp(laserStart, laserEnd, Mathf.InverseLerp(decayStartTime, 0, showTime));
+                float time = Mathf.InverseLerp(decayStartTime, 0, showTime);
+                if(!exploded && time > 0.5f)
+                {
+                    SpawnLaserExplosion(laserEnd, hitNormal);
+                     exploded = true;
+                }
+                Vector3 currentStart = Vector3.Lerp(laserStart, laserEnd, time);
                 CorrectVertexTransform(currentStart);
                 yield return null;
             }
+            
             projectileMeshRenderer.enabled = false;
             hideCoroutine = null;
+        }
+
+        protected void SpawnLaserExplosion(Vector3 position, Vector3 normal)
+        {
+            Transform spawn = Instantiate(laserExplodePrefab, position, Quaternion.identity).transform;
+            spawn.forward = normal;
+            Destroy(spawn.gameObject, 3f);
         }
     }
 }

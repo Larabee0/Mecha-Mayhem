@@ -71,6 +71,7 @@ namespace RedButton.GamePlay
             capsuleRenderer.enabled = false;
             if(powerUpCore != null)
             {
+                StopAllCoroutines();
                 manager.activePowerUps.Remove(this);
                 manager.inactivePowerUps.Add(this);
                 manager.ReleasePowerUp(powerUpCore.GetType());
