@@ -14,6 +14,8 @@ namespace RedButton.Core.UI
 
         [SerializeField] private Image backgroundImage;
 
+        [SerializeField] Dropdown screenSelect;
+
         [SerializeField] private GameObject mainOptions;
         [SerializeField] private GameObject sensivitiyOptions;
         [SerializeField] private Button sensitivityButton;
@@ -50,6 +52,25 @@ namespace RedButton.Core.UI
             p4SenstivitySlider.value = settings.player4Sens * 100;
 
             gimmickDelaySlider.value = settings.gimmickDelay;
+
+            List<DisplayInfo> displays = new();
+            Screen.GetDisplayLayout(displays);
+            List<Dropdown.OptionData> options = screenSelect.options = new List<Dropdown.OptionData>();
+            for (int i = 0; i < Display.displays.Length; i++)
+            {
+                
+                options.Add(new Dropdown.OptionData(string.Format("Screen {0}",i+1)));  
+            }
+            if(settings.screenIndex < options.Count)
+            {
+                if (!Screen.mainWindowDisplayInfo.Equals( displays[settings.screenIndex]))
+                {
+                    Screen.MoveMainWindowTo(displays[settings.screenIndex], Vector2Int.zero);
+
+                    Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+                } 
+            }
+            
         }
 
 
@@ -63,12 +84,22 @@ namespace RedButton.Core.UI
             settings.player4Sens = p4SenstivitySlider.value / 100;
 
             settings.gimmickDelay = (int)gimmickDelaySlider.value;
+            if(settings.screenIndex != screenSelect.value)
+            {
+                settings.screenIndex = screenSelect.value;
+                List<DisplayInfo> displays = new();
+                Screen.GetDisplayLayout(displays);
+                Screen.MoveMainWindowTo(displays[settings.screenIndex], Vector2Int.zero);
+                Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+            }
+            
             PersistantOptions.instance.OnUserSettingsChangedData?.Invoke();
         }
 
         public void Open()
         {
             backgroundImage.enabled = true;
+            
             gameObject.SetActive(true);
             mainOptions.SetActive(true);
             sensivitiyOptions.SetActive(false);
@@ -110,6 +141,7 @@ namespace RedButton.Core.UI
             gameObject.SetActive(false);
             mainOptions.SetActive(false);
             sensivitiyOptions.SetActive(false);
+            
             UpdateSettings();
             startMenuManager.CloseOptions();
         }

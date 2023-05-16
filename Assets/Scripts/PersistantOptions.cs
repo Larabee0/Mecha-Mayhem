@@ -59,6 +59,8 @@ namespace RedButton.Core
 
         public int roundCount = 3;
 
+        public int screenIndex;
+
         public float GetPlayerSense(Controller playerNum) => playerNum switch
         {
             Controller.One => player1Sens,
