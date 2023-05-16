@@ -25,6 +25,7 @@ namespace RedButton.Core.UI
             VictoryStats.SetActive(false);
             startNextRound = false;
             winnerText.text = string.Format("Next: {0}",newRoundName);
+            this.winnerText.gameObject.SetActive(true);
             TitleBar.text = string.Format("{0} Wins round {1}", lastRoundWinner, lastRound);
             gameObject.SetActive(true);
             nextRoundButton.GetComponentInChildren<Text>().text = "Next Round";
@@ -35,6 +36,7 @@ namespace RedButton.Core.UI
         {
             VictoryStats.SetActive(false);
             this.winnerText.text = winnerText;
+            this.winnerText.gameObject.SetActive(true);
             TitleBar.text = titleBarText;
             nextRoundButton.GetComponentInChildren<Text>().text = "Start";
         }
