@@ -26,7 +26,7 @@ namespace RedButton.GamePlay
         [HideInInspector] public bool IsGimmickOccuring = false;
 
         private bool SpacebarOn = false;
-        private bool SpacebarReady = false;
+        private bool SpacebarReady = true;
 
         // Start is called before the first frame update
         void Start()
@@ -44,6 +44,7 @@ namespace RedButton.GamePlay
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     SpacebarOn = true;
+                    StartCoroutine(SpaceDuration());
                 }
             }
             
@@ -62,10 +63,14 @@ namespace RedButton.GamePlay
                 {
                     StartCoroutine(SpacebarCD());
                 }
-                SpacebarOn = false;
             }
         }
 
+        IEnumerator SpaceDuration()
+        {
+            yield return new WaitForSeconds(Duration);
+            SpacebarOn = false;
+        }
         IEnumerator SpacebarCD()
         {
             yield return new WaitForSeconds(SpacebarCooldown);
