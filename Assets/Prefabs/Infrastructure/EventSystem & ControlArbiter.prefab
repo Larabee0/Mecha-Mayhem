@@ -488,7 +488,7 @@ MonoBehaviour:
   p4Bg: {fileID: 1183487823}
   p4Ic: {fileID: 3714058545129773797}
   p4ControllerTxt: {fileID: 84272894}
-  bgSprite: {fileID: 21300000, guid: 1b105dac2aebdfd49a7bf34d192fa314, type: 3}
+  bgSprite: {fileID: 21300000, guid: c70a437973b7bc9429c668d2c7cdea51, type: 3}
   willSprite: {fileID: 21300000, guid: 291faab785fe8004b92b20dd4e6c9960, type: 3}
   mechSelectorManager: {fileID: 2032857601658021133}
   optionsManager: {fileID: 4162253302077006343}
