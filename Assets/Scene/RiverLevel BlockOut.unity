@@ -1190,7 +1190,7 @@ MonoBehaviour:
   powerUpUpdateRate: 5
   favourDamagedMechWeight: 0.6
   favourMostAvaliablePowerUpWeight: 0.6
-  powerUpTimeOut: 30
+  powerUpTimeOut: 10
   minPowerUpTime: 0
   maxPowerUpTime: 0
 --- !u!1001 &424170603
