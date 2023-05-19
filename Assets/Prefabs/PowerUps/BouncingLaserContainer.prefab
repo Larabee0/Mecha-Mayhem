@@ -79,6 +79,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   limit: 2
   powerUpColour: {r: 1, g: 0, b: 0, a: 1}
+  particleEffect: {fileID: 1825609963135452695, guid: b9612dd7fc5d5c246946dde0ac8a7f02,
+    type: 3}
   weaponTime: 10
   weaponName: Dual Bouncing Laser
   stockGroups: []

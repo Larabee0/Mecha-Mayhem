@@ -63,7 +63,6 @@ MonoBehaviour:
   powerUpCore: {fileID: 0}
   manager: {fileID: 0}
   mechInTrigger: 0
-  powerUpActive: 0
   spinSpeed: 1
   brightness: 10000
 --- !u!114 &1615739709745365508
@@ -80,6 +79,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   limit: 1
   powerUpColour: {r: 0.042452812, g: 1, b: 0.39516968, a: 1}
+  particleEffect: {fileID: 2148708525790841102, guid: 0c8ca6b7279f97d4386d7460a650c8cb,
+    type: 3}
   healAmount: 10
 --- !u!1 &1061957101399959709
 GameObject:
