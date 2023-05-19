@@ -8,6 +8,7 @@ namespace RedButton.GamePlay
 {
     public class MapPowerUp : MonoBehaviour
     {
+        [SerializeField] private AudioSource source;
         [SerializeField] private PowerUpCore powerUpCore;
         [HideInInspector] public PowerUpsManager manager;
         public bool mechInTrigger;
@@ -24,6 +25,7 @@ namespace RedButton.GamePlay
             capsuleRenderer.enabled = false;
             powerUpCapsule = capsuleRenderer.transform;
             powerUpCore = GetComponent<PowerUpCore>();
+            source.transform.SetParent(null);
             
         }
 
@@ -52,8 +54,10 @@ namespace RedButton.GamePlay
             {
                 if(powerUpCore.particleEffect != null)
                 {
-                    Instantiate(powerUpCore.particleEffect, transform.position, Quaternion.identity);
+                    Instantiate(powerUpCore.particleEffect, mech.transform);
                 }
+
+                source.Play();
                 
                 powerUpCore.AddTo(mech);
                 ConsumePowerUp();

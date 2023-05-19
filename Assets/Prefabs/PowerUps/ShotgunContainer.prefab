@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limit: 2
-  powerUpColour: {r: 0.46981373, g: 0.043137252, b: 1, a: 1}
+  powerUpColour: {r: 1, g: 0.8904409, b: 0.043137252, a: 1}
   particleEffect: {fileID: 9076306130373509826, guid: 2f98f6b6ae98250439f91207d0dfb04e,
     type: 3}
   weaponTime: 10

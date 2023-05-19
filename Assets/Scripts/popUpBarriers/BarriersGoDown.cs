@@ -5,6 +5,7 @@ using RedButton.GamePlay;
 
 public class BarriersGoDown : MonoBehaviour
 {
+    [SerializeField] private AudioSource gimmickSound;
     [Space]
     [Header("Range of time between barriers")]
     [SerializeField] int minTimeBetweenBarriers;
@@ -94,9 +95,13 @@ public class BarriersGoDown : MonoBehaviour
     {
         if (spacebarReady && Input.GetKeyDown(KeyCode.Space))
         {
+            if (gimmickSound != null)
+            {
+                gimmickSound.Play();
+            }
             spacebarReady = false;
-            minTimeBetweenBarriers = minTimeBetweenBarriers / 2;
-            maxTimeBetweenBarriers = maxTimeBetweenBarriers / 2;
+            minTimeBetweenBarriers /= 2;
+            maxTimeBetweenBarriers /= 2;
             int spacebarBarrierNumber = barriers.Count / 2;
             for (int i = 0; i < spacebarBarrierNumber; i++)
             {

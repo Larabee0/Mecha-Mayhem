@@ -1,3 +1,4 @@
+using Cinemachine;
 using RedButton.Core;
 using System;
 using System.Collections;
@@ -41,6 +42,7 @@ namespace RedButton.Mech
         public ShieldScript shield;
         [SerializeField] private Texture2D healthBackgroundDeath;
         public Texture2D HealthBackgroundDeath => healthBackgroundDeath;
+        public  CinemachineVirtualCamera victoryCamera;
         [SerializeField] private int minHealth = 0;
         [SerializeField] private int maxHealth = 100;
         [SerializeField] private int health = 100;
@@ -57,6 +59,10 @@ namespace RedButton.Mech
         public StringPassThrough OnWeaponChanged;
         public FloatPassThrough OnHealthChange;
         public MechPassThroughDelegeate OnMechDied;
+
+        [Header("Sound")]
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip[] damageSounds;
 
 
         [Header("For debug info only, DO NOT set these properries",order = 0)]
@@ -124,6 +130,7 @@ namespace RedButton.Mech
                 {
                     spriteRenderer.color = colour;
                     spriteRenderer.material.SetTexture("_UnlitColorMap", spriteRenderer.sprite.texture);
+                    spriteRenderer.material.SetColor("_EmissiveColor", colour * 1.5f);
                 }
                 fixedColourables[i].material.SetColor("_BaseColor", colour);
                 fixedColourables[i].material.SetColor("_UnlitColor", colour);
@@ -218,8 +225,13 @@ namespace RedButton.Mech
                 health = Mathf.Clamp(health, minHealth, maxHealth);
                 OnHealthChange?.Invoke(health);
             }
-            if(damage > 0)
+            if (damage > 0)
             {
+                if (audioSource != null && damageSounds != null && damageSounds.Length > 0)
+                {
+                    audioSource.clip = damageSounds[UnityEngine.Random.Range(0, damageSounds.Length)];
+                    audioSource.Play();
+                }
                 stats.damageRecieved += damage;
                 stats.hitsTaken++;
             }

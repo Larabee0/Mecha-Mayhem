@@ -28,6 +28,10 @@ namespace RedButton.Mech.Examples
                 switch (coolDownProcess)
                 {
                     case null:
+                        if (weaponSound != null)
+                        {
+                            weaponSound.Play();
+                        }
                         PhysicsShoot();
                         coolDownProcess = StartCoroutine(CoolDownCoroutine());
                         break;
