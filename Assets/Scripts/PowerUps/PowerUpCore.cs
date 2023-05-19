@@ -18,6 +18,7 @@ namespace RedButton.GamePlay
         protected CentralMechComponent CMC;
         public int limit=3;
         public Color powerUpColour;
+        public GameObject particleEffect;
         public virtual void Copy(PowerUpCore source)
         {
             

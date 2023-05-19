@@ -50,6 +50,11 @@ namespace RedButton.GamePlay
 
             if(mech != null)
             {
+                if(powerUpCore.particleEffect != null)
+                {
+                    Instantiate(powerUpCore.particleEffect, transform.position, Quaternion.identity);
+                }
+                
                 powerUpCore.AddTo(mech);
                 ConsumePowerUp();
             }
@@ -88,6 +93,7 @@ namespace RedButton.GamePlay
                 manager.activePowerUps.Add(this);
                 manager.inactivePowerUps.Remove(this);
                 this.powerUpCore.powerUpColour = capsuleRenderer.material.color = powerUpCore.powerUpColour;
+                this.powerUpCore.particleEffect = powerUpCore.particleEffect;
                 capsuleRenderer.material.SetColor("_EmissiveColor", powerUpCore.powerUpColour * brightness);
                 capsuleRenderer.enabled = true;
                 StartCoroutine(PowerUpTimeOut());
