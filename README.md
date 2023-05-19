@@ -13,3 +13,5 @@ Find the game on https://redbuttonstudios.itch.io/mecha-mayhem
 - Wiimote API [MIT] - https://github.com/Flafla2/Unity-Wiimote
 - World Materials Free [Free Extenion Asset] - https://assetstore.unity.com/packages/2d/textures-materials/world-materials-free-150182
 - 2022 PBR XfrogPlants Sampler [Free Extenion Asset] - https://assetstore.unity.com/packages/3d/vegetation/trees/2022-pbr-xfrogplants-sampler-229007
+- Soundly [Worldwide and non-exclusive license] - https://getsoundly.com/
+- GoodTimesRg-Regular Font [(c) 1998-2009 Ray Larabie] - https://fonts.webtoolhub.com/font-n24475-goodtimesrg-regular.aspx
