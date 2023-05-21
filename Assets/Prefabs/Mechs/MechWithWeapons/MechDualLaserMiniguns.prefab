@@ -252,6 +252,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MechDualLaserMiniguns
       objectReference: {fileID: 0}
+    - target: {fileID: 4330105638080865121, guid: 5128ad36df0315443a2883b996cec26e,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5128ad36df0315443a2883b996cec26e, type: 3}
 --- !u!4 &3227145162079782903 stripped
