@@ -8,6 +8,8 @@ namespace RedButton.Mech
 {
     public class ShieldScript : WeaponCore
     {
+        [SerializeField] private AudioClip rechargeSound;
+        [SerializeField] private AudioClip breakSound;
         [SerializeField] int shieldCD;
         [SerializeField] private int maxShieldHealth;
         private int currentShieldHealth;
@@ -119,6 +121,8 @@ namespace RedButton.Mech
             }
             StartCoroutine(FlashIcon());
             shieldReady = true;
+            weaponSound.clip = rechargeSound;
+            weaponSound.Play();
             currentShieldHealth = maxShieldHealth;
         }
 
@@ -143,6 +147,8 @@ namespace RedButton.Mech
             {
                 StopAllCoroutines();
                 shieldReady = true;
+                weaponSound.clip = rechargeSound;
+                weaponSound.Play();
             }
             currentShieldHealth = maxShieldHealth + healthOffset;
             ShieldColour();
@@ -157,6 +163,8 @@ namespace RedButton.Mech
             {
                 shieldObject.SetActive(false);
                 shieldReady = false;
+                weaponSound.clip = breakSound;
+                weaponSound.Play();
                 StartCoroutine(ShieldRecharge(shieldCD * 2));
             }
         }

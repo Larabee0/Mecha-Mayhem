@@ -20,6 +20,8 @@ namespace RedButton.GamePlay
         public int TestGroundLikelyhood;
         public int TestGroundAmount;
 
+        [SerializeField] private AudioSource gimmickSound;
+
         [HideInInspector] public float Interval;
         [HideInInspector] public float Duration;
         [HideInInspector] public float TimeFlag;
@@ -39,15 +41,17 @@ namespace RedButton.GamePlay
         // Update is called once per frame
         void Update()
         {
-            if (SpacebarReady)
+            if (SpacebarReady && Input.GetKeyDown(KeyCode.Space))
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                SpacebarOn = true;
+                if (gimmickSound != null)
                 {
-                    SpacebarOn = true;
-                    StartCoroutine(SpaceDuration());
+                    gimmickSound.Play();
                 }
+                SpacebarOn = true;
+                StartCoroutine(SpaceDuration());
             }
-            
+
             if (Time.time > TimeFlag + Interval && Time.time < TimeFlag + Interval + Duration || SpacebarOn)
             {
                 IsGimmickOccuring = true;

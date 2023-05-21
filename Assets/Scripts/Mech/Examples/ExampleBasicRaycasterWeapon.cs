@@ -96,6 +96,10 @@ namespace RedButton.Mech.Examples
                 switch (fireInterval)
                 {
                     case <= 0f:
+                        if(weaponSound != null)
+                        {
+                            weaponSound.Play();
+                        }
                         StartCoroutine(LaserCoolDown());
                         showTime = fireInterval / 2f; // showTime is half the time of the new fireInterval to ensure the laser visual is hidden before it fires again.
                         BasicRayCaster();
@@ -111,6 +115,10 @@ namespace RedButton.Mech.Examples
         {
             if (!CMC.ShieldActive)
             {
+                if (weaponSound != null)
+                {
+                    weaponSound.Play();
+                }
                 // we still set showTime so the laser is shown for a reasonable time. 
                 // this is less important than in Fire() as the same weapon will not fire twice in a row.
                 showTime = Random.Range(fireIntervalMin, fireIntervalMax) / 2f;

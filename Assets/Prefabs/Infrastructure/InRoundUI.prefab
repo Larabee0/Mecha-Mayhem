@@ -644,12 +644,12 @@ PrefabInstance:
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
       propertyPath: m_FontData.m_MinSize
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
@@ -853,12 +853,12 @@ PrefabInstance:
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
       propertyPath: m_FontData.m_MinSize
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
@@ -1052,12 +1052,12 @@ PrefabInstance:
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
       propertyPath: m_FontData.m_MinSize
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
@@ -1266,12 +1266,12 @@ PrefabInstance:
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
       propertyPath: m_FontData.m_MinSize
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8596072138016666014, guid: 11ae9e3ca4282534dbe7378630d532c7,
         type: 3}

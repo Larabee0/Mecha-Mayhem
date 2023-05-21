@@ -129,6 +129,7 @@ namespace RedButton.GamePlay
             deathOrder.Peek().stats.roundsWon += 1;
             lastRoundWinner = string.Format("Player {0} ", ((int)deathOrder.Peek().MechInputController.Player) + 1);
             currentRound += 1;
+            deathOrder.Peek().victoryCamera.Priority = 100;
             // end game if rounds finished
             StartCoroutine(NextRoundDelayed());
         }
@@ -192,6 +193,7 @@ namespace RedButton.GamePlay
             }
             spawnedMechs.ForEach(mech => {
                 mech.MechInputController.Disable();
+                mech.victoryCamera.Priority = 0;
             });
             // hide round number
             for (int i = 0; i < activeMechs.Count; i++)

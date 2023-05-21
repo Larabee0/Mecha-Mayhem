@@ -16,7 +16,7 @@ namespace RedButton.Mech
         public CentralMechComponent Owner => CMC;
 
         protected virtual Vector3 TargetForward => muzzleOriginPoint.forward;
-
+        [SerializeField] protected AudioSource weaponSound;
         [HideInInspector] public bool Grouped; // if the weapon is part of a group this is set to true by the group.
         protected bool UnboundFromControls = true;
 
