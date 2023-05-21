@@ -29,6 +29,7 @@ namespace RedButton.GamePlay
         [SerializeField] private int currentRound = 1;
         private readonly Dictionary<int, int> playerVictories = new();
         private string lastRoundWinner;
+        private CentralMechComponent lastMech;
 
         private void Awake()
         {
@@ -127,7 +128,8 @@ namespace RedButton.GamePlay
 
             playerVictories[(int)deathOrder.Peek().MechInputController.Player] += 1;
             deathOrder.Peek().stats.roundsWon += 1;
-            lastRoundWinner = string.Format("Player {0} ", ((int)deathOrder.Peek().MechInputController.Player) + 1);
+            lastMech = deathOrder.Peek();
+            lastRoundWinner = string.Format("Player {0} ", ((int)lastMech.MechInputController.Player) + 1);
             currentRound += 1;
             deathOrder.Peek().victoryCamera.Priority = 100;
             // end game if rounds finished
@@ -136,7 +138,7 @@ namespace RedButton.GamePlay
 
         private IEnumerator NextRoundDelayed()
         {
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(5f);
             ControlArbiter.Instance.MainUIController.HideHealthBars();
             if (currentRound > roundCount)
             {
@@ -206,6 +208,7 @@ namespace RedButton.GamePlay
             }
             ControlArbiter.Instance.MainUIController.SetPlayers(activeMechs);
             OnRoundStarted?.Invoke();
+            lastMech = null;
         }
 
         private void StartRoundWithOptions(string roundName, List<int>targetPlayers)
@@ -227,7 +230,10 @@ namespace RedButton.GamePlay
                 target.transform.position = spawnPoints[spawnPointIndex];
                 target.Revive();
                 activeMechs.Add(target);
-                target.gameObject.SetActive(false);
+                if(target != lastMech)
+                {
+                    target.gameObject.SetActive(false);
+                }
             }
 
             StartCoroutine(RoundIntro(roundName));

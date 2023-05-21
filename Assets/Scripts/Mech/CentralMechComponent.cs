@@ -56,7 +56,9 @@ namespace RedButton.Mech
         [Header("Player Stats")]
         public MechResults stats=new();
         public string defaultWeapon = "";
+        public Sprite defaultWeaponIcon;
         public StringPassThrough OnWeaponChanged;
+        public SpritePassThrough OnWeaponChangedImage;
         public FloatPassThrough OnHealthChange;
         public MechPassThroughDelegeate OnMechDied;
 
@@ -120,6 +122,7 @@ namespace RedButton.Mech
         {
             OnHealthChange += OnHealthChanged;
             OnWeaponChanged?.Invoke(defaultWeapon);
+            OnWeaponChangedImage?.Invoke(defaultWeaponIcon);
         }
 
         private void SetFixedMechColours(Color colour)

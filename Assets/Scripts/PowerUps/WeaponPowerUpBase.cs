@@ -9,6 +9,7 @@ namespace RedButton.GamePlay
     {
         public float weaponTime;
         [SerializeField] protected string weaponName;
+        [SerializeField] protected Sprite weaponIcon;
         [SerializeField] protected WeaponGroup[] stockGroups;
         [SerializeField] protected List<GameObject> addedWeapons = new();
         [SerializeField] protected List<WeaponCore> stockWeapons;
@@ -18,6 +19,7 @@ namespace RedButton.GamePlay
             WeaponPowerUpBase weaponPowerUp = source as WeaponPowerUpBase;
             weaponTime = weaponPowerUp.weaponTime;
             weaponName = weaponPowerUp.weaponName;
+            weaponIcon = weaponPowerUp.weaponIcon;
         }
 
         public override void AddTo(CentralMechComponent target)
@@ -72,6 +74,7 @@ namespace RedButton.GamePlay
         {
             CentralMechComponent cmc = GetComponent<CentralMechComponent>();
             cmc.OnWeaponChanged?.Invoke(weaponName);
+            cmc.OnWeaponChangedImage?.Invoke(weaponIcon);
             yield return new WaitForSeconds(weaponTime);
             RemoveSelf();
         }
@@ -93,6 +96,7 @@ namespace RedButton.GamePlay
             Destroy(this);
             CentralMechComponent cmc = GetComponent<CentralMechComponent>();
             cmc.OnWeaponChanged?.Invoke(cmc.defaultWeapon);
+            cmc.OnWeaponChangedImage?.Invoke(cmc.defaultWeaponIcon);
         }
 
         protected virtual void OnDisable()

@@ -11,6 +11,16 @@ PrefabInstance:
       propertyPath: defaultWeapon
       value: Dual Shotguns
       objectReference: {fileID: 0}
+    - target: {fileID: 52958292, guid: 5128ad36df0315443a2883b996cec26e, type: 3}
+      propertyPath: defaultWeaponIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: 3ced15abf4a5b114abf510adc8eb478c,
+        type: 3}
+    - target: {fileID: 893954387429300213, guid: 5128ad36df0315443a2883b996cec26e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2331743068901684101, guid: 5128ad36df0315443a2883b996cec26e,
         type: 3}
       propertyPath: m_RootOrder

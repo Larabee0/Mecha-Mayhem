@@ -11,6 +11,6 @@ public class SpinObject : MonoBehaviour
     {
         Vector3 angle = transform.localEulerAngles;
         angle.y += spinSpeed * Time.deltaTime;
-        transform.eulerAngles = angle;
+        transform.localEulerAngles = angle;
     }
 }

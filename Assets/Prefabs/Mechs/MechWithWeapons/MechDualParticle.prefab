@@ -12,6 +12,11 @@ PrefabInstance:
       value: Dual Particle Guns
       objectReference: {fileID: 0}
     - target: {fileID: 52958292, guid: 5128ad36df0315443a2883b996cec26e, type: 3}
+      propertyPath: defaultWeaponIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: df4d2ec5c792a274eb16ccd673cd491b,
+        type: 3}
+    - target: {fileID: 52958292, guid: 5128ad36df0315443a2883b996cec26e, type: 3}
       propertyPath: weaponOriginPoints.Array.data[1]
       value: 
       objectReference: {fileID: 8046720956349475197}
@@ -31,6 +36,11 @@ PrefabInstance:
       propertyPath: weaponOriginPoints.Array.data[5]
       value: 
       objectReference: {fileID: 4601521146765905595}
+    - target: {fileID: 893954387429300213, guid: 5128ad36df0315443a2883b996cec26e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2331743068901684101, guid: 5128ad36df0315443a2883b996cec26e,
         type: 3}
       propertyPath: m_RootOrder

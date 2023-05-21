@@ -182,6 +182,16 @@ PrefabInstance:
       propertyPath: defaultWeapon
       value: Dual Mini Guns
       objectReference: {fileID: 0}
+    - target: {fileID: 52958292, guid: 5128ad36df0315443a2883b996cec26e, type: 3}
+      propertyPath: defaultWeaponIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: c5b9c0184c35c0c4eb85192a50d41b60,
+        type: 3}
+    - target: {fileID: 893954387429300213, guid: 5128ad36df0315443a2883b996cec26e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2331743068901684101, guid: 5128ad36df0315443a2883b996cec26e,
         type: 3}
       propertyPath: m_RootOrder

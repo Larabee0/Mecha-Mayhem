@@ -25,6 +25,7 @@ public delegate void Vector2BoolAxis(Vector2 axis,bool position = false);
 public delegate void Pluse();
 public delegate void FloatPassThrough(float value);
 public delegate void StringPassThrough(string value);
+public delegate void SpritePassThrough(Sprite value);
 
 public class ButtonEventContainer
 {
