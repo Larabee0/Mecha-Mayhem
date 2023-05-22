@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RedButton.GamePlay
 {
@@ -11,6 +12,8 @@ namespace RedButton.GamePlay
         [SerializeField] private AudioSource source;
         [SerializeField] private PowerUpCore powerUpCore;
         [HideInInspector] public PowerUpsManager manager;
+        [SerializeField] private Transform backgroundTransform;
+        [SerializeField] private Image iconImage;
         public bool mechInTrigger;
         [SerializeField] private float spinSpeed = 1;
         [SerializeField] private float brightness = 1f;
@@ -26,12 +29,14 @@ namespace RedButton.GamePlay
             powerUpCapsule = capsuleRenderer.transform;
             powerUpCore = GetComponent<PowerUpCore>();
             source.transform.SetParent(null);
-            
+            backgroundTransform.gameObject.SetActive(false);
+
         }
 
         private void Update()
         {
             powerUpCapsule.Rotate(SpinAngle, SpinAngle, SpinAngle, Space.Self);
+            backgroundTransform.LookAt(Camera.main.transform.position, -Vector3.up);
         }
 
         private void OnValidate()
@@ -78,6 +83,7 @@ namespace RedButton.GamePlay
         public void ConsumePowerUp()
         {
             capsuleRenderer.enabled = false;
+            backgroundTransform.gameObject.SetActive(false);
             if(powerUpCore != null)
             {
                 StopAllCoroutines();
@@ -98,6 +104,9 @@ namespace RedButton.GamePlay
                 manager.inactivePowerUps.Remove(this);
                 this.powerUpCore.powerUpColour = capsuleRenderer.material.color = powerUpCore.powerUpColour;
                 this.powerUpCore.particleEffect = powerUpCore.particleEffect;
+                iconImage.sprite = powerUpCore.powerUpIcon;
+                iconImage.color = powerUpCore.powerUpColour;
+                //backgroundTransform.gameObject.SetActive(true);
                 capsuleRenderer.material.SetColor("_EmissiveColor", powerUpCore.powerUpColour * brightness);
                 capsuleRenderer.enabled = true;
                 StartCoroutine(PowerUpTimeOut());

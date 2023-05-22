@@ -296,11 +296,23 @@ namespace RedButton.Core
             PlayerOneUICancelDelegateUpdate(GoBackToMainMenu, GoBackToOptionsMain);
         }
 
+        public void GoForwardToPlayersPowerUps()
+        {
+            PlayerOneUICancelDelegateUpdate(GoBackToMainMenu, GoBackToOuterControlsMenu);
+        }
+
         public void GoBackToOptionsMain(InputAction.CallbackContext obj)
         {
             PlayerOneUICancelDelegateUpdate(GoBackToOptionsMain, GoBackToMainMenu);
 
             uiTranslator.StartMenuUI.optionsManager.CloseSensitivty();
+        }
+
+        public void GoBackToOuterControlsMenu(InputAction.CallbackContext obj)
+        {
+            PlayerOneUICancelDelegateUpdate(GoBackToOuterControlsMenu, GoBackToMainMenu);
+
+            uiTranslator.StartMenuUI.CloseInnerControls();
         }
 
 

@@ -63,6 +63,8 @@ MonoBehaviour:
   source: {fileID: 0}
   powerUpCore: {fileID: 0}
   manager: {fileID: 0}
+  backgroundTransform: {fileID: 0}
+  iconImage: {fileID: 0}
   mechInTrigger: 0
   spinSpeed: 1
   brightness: 10000
@@ -78,13 +80,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e5ef6e5ffc29b45bc0d1e6498c071d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerUpIcon: {fileID: 21300000, guid: 3ced15abf4a5b114abf510adc8eb478c, type: 3}
   limit: 2
   powerUpColour: {r: 1, g: 0.8904409, b: 0.043137252, a: 1}
   particleEffect: {fileID: 9076306130373509826, guid: 2f98f6b6ae98250439f91207d0dfb04e,
     type: 3}
   weaponTime: 10
   weaponName: Dual Shotguns
-  weaponIcon: {fileID: 21300000, guid: 3ced15abf4a5b114abf510adc8eb478c, type: 3}
   stockGroups: []
   addedWeapons: []
   stockWeapons: []

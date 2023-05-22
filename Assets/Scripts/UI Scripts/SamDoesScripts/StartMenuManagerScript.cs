@@ -58,6 +58,13 @@ namespace RedButton.Core.UI
         [SerializeField] private Slider roundCount;
         [SerializeField] private Text roundCountText;
 
+        [Header("Controls Screen")]
+        [SerializeField] private GameObject powerUpsText;
+        [SerializeField] private GameObject controlsText;
+        [SerializeField] private GameObject innerControlMenuButtons;
+        [SerializeField] private GameObject controlsMenuReturnButton;
+        private bool InnerMenuOpen = false;
+
         private int RoundCount { set => roundCountText.text = string.Format("Number of Rounds: {0}", value); }
 
 
@@ -123,10 +130,44 @@ namespace RedButton.Core.UI
         }
         public void CloseControls()
         {
-            ControlArbiter.Instance.startScreenState = StartScreenState.MainMenu;
-            btnPanel.SetActive(true);
-            controlsPanel.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(btnPanelBtn);
+            if (InnerMenuOpen)
+            {
+                ControlArbiter.Instance.GoBackToOuterControlsMenu(new());
+            }
+            else
+            {
+                ControlArbiter.Instance.startScreenState = StartScreenState.MainMenu;
+                btnPanel.SetActive(true);
+                controlsPanel.SetActive(false);
+                EventSystem.current.SetSelectedGameObject(btnPanelBtn);
+            }
+        }
+
+        public void CloseInnerControls()
+        {
+            InnerMenuOpen = false;
+            powerUpsText.SetActive(false);
+            controlsText.SetActive(false);
+            innerControlMenuButtons.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(controlsMenuReturnButton);
+        }
+
+        public void OpenInnerPowerUpsMenu()
+        {
+            InnerMenuOpen = true;
+            powerUpsText.SetActive(true);
+            innerControlMenuButtons.SetActive(false);
+            ControlArbiter.Instance.GoForwardToPlayersPowerUps();
+            EventSystem.current.SetSelectedGameObject(controlsMenuReturnButton);
+        }
+
+        public void OpenInnerControlsMenu()
+        {
+            InnerMenuOpen = true;
+            controlsText.SetActive(true);
+            innerControlMenuButtons.SetActive(false);
+            ControlArbiter.Instance.GoForwardToPlayersPowerUps();
+            EventSystem.current.SetSelectedGameObject(controlsMenuReturnButton);
         }
 
         public void OpenCredits()

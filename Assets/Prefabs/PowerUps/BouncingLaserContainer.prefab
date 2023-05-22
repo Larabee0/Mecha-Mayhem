@@ -63,6 +63,8 @@ MonoBehaviour:
   source: {fileID: 0}
   powerUpCore: {fileID: 0}
   manager: {fileID: 0}
+  backgroundTransform: {fileID: 0}
+  iconImage: {fileID: 0}
   mechInTrigger: 0
   spinSpeed: 1
   brightness: 10000
@@ -78,13 +80,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 262f7cd1bfae2a043b76fc9f8d7a3527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerUpIcon: {fileID: 21300000, guid: 7e7c25be872a8bc41b5b1a706658bd9f, type: 3}
   limit: 2
   powerUpColour: {r: 1, g: 0, b: 0, a: 1}
   particleEffect: {fileID: 1825609963135452695, guid: b9612dd7fc5d5c246946dde0ac8a7f02,
     type: 3}
   weaponTime: 10
   weaponName: Dual Bouncing Laser
-  weaponIcon: {fileID: 21300000, guid: 7e7c25be872a8bc41b5b1a706658bd9f, type: 3}
   stockGroups: []
   addedWeapons: []
   stockWeapons: []

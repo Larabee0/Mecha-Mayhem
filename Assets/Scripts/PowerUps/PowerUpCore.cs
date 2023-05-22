@@ -15,6 +15,7 @@ namespace RedButton.GamePlay
 
     public class PowerUpCore : MonoBehaviour
     {
+        public Sprite powerUpIcon;
         protected CentralMechComponent CMC;
         public int limit=3;
         public Color powerUpColour;
