@@ -471,7 +471,7 @@ MonoBehaviour:
   optionsPanelBtn: {fileID: 0}
   controlsPanelBtn: {fileID: 283153581395325598}
   creditsPanelBtn: {fileID: 496303426}
-  playerNumPanelBtn: {fileID: 251103221}
+  playerNumPanelBtn: {fileID: 824345500}
   returnBtn: {fileID: 2146255580}
   okBtn: {fileID: 1625583271}
   changeBtn: {fileID: 1467761716}

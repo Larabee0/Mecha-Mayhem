@@ -58,7 +58,7 @@ MonoBehaviour:
     type: 3}
   IgnoreCollisionsLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
   laserBrightness: 5
   takeMechAccentColour: 0
   fireIntervalMin: 0.5
@@ -272,7 +272,7 @@ MonoBehaviour:
     type: 3}
   IgnoreCollisionsLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
   laserBrightness: 5
   takeMechAccentColour: 0
   fireIntervalMin: 0.5
@@ -486,7 +486,7 @@ MonoBehaviour:
     type: 3}
   IgnoreCollisionsLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
   laserBrightness: 5
   takeMechAccentColour: 0
   fireIntervalMin: 0.5

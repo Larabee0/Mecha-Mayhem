@@ -8,6 +8,7 @@ namespace RedButton.GamePlay
     public class RiverFlooding : MonoBehaviour
     {
         [Header("Pushers")]
+        [SerializeField] private Rigidbody pusherRB;
         [SerializeField] private Transform pusherParent;
         [SerializeField] private Vector2 pusherMinMaxHeight;
         [SerializeField] private float raiseLowerTime;
@@ -62,9 +63,10 @@ namespace RedButton.GamePlay
                 waterPos.y = Mathf.Lerp(origin.y, destination.y, time);
                 transform.position = waterPos;
 
-                Vector3 pusherPos = pusherParent.localPosition;
+                Vector3 pusherPos = pusherParent.position;
                 pusherPos.y = Mathf.Lerp(pusherMinMaxHeight.x,pusherMinMaxHeight.y, time);
-                pusherParent.transform.localPosition = pusherPos;
+                //pusherParent.transform.localPosition = pusherPos;
+                pusherRB.MovePosition(pusherPos);
                 yield return null;
             }
             // while (gameObject.transform.position.y <= destination.y)
@@ -83,9 +85,10 @@ namespace RedButton.GamePlay
                 waterPos.y = Mathf.Lerp(destination.y, origin.y, time);
                 transform.position = waterPos;
 
-                Vector3 pusherPos = pusherParent.localPosition;
+                Vector3 pusherPos = pusherParent.position;
                 pusherPos.y = Mathf.Lerp(pusherMinMaxHeight.y, pusherMinMaxHeight.x, time);
-                pusherParent.transform.localPosition = pusherPos;
+                //pusherParent.transform.localPosition = pusherPos;
+                pusherRB.MovePosition(pusherPos);
                 yield return null;
             }
 

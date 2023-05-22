@@ -140,7 +140,7 @@ MonoBehaviour:
     type: 3}
   IgnoreCollisionsLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
   laserBrightness: 140
   takeMechAccentColour: 0
   fireIntervalMin: 0.5
