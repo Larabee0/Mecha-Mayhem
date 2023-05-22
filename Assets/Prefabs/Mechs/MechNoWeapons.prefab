@@ -815,6 +815,7 @@ MonoBehaviour:
     hitsTaken: 0
     damageRecieved: 0
   defaultWeapon: 
+  defaultWeaponIcon: {fileID: 0}
   audioSource: {fileID: 4330105638080865121}
   damageSounds:
   - {fileID: 8300000, guid: 31b890eab4b2165409dbda88def47332, type: 3}
@@ -849,6 +850,8 @@ MonoBehaviour:
   rotationSpeed: 5
   skinnedMesh: {fileID: 3222246349715223425}
   animator: {fileID: 3777092056171449418}
+  upwardForce: {x: 0, y: 25, z: 0}
+  upForceMul: 0.01
 --- !u!82 &4330105638080865121
 AudioSource:
   m_ObjectHideFlags: 0

@@ -22,6 +22,8 @@ namespace RedButton.Mech.Examples
         [SerializeField] private Animator animator;
         protected float moveInput;
         protected Vector3 moveDir;
+        [SerializeField] protected Vector3 upwardForce;
+        [SerializeField] protected float upForceMul;
 
         protected override void OnMove(Vector2 axis, bool animate)
         {
@@ -51,6 +53,7 @@ namespace RedButton.Mech.Examples
                 Vector3 delta = currentDir - moveDir;
                 rb.AddForce(moveInput * ((-moveSpeed * forceMultiplier) * 2) * delta, ForceMode.Force);
                 rb.AddForce(moveInput * moveSpeed * forceMultiplier * moveDir, ForceMode.Force);
+                rb.AddForce(moveInput * upwardForce, ForceMode.Force);
             }
         }
     }

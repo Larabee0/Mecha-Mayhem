@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace RedButton.GamePlay
 {
     public class RiverFlooding : MonoBehaviour
     {
+        [Header("Pushers")]
+        [SerializeField] private Transform pusherParent;
+        [SerializeField] private Vector2 pusherMinMaxHeight;
+        [SerializeField] private float raiseLowerTime;
+
         [Header("Flood Charecteristics: \n")]
         public float Interval;
         public float Duration;
@@ -49,19 +55,46 @@ namespace RedButton.GamePlay
 
         IEnumerator Erupt()
         {
-            while (gameObject.transform.position.y <= destination.y)
+            for (float i = 0; i < raiseLowerTime; i += Time.deltaTime)
             {
-                yield return new WaitForSeconds(Floodtick);
-                RaiseRiver();
+                float time = Mathf.InverseLerp(0, raiseLowerTime, i);
+                Vector3 waterPos = transform.position;
+                waterPos.y = Mathf.Lerp(origin.y, destination.y, time);
+                transform.position = waterPos;
+
+                Vector3 pusherPos = pusherParent.localPosition;
+                pusherPos.y = Mathf.Lerp(pusherMinMaxHeight.x,pusherMinMaxHeight.y, time);
+                pusherParent.transform.localPosition = pusherPos;
+                yield return null;
             }
+            // while (gameObject.transform.position.y <= destination.y)
+            // {
+            //     yield return new WaitForSeconds(Floodtick);
+            //     RaiseRiver();
+            // }
             yield return new WaitForSeconds(Duration);
-            while (gameObject.transform.position.y > origin.y)
+
+
+
+            for (float i = 0; i < raiseLowerTime; i += Time.deltaTime)
             {
-                yield return new WaitForSeconds(Floodtick);
-                LowerRiver();
+                float time = Mathf.InverseLerp( 0, raiseLowerTime, i);
+                Vector3 waterPos = transform.position;
+                waterPos.y = Mathf.Lerp(destination.y, origin.y, time);
+                transform.position = waterPos;
+
+                Vector3 pusherPos = pusherParent.localPosition;
+                pusherPos.y = Mathf.Lerp(pusherMinMaxHeight.y, pusherMinMaxHeight.x, time);
+                pusherParent.transform.localPosition = pusherPos;
+                yield return null;
             }
+
+            // while (gameObject.transform.position.y > origin.y)
+            // {
+            //     yield return new WaitForSeconds(Floodtick);
+            //     LowerRiver();
+            // }
             LocalGim = false;
-            StopCoroutine(Erupt());
         }
 
         public void RaiseRiver()
