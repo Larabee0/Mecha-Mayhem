@@ -1719,6 +1719,10 @@ MonoBehaviour:
   numberOfBarriers: 1
   barrierPrefabs:
   - {fileID: 1428721652305783790, guid: 834340f94ce0ebc45bfb264297d4417e, type: 3}
+  - {fileID: 7155317096297611449, guid: eb335aa7fea68854abb0a016f9970111, type: 3}
+  - {fileID: 1176252977510641621, guid: d41ab4d4c00a64c479e97641f9efe566, type: 3}
+  - {fileID: 7400677545938868766, guid: 7018bc6e897c42645bc666c4286e7d1f, type: 3}
+  - {fileID: 5340644628978954422, guid: d34ad5c8a3119914f83b9ec39675ec52, type: 3}
 --- !u!82 &947540758
 AudioSource:
   m_ObjectHideFlags: 0
