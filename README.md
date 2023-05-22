@@ -15,3 +15,4 @@ Find the game on https://redbuttonstudios.itch.io/mecha-mayhem
 - 2022 PBR XfrogPlants Sampler [Free Extenion Asset] - https://assetstore.unity.com/packages/3d/vegetation/trees/2022-pbr-xfrogplants-sampler-229007
 - Soundly [Worldwide and non-exclusive license] - https://getsoundly.com/
 - GoodTimesRg-Regular Font [(c) 1998-2009 Ray Larabie] - https://fonts.webtoolhub.com/font-n24475-goodtimesrg-regular.aspx
+- AllSky Free - 10 Sky / Skybox Set [Standard Unity Asset Store EULA] - https://assetstore.unity.com/packages/2d/textures-materials/sky/allsky-free-10-sky-skybox-set-146014
