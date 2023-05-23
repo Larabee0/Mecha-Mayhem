@@ -99,6 +99,7 @@ public class BarriersGoDown : MonoBehaviour
             {
                 gimmickSound.Play();
             }
+            Debug.Log(barriers.Count);
             spacebarReady = false;
             //minTimeBetweenBarriers /= 2;
             //maxTimeBetweenBarriers /= 2;
