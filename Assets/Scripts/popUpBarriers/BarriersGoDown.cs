@@ -51,6 +51,7 @@ public class BarriersGoDown : MonoBehaviour
         foreach (GameObject barrier in barriers)
         {
             Destroy(barrier);
+            barriers.Remove(barrier);
         }
     }
     private void LookForBarriers()
@@ -101,8 +102,8 @@ public class BarriersGoDown : MonoBehaviour
             }
             Debug.Log(barriers.Count);
             spacebarReady = false;
-            //minTimeBetweenBarriers /= 2;
-            //maxTimeBetweenBarriers /= 2;
+            minTimeBetweenBarriers /= 2;
+            maxTimeBetweenBarriers /= 2;
             int spacebarBarrierNumber = barriers.Count / 2;
             for (int i = 0; i < spacebarBarrierNumber; i++)
             {
