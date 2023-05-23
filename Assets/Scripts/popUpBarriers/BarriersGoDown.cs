@@ -100,8 +100,8 @@ public class BarriersGoDown : MonoBehaviour
                 gimmickSound.Play();
             }
             spacebarReady = false;
-            minTimeBetweenBarriers /= 2;
-            maxTimeBetweenBarriers /= 2;
+            //minTimeBetweenBarriers /= 2;
+            //maxTimeBetweenBarriers /= 2;
             int spacebarBarrierNumber = barriers.Count / 2;
             for (int i = 0; i < spacebarBarrierNumber; i++)
             {
