@@ -106,9 +106,9 @@ public class BarriersGoDown : MonoBehaviour
             }
             Debug.Log(barriers.Count);
             spacebarReady = false;
-            minTimeBetweenBarriers /= 2;
-            maxTimeBetweenBarriers /= 2;
-            int spacebarBarrierNumber = barriers.Count / 2;
+            minTimeBetweenBarriers = minTimeBetweenBarriers / 3 * 2;
+            maxTimeBetweenBarriers = maxTimeBetweenBarriers / 3 * 2;
+            int spacebarBarrierNumber = barriers.Count / 3;
             for (int i = 0; i < spacebarBarrierNumber; i++)
             {
 
