@@ -21,6 +21,7 @@ public class BarriersGoDown : MonoBehaviour
     
 
     List<GameObject> barriers;
+    GameObject barrierPrefabToDelete;
     
     bool spacebarReady = true;
 
@@ -45,12 +46,15 @@ public class BarriersGoDown : MonoBehaviour
     }   
     private void LookForBarriersDelete()
     {
+        barrierPrefabToDelete = GameObject.FindGameObjectWithTag("BarriersPrefab");
+        DestroyImmediate(barrierPrefabToDelete);
+
         barriers = new List<GameObject>();
         barriers.AddRange(GameObject.FindGameObjectsWithTag("Barrier"));
 
         foreach (GameObject barrier in barriers)
         {
-            Destroy(barrier);
+            DestroyImmediate(barrier);
             barriers.Remove(barrier);
         }
     }
