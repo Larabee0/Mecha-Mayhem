@@ -65,6 +65,7 @@ namespace RedButton.Core.UI
         [SerializeField] private GameObject controlsMenuReturnButton;
         private bool InnerMenuOpen = false;
 
+
         private int RoundCount { set => roundCountText.text = string.Format("Number of Rounds: {0}", value); }
 
 
@@ -459,6 +460,5 @@ namespace RedButton.Core.UI
             lvlSelectPanel.SetActive(false);
         }
         #endregion
-
     }
 }
