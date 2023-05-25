@@ -1045,7 +1045,7 @@ MonoBehaviour:
   videoPlayer: {fileID: 9223286486761454604}
   bgPanel: {fileID: 1687991420}
   timerValue: 0
-  timerMax: 3
+  timerMax: 10
 --- !u!1 &314296155
 GameObject:
   m_ObjectHideFlags: 0

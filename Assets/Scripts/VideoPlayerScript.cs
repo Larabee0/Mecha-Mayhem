@@ -11,7 +11,7 @@ public class VideoPlayerScript : MonoBehaviour
     [SerializeField] private float timerMax;
     private bool playingVideo;
 
-    private void Start()
+    private void OnEnable()
     {
         videoPlayer.GetComponent<VideoPlayer>().targetCamera = Camera.main;
     }
