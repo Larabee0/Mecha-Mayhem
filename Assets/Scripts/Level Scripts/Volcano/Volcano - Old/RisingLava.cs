@@ -6,59 +6,131 @@ namespace RedButton.GamePlay
 {
     public class RisingLava : MonoBehaviour
     {
-        private float Interval;
         private float Duration;
         private int Damage;
 
         public Vector3 LavaSpeed;
-        private float Lavatick;
         public float timer = 0f;
         public Vector3 destination;
         public Vector3 origin;
-        private bool IsGimmickOccuring;
+        private bool IsGimmickOccuring => gimmickCore.IsGimmickOccuring;
         private bool LocalGim = false;
+        private bool roundStarted = false;
+
+        [Header("Scripting References")]
+        [SerializeField] private GameArbiter gameArbiter;
+        [SerializeField] private GimmickCore gimmickCore;
+
+        private float raiseLowerTime = 0f;
 
         // Start is called before the first frame update
         void Start()
         {
+            raiseLowerTime = Mathf.Abs(origin.y - destination.y) / LavaSpeed.y;
+
             timer = Time.time;
-            GameObject GameArb = GameObject.Find("GameArbiter");
-            Damage = GameArb.GetComponent<GimmickCore>().VolcanoDamage;
+            gameArbiter = FindObjectOfType<GameArbiter>();
+            gimmickCore = gameArbiter.GetComponent<GimmickCore>();
+            Damage = gimmickCore.VolcanoDamage;
+            gameArbiter.OnRoundStarted += OnRoundStart;
+            gameArbiter.OnRoundEnded += OnRoundEnd;
         }
 
         // Update is called once per frame
         void Update()
         {
-            GameObject GameArb = GameObject.Find("GameArbiter");
-            IsGimmickOccuring = GameArb.GetComponent<GimmickCore>().IsGimmickOccuring;
+            if (!roundStarted)
+            {
+                return;
+            }
             if (IsGimmickOccuring == true)
             {
                 if (LocalGim == false)
                 {
                     LocalGim = true;
-                    Interval = GameArb.GetComponent<GimmickCore>().Interval;
-                    Duration = GameArb.GetComponent<GimmickCore>().Duration;    
+                    Duration = gimmickCore.Duration;
                     StartCoroutine(Erupt());
-                }
-                
+                }   
+            }
+        }
+
+        private void OnDestroy()
+        {
+            gameArbiter.OnRoundStarted -= OnRoundStart;
+            gameArbiter.OnRoundEnded -= OnRoundEnd;
+        }
+
+        private void OnRoundStart()
+        {
+            roundStarted = true;
+        }
+
+        private void OnRoundEnd()
+        {
+            roundStarted = false;
+            if (LocalGim)
+            {
+                StopAllCoroutines();
+                StartCoroutine(EndRound());
             }
         }
 
         IEnumerator Erupt()
         {
-            while (gameObject.transform.position.y <= destination.y)
+
+
+            for (float i = 0; i < raiseLowerTime; i += Time.deltaTime)
             {
-                yield return new WaitForSeconds(Lavatick);
-                RaiseLava();
+                float time = Mathf.InverseLerp(0, raiseLowerTime, i);
+                Vector3 waterPos = transform.position;
+                waterPos.y = Mathf.Lerp(origin.y, destination.y, time);
+                transform.position = waterPos;
+                yield return null;
             }
+
+
+            // while (gameObject.transform.position.y <= destination.y)
+            // {
+            //     yield return null;
+            //     RaiseLava();
+            // }
             yield return new WaitForSeconds(Duration);
-            while (gameObject.transform.position.y > origin.y)
+
+
+            for (float i = 0; i < raiseLowerTime; i += Time.deltaTime)
             {
-                yield return new WaitForSeconds(Lavatick);
-                LowerLava();
+                float time = Mathf.InverseLerp(0, raiseLowerTime, i);
+                Vector3 waterPos = transform.position;
+                waterPos.y = Mathf.Lerp(destination.y, origin.y, time);
+                transform.position = waterPos;
+
+                yield return null;
             }
+            // while (gameObject.transform.position.y > origin.y)
+            // {
+            //     yield return null;
+            //     LowerLava();
+            // }
             LocalGim = false;
             StopCoroutine(Erupt());           
+        }
+
+        private IEnumerator EndRound()
+        {
+            float time = Mathf.InverseLerp(destination.y, origin.y, transform.position.y);
+
+            float startTime = Mathf.Lerp(0, raiseLowerTime, time);
+
+            for (float i = startTime; i < raiseLowerTime; i += Time.deltaTime)
+            {
+                time = Mathf.InverseLerp(0, raiseLowerTime, i);
+                Vector3 waterPos = transform.position;
+                waterPos.y = Mathf.Lerp(destination.y, origin.y, time);
+                transform.position = waterPos;
+                yield return null;
+            }
+
+            LocalGim = false;
         }
 
         public void RaiseLava()
@@ -74,7 +146,7 @@ namespace RedButton.GamePlay
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.CompareTag("Player"))
             {
                 Mech.CentralMechComponent mech = collision.gameObject.GetComponentInParent<Mech.CentralMechComponent>();
                 mech.UpdateHealth(Damage);

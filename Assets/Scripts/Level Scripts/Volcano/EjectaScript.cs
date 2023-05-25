@@ -8,33 +8,30 @@ namespace RedButton.GamePlay
     {
         [Header("Ejecta Charecteristics")]
         private float velocity;
-        [SerializeField] private Vector3 TargetPoint;
+        public Vector3 TargetPoint;
         [Header("\nImpact")]
-        [SerializeField] GameObject impact;
+        [SerializeField] private GameObject impact;
         [Header("\nHazard Zone")]
-        [SerializeField] GameObject HazardZone; 
+        [SerializeField] private GameObject HazardZone;
 
-        private void Awake()
+        private GameObject hazardzoneInstance;
+
+        private void Start()
         {
             GameObject Caldera = GameObject.Find("TargetPlane");
             velocity = Caldera.GetComponent<VolcanoGimmick>().Velocity;
-            TargetPoint = Caldera.GetComponent<VolcanoGimmick>().TargetPoint;
             Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
             rigidbody.AddForce(0,-velocity,0, ForceMode.VelocityChange);
-            GameObject Haz = GameObject.Instantiate(HazardZone);
-            Haz.transform.position = TargetPoint;
+            hazardzoneInstance = Instantiate(HazardZone,TargetPoint,Quaternion.identity);
             Destroy(gameObject, 5);
-            Destroy(Haz, 5);
+            Destroy(hazardzoneInstance, 5);
         }
-        // Update is called once per frame
 
         protected void OnCollisionEnter(Collision collision)
         {
             Destroy(gameObject);
-            GameObject Haz = GameObject.Find("Hazard Zone(Clone)");
-            Destroy(Haz);
-            GameObject Impact = Instantiate(impact);
-            Impact.transform.position = TargetPoint;
+            Destroy(hazardzoneInstance);
+            Instantiate(impact, TargetPoint, Quaternion.identity);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace RedButton.GamePlay
         public bool RoundStarted => roundStarted;
         public Pluse OnActiveSceneChanged;
         public Pluse OnRoundStarted;
+        public Pluse OnRoundEnded;
 
         [SerializeField] private PowerUpsManager powerUpsManager;
         [SerializeField] private int roundCount = 3;
@@ -132,7 +133,9 @@ namespace RedButton.GamePlay
             lastRoundWinner = string.Format("Player {0} ", ((int)lastMech.MechInputController.Player) + 1);
             currentRound += 1;
             deathOrder.Peek().victoryCamera.Priority = 100;
-            // end game if rounds finished
+
+            OnRoundEnded?.Invoke();
+            
             StartCoroutine(NextRoundDelayed());
         }
 

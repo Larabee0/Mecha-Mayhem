@@ -22,7 +22,7 @@ namespace RedButton.GamePlay
             Duration = GameArb.GetComponent<GimmickCore>().Duration;
             OriginalWidth.Set(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
             GameObject RiverWater = GameObject.Find("FloodWater");
-            RiverFinalWidth.Set(RiverWater.GetComponent<RiverFlooding>().RiverFinalWidth, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+            //RiverFinalWidth.Set(RiverWater.GetComponent<RiverFlooding>().RiverFinalWidth, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
         }
 
         void Update()

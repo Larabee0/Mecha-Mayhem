@@ -13,6 +13,9 @@ namespace RedButton.GamePlay
         public float MaxDuration;
         public float MinDuration;
 
+        [Header("Scripting References")]
+        [SerializeField] private GameArbiter gameArbiter;
+
         [Space]
         [Header("Level Specific Parameters")]
         public int VolcanoAmount = 10;
@@ -29,6 +32,7 @@ namespace RedButton.GamePlay
 
         private bool SpacebarOn = false;
         private bool SpacebarReady = true;
+        private bool roundStarted = false;
 
         // Start is called before the first frame update
         void Start()
@@ -36,11 +40,19 @@ namespace RedButton.GamePlay
             TimeFlag = Time.time;
             Interval = Random.Range(MinTimeInterval, MaxTimeInterval);
             Duration = Random.Range(MinDuration, MaxDuration);
+            gameArbiter = GetComponent<GameArbiter>();
+
+            gameArbiter.OnRoundStarted += OnRoundStart;
+            gameArbiter.OnRoundEnded += OnRoundEnd;
         }
 
         // Update is called once per frame
         void Update()
         {
+            if(!roundStarted)
+            {
+                return;
+            }
             if (SpacebarReady && Input.GetKeyDown(KeyCode.Space))
             {
                 SpacebarOn = true;
@@ -68,6 +80,21 @@ namespace RedButton.GamePlay
                     StartCoroutine(SpacebarCD());
                 }
             }
+        }
+        private void OnDestroy()
+        {
+            gameArbiter.OnRoundStarted -= OnRoundStart;
+            gameArbiter.OnRoundEnded -= OnRoundEnd;
+        }
+
+        private void OnRoundStart()
+        {
+            roundStarted = true;
+        }
+
+        private void OnRoundEnd()
+        {
+            roundStarted = false;
         }
 
         IEnumerator SpaceDuration()

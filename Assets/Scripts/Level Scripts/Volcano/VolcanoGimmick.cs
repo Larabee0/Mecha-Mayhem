@@ -9,13 +9,12 @@ namespace RedButton.GamePlay
     /// </summary>
     public class VolcanoGimmick : MonoBehaviour
     {
-        private float Interval;
         private float Duration;
         private int amount;
         private float spawnrate;
 
         [Header("Flight characteristics")]
-        [SerializeField] public float Velocity = 5f;
+        public float Velocity = 5f;
         [SerializeField] private float height = 20f;
 
         [Header("Objects")]
@@ -23,78 +22,98 @@ namespace RedButton.GamePlay
         [SerializeField] private GameObject TargetPlane;
         [SerializeField] private GameObject HazardZone;
 
+        [SerializeField] private GameArbiter gameArbiter;
+        [SerializeField] private GimmickCore gimmickCore;
+
         [Header("Debugging")]
         public float TimeFlag = 0f;
-        public Vector3 TargetPoint;
-        private bool IsGimmickOccuring;
+        private bool IsGimmickOccuring => gimmickCore.IsGimmickOccuring;
         private bool LocalGim = false;
+        private bool roundStarted = false;
 
         void Start()
         {
             TimeFlag = Time.time;
+            gameArbiter = FindObjectOfType<GameArbiter>();
+            gimmickCore = gameArbiter.GetComponent<GimmickCore>();
+            gameArbiter.OnRoundStarted += OnRoundStart;
+            gameArbiter.OnRoundEnded += OnRoundEnd;
         }
 
         void Update()
         {
-            GameObject GameArb = GameObject.Find("GameArbiter");
-            IsGimmickOccuring = GameArb.GetComponent<GimmickCore>().IsGimmickOccuring;
+            if(!roundStarted)
+            {
+                return;
+            }
             if (IsGimmickOccuring == true)
             {
                 if (LocalGim == false)
-                { 
-                    Interval = GameArb.GetComponent<GimmickCore>().Interval;
-                    Duration = GameArb.GetComponent<GimmickCore>().Duration;
-                    amount = GameArb.GetComponent<GimmickCore>().VolcanoAmount - 1;
+                {
+                    Duration = gimmickCore.Duration;
+                    amount = gimmickCore.VolcanoAmount - 1;
                     spawnrate = Duration / amount;
-                    //Debug.Log("volcano: " + Duration + "," + spawnrate + "," + amount);
+
                     TimeFlag = Time.time;
                     LocalGim = true;
                     StartCoroutine(Erupt());
                 }
             }
         }
-        IEnumerator Erupt()
+        
+        private void OnDestroy()
         {
-            while (Time.time < TimeFlag + Duration) {
-                yield return new WaitForSeconds(spawnrate);
-                NewTarget();
-                SpawnEjecta();
-            }
-            yield return LocalGim = false;
-            StopCoroutine(Erupt());          
+            gameArbiter.OnRoundStarted -= OnRoundStart;
+            gameArbiter.OnRoundEnded -= OnRoundEnd;
         }
 
-        public void SpawnEjecta()
+        private void OnRoundStart()
+        {
+            roundStarted = true;
+        }
+
+        private void OnRoundEnd()
+        {
+            roundStarted = false;
+            StopAllCoroutines();
+        }
+
+        IEnumerator Erupt()
+        {
+            while (Time.time < TimeFlag + Duration)
+            {
+                yield return new WaitForSeconds(spawnrate);
+                SpawnEjecta(NewTarget());
+            }
+            LocalGim = false;
+        }
+
+        public void SpawnEjecta(Vector3 targetPoint)
         {
             // safety measure.
-            if  (TargetPlane == null)
+            if (TargetPlane == null)
             {
                 Debug.LogWarningFormat("Target Plane for VolcanoGimmick was not set ", gameObject.name);
                 return;
             }
 
-            Vector3 SpawnPoint = new Vector3(TargetPoint.x, height, TargetPoint.z);
-            Vector3 bulletVector = (TargetPoint - SpawnPoint).normalized;
+            Vector3 SpawnPoint = new(targetPoint.x, height, targetPoint.z);
+            Vector3 bulletVector = (targetPoint - SpawnPoint).normalized;
             Quaternion rotation = Quaternion.LookRotation(bulletVector);
 
             // spawn the projectile in the correct orientaiton and position
-            GameObject ejecta = Instantiate(Ejecta, SpawnPoint, rotation);  
+            Instantiate(Ejecta, SpawnPoint, rotation).GetComponent<EjectaScript>().TargetPoint = targetPoint;
         }
 
-        public void NewTarget()
+        public Vector3 NewTarget()
         {
-            List<Vector3> VerticeList = new List<Vector3>(TargetPlane.GetComponent<MeshFilter>().sharedMesh.vertices);
+            List<Vector3> VerticeList = new(TargetPlane.GetComponent<MeshFilter>().sharedMesh.vertices);
             Vector3 leftTop = TargetPlane.transform.TransformPoint(VerticeList[0]);
             Vector3 rightTop = TargetPlane.transform.TransformPoint(VerticeList[10]);
             Vector3 leftBottom = TargetPlane.transform.TransformPoint(VerticeList[110]);
             Vector3 XAxis = rightTop - leftTop;
             Vector3 ZAxis = leftBottom - leftTop;
-            TargetPoint = leftTop + XAxis * Random.value + ZAxis * Random.value;
-
-            /*TargetPoint.x = Random.Range(leftTop.x, rightTop.x);
-            TargetPoint.y = 0f;
-            TargetPoint.z = Random.Range(leftTop.z, leftBottom.z);*/
+            return leftTop + XAxis * Random.value + ZAxis * Random.value;
         }
-        
     }
 }
