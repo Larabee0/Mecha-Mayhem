@@ -10,6 +10,8 @@ public class BarriersGoDown : MonoBehaviour
     [Header("Range of time between barriers")]
     [SerializeField] int minTimeBetweenBarriers;
     [SerializeField] int maxTimeBetweenBarriers;
+    private int max;
+    private int min;
 
     [Space]
     [Header("Number of Barriers going down at one time")]
@@ -25,6 +27,11 @@ public class BarriersGoDown : MonoBehaviour
     
     bool spacebarReady = true;
 
+    private void Awake()
+    {
+        max = maxTimeBetweenBarriers;
+        min = minTimeBetweenBarriers;
+    }
     private void SummonBarriers()
     {
         int prefabToUse = Random.Range(0, barrierPrefabs.Length - 1);
@@ -39,11 +46,17 @@ public class BarriersGoDown : MonoBehaviour
     }
     private void BarriersRound()
     {
+        ResetMinMax();
         LookForBarriersDelete();
         SummonBarriers();
         LookForBarriers();
         ResetSpaceBar();
-    }   
+    }
+    private void ResetMinMax()
+    {
+        maxTimeBetweenBarriers = max;
+        minTimeBetweenBarriers = min;
+    }
     private void LookForBarriersDelete()
     {
         barrierPrefabToDelete = GameObject.FindGameObjectWithTag("BarriersPrefab");
@@ -106,9 +119,9 @@ public class BarriersGoDown : MonoBehaviour
             }
             Debug.Log(barriers.Count);
             spacebarReady = false;
-            minTimeBetweenBarriers = minTimeBetweenBarriers / 3 * 2;
-            maxTimeBetweenBarriers = maxTimeBetweenBarriers / 3 * 2;
-            int spacebarBarrierNumber = barriers.Count / 3;
+            minTimeBetweenBarriers = minTimeBetweenBarriers / 2;
+            maxTimeBetweenBarriers = maxTimeBetweenBarriers / 2;
+            int spacebarBarrierNumber = barriers.Count / 2;
             for (int i = 0; i < spacebarBarrierNumber; i++)
             {
 
