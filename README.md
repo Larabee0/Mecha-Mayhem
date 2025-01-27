@@ -37,4 +37,4 @@ Filip Kalisz - Programmer
 
 Vaugahn - Expo Art  
 
-Group Supervisor Matt Irwin 
+Group Supervisor - Matt Irwin 
