@@ -20,11 +20,19 @@ Find the game on https://redbuttonstudios.itch.io/mecha-mayhem
 
 ## Credits
 Hattie Gammon - Music 
+
 Chai Osher - Design 
+
 Josh Beckett - Robotics 
+
 Nail Daniel - Programmer 
+
 Sam Sheriff - Design 
+
 Will Vickers Hastings - Programmer 
+
 Isobel Belton - Art 
+
 Filip Kalisz - Programmer 
+
 Vaugahn - Expo Art 
