@@ -19,12 +19,12 @@ Find the game on https://redbuttonstudios.itch.io/mecha-mayhem
 - AllSky Free - 10 Sky / Skybox Set [Standard Unity Asset Store EULA] - https://assetstore.unity.com/packages/2d/textures-materials/sky/allsky-free-10-sky-skybox-set-146014
 
 ## Credits
-Hattie Gammon - Music
-Chai Osher - Design
-Josh Beckett - Robotics
-Nail Daniel - Programmer
-Sam Sheriff -Design
-Will Vickers Hastings - Programmer
-Isobel Belton - Art
-Filip Kalisz - Programmer
-Vaugahn - Expo Art
+Hattie Gammon - Music 
+Chai Osher - Design 
+Josh Beckett - Robotics 
+Nail Daniel - Programmer 
+Sam Sheriff - Design 
+Will Vickers Hastings - Programmer 
+Isobel Belton - Art 
+Filip Kalisz - Programmer 
+Vaugahn - Expo Art 
