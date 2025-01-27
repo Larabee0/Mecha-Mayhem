@@ -35,4 +35,6 @@ Isobel Belton - Art
 
 Filip Kalisz - Programmer 
 
-Vaugahn - Expo Art 
+Vaugahn - Expo Art  
+
+Group Supervisor Matt Irwin 
